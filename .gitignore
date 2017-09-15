@@ -1,0 +1,6 @@
+*.suo
+/Program/Client/Assets/StreamingAssets.meta
+/Program/Client/Assets/StreamingAssets/build_info.txt
+/Program/Client/Assets/StreamingAssets/build_info.txt.meta
+/Program/Client/Library
+/Program/Client/Temp
