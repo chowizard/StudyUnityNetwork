@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class SceneMain : MonoBehaviour
 {
@@ -10,16 +12,38 @@ public class SceneMain : MonoBehaviour
 
     public string sceneName;
 
+    public EntityManager entityManager;
+
     // Use this for initialization
-    void Start()
+    private void Start()
     {
-        Debug.Log("Scene was started.");
+        Debug.Log(string.Format("Scene [{0}] was started.", sceneName));
+
+        if(entityManager == null)
+        {
+            Transform findTransform = transform.Find("EntityManager");
+            if(findTransform != null)
+                entityManager = findTransform.GetComponent<EntityManager>();
+        }
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        //if(Input.GetKeyDown(KeyCode.Z))
+        if(Input.GetKeyDown(KeyCode.Z))
+            SpawnPlayer();
+    }
 
+    private void SpawnPlayer()
+    {
+        GameObject playerPrefab = Resources.Load<GameObject>("Player");
+        Debug.Assert(playerPrefab != null);
+
+        GameObject myPlayer = Instantiate<GameObject>(playerPrefab);
+        myPlayer.name = playerPrefab.name;
+        myPlayer.transform.position = playerPrefab.transform.position;
+        myPlayer.transform.parent = entityManager.transform;
+
+        NetworkServer.Spawn(myPlayer);
     }
 }

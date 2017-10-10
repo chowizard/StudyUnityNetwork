@@ -76,6 +76,7 @@ public class NetworkManager : MonoBehaviour
     public void SetupServer()
     {
         NetworkServer.Listen(port);
+        NetworkServer.RegisterHandler(MsgType.Connect, OnConnectedFromClient);
         isAtStartup = false;
 
         state = State.Server;
@@ -86,7 +87,7 @@ public class NetworkManager : MonoBehaviour
     public void SetupClient()
     {
         networkClient = new NetworkClient();
-        networkClient.RegisterHandler(MsgType.Connect, OnConnected);
+        networkClient.RegisterHandler(MsgType.Connect, OnConnectedToServer);
         networkClient.Connect(ip, port);
         isAtStartup = false;
 
@@ -98,15 +99,21 @@ public class NetworkManager : MonoBehaviour
     public void SetupLocalClient()
     {
         networkClient = ClientScene.ConnectLocalServer();
-        networkClient.RegisterHandler(MsgType.Connect, OnConnected);
+        networkClient.RegisterHandler(MsgType.Connect, OnConnectedToServer);
         isAtStartup = false;
 
         state = State.LocalClient;
         message = "Setup local client.";
     }
 
+    public void OnConnectedFromClient(NetworkMessage networkMessage)
+    {
+        message = "Connected from client";
+        Debug.Log(message);
+    }
+
     // client function
-    public void OnConnected(NetworkMessage netMsg)
+    public void OnConnectedToServer(NetworkMessage networkMessage)
     {
         message = "Connected to server";
         Debug.Log(message);

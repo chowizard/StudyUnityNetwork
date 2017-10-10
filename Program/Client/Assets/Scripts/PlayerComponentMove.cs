@@ -36,16 +36,23 @@ public class PlayerComponentMove : NetworkBehaviour
         float axisX = Input.GetAxis("Horizontal");
         float axisZ = Input.GetAxis("Vertical");
 
-        float positionX = axisX * velocity * Time.deltaTime;
-        float positionZ = axisZ * velocity * Time.deltaTime;
+        float moveDeltaHorizontal = axisX * velocity * Time.deltaTime;
+        float moveDeltaVertical = axisZ * velocity * Time.deltaTime;
 
-        transform.Translate(axisX, transform.position.y, axisZ);
+        if((moveDeltaHorizontal != 0.0f) || (moveDeltaVertical != 0.0f))
+            CmdMove(moveDeltaHorizontal, moveDeltaVertical);
     }
 
     private void CheckUpdateFire()
     {
         if(Input.GetKeyDown(KeyCode.Space))
             CmdFire();
+    }
+
+    [Command]
+    private void CmdMove(float moveDeltaHorizontal, float moveDeltaVertical)
+    {
+        transform.Translate(moveDeltaHorizontal, transform.position.y, moveDeltaVertical);
     }
 
     [Command]
