@@ -45,10 +45,11 @@ public class PlayerComponentMove : NetworkBehaviour
     private void CheckUpdateFire()
     {
         if(Input.GetKeyDown(KeyCode.Space))
-            Fire();
+            CmdFire();
     }
 
-    private void Fire()
+    [Command]
+    private void CmdFire()
     {
         Vector3 spawnPosition = transform.position - transform.forward;
         GameObject bullet = Instantiate<GameObject>(bulletObject, spawnPosition, Quaternion.identity);

@@ -21,12 +21,19 @@ public class BulletComponent : MonoBehaviour
         CheckVelocity();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        GameObject hittedTarget = collision.gameObject;
+        PlayerComponentMove moveComponent = hittedTarget.GetComponent<PlayerComponentMove>();
+        if(moveComponent != null)
+            Destroy(gameObject);
+    }
+
     private void CheckVelocity()
     {
         Vector3 currentVelocity = velocity * speed;
 
         if(selfRigidbody.velocity != currentVelocity)
             selfRigidbody.velocity = currentVelocity;
-
     }
 }
