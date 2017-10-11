@@ -52,12 +52,10 @@ public class NetworkManager : MonoBehaviour
                 SetupServer();
                 SetupLocalClient();
             }
-
-            if(Input.GetKeyDown(KeyCode.Escape))
-            {
-
-            }
         }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+            Terminate();
     }
 
     private void OnGUI()
@@ -75,9 +73,14 @@ public class NetworkManager : MonoBehaviour
     // Create a server and listen on a port
     public void SetupServer()
     {
-        NetworkServer.Listen(port);
         NetworkServer.RegisterHandler(MsgType.Connect, OnConnectedFromClient);
+        NetworkServer.RegisterHandler(MsgType.Disconnect, OnDisconnectedFromClient);
+        NetworkServer.RegisterHandler(MsgType.Error, OnError);
+
+        NetworkServer.Listen(port);
         isAtStartup = false;
+
+        //DontDestroyOnLoad(this);
 
         state = State.Server;
         message = "Setup server.";
@@ -88,11 +91,16 @@ public class NetworkManager : MonoBehaviour
     {
         networkClient = new NetworkClient();
         networkClient.RegisterHandler(MsgType.Connect, OnConnectedToServer);
+        networkClient.RegisterHandler(MsgType.Disconnect, OnDisconnectedToServer);
+        networkClient.RegisterHandler(MsgType.Error, OnError);
+
         networkClient.Connect(ip, port);
         isAtStartup = false;
 
         state = State.Client;
         message = "Setup client.";
+
+        //Debug.Assert(networkClient.isConnected);
     }
 
     // Create a local client and connect to the local server
@@ -100,6 +108,9 @@ public class NetworkManager : MonoBehaviour
     {
         networkClient = ClientScene.ConnectLocalServer();
         networkClient.RegisterHandler(MsgType.Connect, OnConnectedToServer);
+        networkClient.RegisterHandler(MsgType.Disconnect, OnDisconnectedToServer);
+        networkClient.RegisterHandler(MsgType.Error, OnError);
+
         isAtStartup = false;
 
         state = State.LocalClient;
@@ -108,14 +119,77 @@ public class NetworkManager : MonoBehaviour
 
     public void OnConnectedFromClient(NetworkMessage networkMessage)
     {
-        message = "Connected from client";
+        message = "Connected from client.";
         Debug.Log(message);
     }
 
-    // client function
+    public void OnDisconnectedFromClient(NetworkMessage networkMessage)
+    {
+        message = "Client was disconnected.";
+        Debug.Log(message);
+    }
+
     public void OnConnectedToServer(NetworkMessage networkMessage)
     {
-        message = "Connected to server";
+        message = "Connected to server.";
+        Debug.Log(message);
+    }
+
+    public void OnDisconnectedToServer(NetworkMessage networkMessage)
+    {
+        message = "Disconnected from server.";
+        Debug.Log(message);
+    }
+
+    public void OnError(NetworkMessage networkMessage)
+    {
+        message = "Error occured. : ";
+        Debug.Log(message);
+    }
+
+    private void Terminate()
+    {
+        switch(state)
+        {
+        case State.Server:
+            TerminateAtServer();
+            break;
+
+        case State.Client:
+            TerminateAtClient();
+            break;
+
+        case State.LocalClient:
+            TerminateAtLocalClient();
+            break;
+        }
+
+        isAtStartup = true;
+    }
+
+    private void TerminateAtServer()
+    {
+        NetworkServer.DisconnectAll();
+
+        message = "Server was terminate.";
+        Debug.Log(message);
+    }
+
+    private void TerminateAtClient()
+    {
+        if(networkClient.isConnected)
+            networkClient.Disconnect();
+
+        message = "Client was terminate.";
+        Debug.Log(message);
+    }
+
+    private void TerminateAtLocalClient()
+    {
+        if(networkClient.isConnected)
+            networkClient.Disconnect();
+
+        message = "Local Client was terminate.";
         Debug.Log(message);
     }
 }
