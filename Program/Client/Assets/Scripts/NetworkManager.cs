@@ -170,6 +170,7 @@ public class NetworkManager : MonoBehaviour
     private void TerminateAtServer()
     {
         NetworkServer.DisconnectAll();
+        NetworkServer.Reset();
 
         message = "Server was terminate.";
         Debug.Log(message);
