@@ -14,6 +14,8 @@ public class SceneMain : MonoBehaviour
 
     public EntityManager entityManager;
 
+    public NetworkManager networkManager;
+
     // Use this for initialization
     private void Start()
     {
@@ -25,13 +27,23 @@ public class SceneMain : MonoBehaviour
             if(findTransform != null)
                 entityManager = findTransform.GetComponent<EntityManager>();
         }
+
+        if(networkManager == null)
+        {
+            Transform findTransform = transform.Find("NetworkManager");
+            if (findTransform != null)
+                networkManager = findTransform.GetComponent<NetworkManager>();
+        }
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Z))
-            SpawnPlayer();
+        if(networkManager.mode == NetworkManager.Mode.Server)
+        {
+            if (Input.GetKeyDown(KeyCode.Z))
+                SpawnPlayer();
+        }
     }
 
     private void SpawnPlayer()
@@ -44,6 +56,6 @@ public class SceneMain : MonoBehaviour
         myPlayer.transform.position = playerPrefab.transform.position;
         myPlayer.transform.parent = entityManager.transform;
 
-        NetworkServer.Spawn(myPlayer);
+        NetworkServer.SpawnWithClientAuthority(myPlayer, networkManager.NetClient.connection);
     }
 }
