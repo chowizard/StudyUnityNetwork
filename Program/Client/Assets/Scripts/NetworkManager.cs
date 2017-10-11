@@ -27,7 +27,6 @@ public class NetworkManager : MonoBehaviour
 
     private string message;
 
-    // Use this for initialization
     private void Start()
     {
     }
@@ -73,9 +72,9 @@ public class NetworkManager : MonoBehaviour
     // Create a server and listen on a port
     public void SetupServer()
     {
+        NetworkServer.RegisterHandler(MsgType.Error, OnError);
         NetworkServer.RegisterHandler(MsgType.Connect, OnConnectedFromClient);
         NetworkServer.RegisterHandler(MsgType.Disconnect, OnDisconnectedFromClient);
-        NetworkServer.RegisterHandler(MsgType.Error, OnError);
 
         NetworkServer.Listen(port);
         isAtStartup = false;
@@ -90,9 +89,11 @@ public class NetworkManager : MonoBehaviour
     public void SetupClient()
     {
         networkClient = new NetworkClient();
+        networkClient.RegisterHandler(MsgType.Error, OnError);
         networkClient.RegisterHandler(MsgType.Connect, OnConnectedToServer);
         networkClient.RegisterHandler(MsgType.Disconnect, OnDisconnectedToServer);
-        networkClient.RegisterHandler(MsgType.Error, OnError);
+        networkClient.RegisterHandler(MsgType.Ready, OnReady);
+        networkClient.RegisterHandler(MsgType.NotReady, OnNotReady);
 
         networkClient.Connect(ip, port);
         isAtStartup = false;
@@ -107,9 +108,11 @@ public class NetworkManager : MonoBehaviour
     public void SetupLocalClient()
     {
         networkClient = ClientScene.ConnectLocalServer();
+        networkClient.RegisterHandler(MsgType.Error, OnError);
         networkClient.RegisterHandler(MsgType.Connect, OnConnectedToServer);
         networkClient.RegisterHandler(MsgType.Disconnect, OnDisconnectedToServer);
-        networkClient.RegisterHandler(MsgType.Error, OnError);
+        networkClient.RegisterHandler(MsgType.Ready, OnReady);
+        networkClient.RegisterHandler(MsgType.NotReady, OnNotReady);
 
         isAtStartup = false;
 
@@ -145,6 +148,18 @@ public class NetworkManager : MonoBehaviour
     {
         message = "Error occured. : ";
         Debug.Log(message);
+    }
+
+    public void OnReady(NetworkMessage networkMessage)
+    {
+        message = "ready to send message to server.";
+        Debug.Log(message);
+    }
+
+    public void OnNotReady(NetworkMessage networkMessage)
+    {
+        message = "Not ready to send message to server.";
+        Debug.LogError(message);
     }
 
     private void Terminate()
