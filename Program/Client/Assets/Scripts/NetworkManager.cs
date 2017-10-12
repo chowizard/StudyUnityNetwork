@@ -15,17 +15,34 @@ public class NetworkManager : MonoBehaviour
         LocalClient
     }
 
+
+
     public string ip = "127.0.0.1";
-
     public ushort port = 15632;
-
     public bool isAtStartup = true;
-
     public Mode mode = Mode.None;
 
-    private NetworkClient netClient;
+    private static NetworkManager singleton;
 
-    private string message;
+    private NetworkControllerServer serverController;
+    private NetworkControllerClient clientController;
+    private NetworkControllerLocalClient localClientController;
+
+    [HideInInspector]
+    public string message;
+
+    public static NetworkManager Singleton
+    {
+        get
+        {
+            return singleton;
+        }
+    }
+
+    private void Awake()
+    {
+        singleton = this;
+    }
 
     private void Start()
     {
@@ -72,15 +89,12 @@ public class NetworkManager : MonoBehaviour
     // Create a server and listen on a port
     public void SetupServer()
     {
-        NetworkServer.RegisterHandler(MsgType.Error, OnError);
-        NetworkServer.RegisterHandler(MsgType.Connect, OnConnectedFromClient);
-        NetworkServer.RegisterHandler(MsgType.Disconnect, OnDisconnectedFromClient);
+        if(serverController == null)
+            serverController = new NetworkControllerServer(this);
 
-        NetworkServer.Listen(port);
+        serverController.Setup();
+
         isAtStartup = false;
-
-        //DontDestroyOnLoad(this);
-
         mode = Mode.Server;
         message = "Setup server.";
     }
@@ -88,16 +102,12 @@ public class NetworkManager : MonoBehaviour
     // Create a client and connect to the server port
     public void SetupClient()
     {
-        netClient = new NetworkClient();
-        netClient.RegisterHandler(MsgType.Error, OnError);
-        netClient.RegisterHandler(MsgType.Connect, OnConnectedToServer);
-        netClient.RegisterHandler(MsgType.Disconnect, OnDisconnectedToServer);
-        netClient.RegisterHandler(MsgType.Ready, OnReady);
-        netClient.RegisterHandler(MsgType.NotReady, OnNotReady);
+        if(clientController == null)
+            clientController = new NetworkControllerClient(this);
 
-        netClient.Connect(ip, port);
+        clientController.Setup();
+
         isAtStartup = false;
-
         mode = Mode.Client;
         message = "Setup client.";
 
@@ -107,76 +117,14 @@ public class NetworkManager : MonoBehaviour
     // Create a local client and connect to the local server
     public void SetupLocalClient()
     {
-        netClient = ClientScene.ConnectLocalServer();
-        netClient.RegisterHandler(MsgType.Error, OnError);
-        netClient.RegisterHandler(MsgType.Connect, OnConnectedToServer);
-        netClient.RegisterHandler(MsgType.Disconnect, OnDisconnectedToServer);
-        netClient.RegisterHandler(MsgType.Ready, OnReady);
-        netClient.RegisterHandler(MsgType.NotReady, OnNotReady);
+        if(localClientController == null)
+            localClientController = new NetworkControllerLocalClient(this);
+
+        localClientController.Setup();
 
         isAtStartup = false;
-
         mode = Mode.LocalClient;
         message = "Setup local client.";
-    }
-
-    public void OnConnectedFromClient(NetworkMessage networkMessage)
-    {
-        //netClient = networkMessage.ReadMessage<NetworkClient>();
-
-        message = "Connected from client.";
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
-    }
-
-    public void OnDisconnectedFromClient(NetworkMessage networkMessage)
-    {
-        message = "Client was disconnected.";
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
-    }
-
-    public void OnConnectedToServer(NetworkMessage networkMessage)
-    {
-        message = "Connected to server.";
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
-    }
-
-    public void OnDisconnectedToServer(NetworkMessage networkMessage)
-    {
-        message = "Disconnected from server.";
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
-    }
-
-    public void OnError(NetworkMessage networkMessage)
-    {
-        message = "Error occured. : ";
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
-    }
-
-    public void OnReady(NetworkMessage networkMessage)
-    {
-        message = "ready to send message to server.";
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
-    }
-
-    public void OnNotReady(NetworkMessage networkMessage)
-    {
-        message = "Not ready to send message to server.";
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.LogError(message);
-    }
-
-    public NetworkClient NetClient
-    {
-        get
-        {
-            return netClient;
-        }
     }
 
     private void Terminate()
@@ -201,8 +149,11 @@ public class NetworkManager : MonoBehaviour
 
     private void TerminateAtServer()
     {
-        NetworkServer.DisconnectAll();
-        NetworkServer.Reset();
+        if(serverController != null)
+        {
+            serverController.Terminate();
+            serverController = null;
+        }
 
         message = "Server was terminate.";
         Debug.Log(message);
@@ -210,8 +161,11 @@ public class NetworkManager : MonoBehaviour
 
     private void TerminateAtClient()
     {
-        if(netClient.isConnected)
-            netClient.Disconnect();
+        if(clientController != null)
+        {
+            clientController.Terminate();
+            clientController = null;
+        }
 
         message = "Client was terminate.";
         Debug.Log(message);
@@ -219,8 +173,11 @@ public class NetworkManager : MonoBehaviour
 
     private void TerminateAtLocalClient()
     {
-        if(netClient.isConnected)
-            netClient.Disconnect();
+        if(localClientController != null)
+        {
+            localClientController.Terminate();
+            localClientController = null;
+        }
 
         message = "Local Client was terminate.";
         Debug.Log(message);

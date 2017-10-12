@@ -56,6 +56,6 @@ public class SceneMain : MonoBehaviour
         myPlayer.transform.position = playerPrefab.transform.position;
         myPlayer.transform.parent = entityManager.transform;
 
-        NetworkServer.SpawnWithClientAuthority(myPlayer, networkManager.NetClient.connection);
+        //NetworkServer.SpawnWithClientAuthority(myPlayer, networkManager.NetClient.connection);
     }
 }
