@@ -49,6 +49,8 @@ public sealed class NetworkControllerServer
 
     public void OnConnected(NetworkMessage networkMessage)
     {
+        AddNetworkClient(networkMessage.conn);
+
         string message = string.Format("Connected from client. (Connection ID = {0}    Address = {1})",
                                        networkMessage.conn.connectionId,
                                        networkMessage.conn.address);
@@ -60,6 +62,8 @@ public sealed class NetworkControllerServer
 
     public void OnDisconnected(NetworkMessage networkMessage)
     {
+        RemoveNetworkClient(networkMessage.conn.connectionId);
+
         string message = "Client was disconnected.";
         message += "\nMessage Type : " + networkMessage.msgType;
         Debug.Log(message);
@@ -90,6 +94,7 @@ public sealed class NetworkControllerServer
 
         NetworkClient networkClient = new NetworkClient(connection);
 
+        RemoveNetworkClient(connection.connectionId);
         networkClients.Add(connection.connectionId, networkClient);
 
         return networkClient;
