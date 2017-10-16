@@ -24,6 +24,8 @@ public class NetworkManager : MonoBehaviour
 
     private static NetworkManager singleton;
 
+    private ConnectionConfig connectionConfiguration;
+
     private NetworkControllerServer serverController;
     private NetworkControllerClient clientController;
     private NetworkControllerLocalClient localClientController;
@@ -46,6 +48,7 @@ public class NetworkManager : MonoBehaviour
 
     private void Start()
     {
+        SetupConnectionConfiguration();
     }
 
     // Update is called once per frame
@@ -125,6 +128,38 @@ public class NetworkManager : MonoBehaviour
         isAtStartup = false;
         mode = Mode.LocalClient;
         message = "Setup local client.";
+    }
+
+    public NetworkControllerServer ServerController
+    {
+        get
+        {
+            return serverController;
+        }
+    }
+
+    public NetworkControllerClient ClientController
+    {
+        get
+        {
+            return clientController;
+        }
+    }
+
+    public NetworkControllerLocalClient LocalClientController
+    {
+        get
+        {
+            return localClientController;
+        }
+    }
+
+    private void SetupConnectionConfiguration()
+    {
+        if(connectionConfiguration == null)
+            connectionConfiguration = new ConnectionConfig();
+
+        connectionConfiguration.AddChannel(QosType.Reliable);
     }
 
     private void Terminate()
