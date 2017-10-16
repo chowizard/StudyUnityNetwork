@@ -109,8 +109,10 @@ namespace UnityTest.IntegrationTests
             {
                 case BuildTargetGroup.Android:
                     return BuildTarget.Android;
+#if NOT_SUPPORTED
                 case BuildTargetGroup.WebPlayer:
                     return BuildTarget.WebPlayer;
+#endif
                 default:
                 {
                     switch (Application.platform)
@@ -122,7 +124,11 @@ namespace UnityTest.IntegrationTests
                         case RuntimePlatform.LinuxPlayer:
                             return BuildTarget.StandaloneLinux;
                     }
+#if NOT_SUPPORTED
                     return BuildTarget.WebPlayer;
+#else
+                    return BuildTarget.NoTarget;
+#endif
                 }
             }
         }
