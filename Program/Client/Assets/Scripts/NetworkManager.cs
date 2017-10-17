@@ -159,7 +159,7 @@ public class NetworkManager : MonoBehaviour
         if(connectionConfiguration == null)
             connectionConfiguration = new ConnectionConfig();
 
-        connectionConfiguration.AddChannel(QosType.Reliable);
+        //connectionConfiguration.AddChannel(QosType.Reliable);
     }
 
     private void Terminate()

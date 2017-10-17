@@ -58,7 +58,7 @@ public class SceneMain : MonoBehaviour
 
         if(networkManager.ServerController != null)
         {
-            NetworkClient networkClient = networkManager.ServerController.GetNetworkClient(1);
+            NetworkClient networkClient = networkManager.ServerController.GetRemoteNetworkClient(1);
             NetworkServer.SpawnWithClientAuthority(myPlayer, networkClient.connection);
         }
     }
