@@ -18,15 +18,8 @@ public sealed class NetworkControllerServer
 
     public void Setup()
     {
-        NetworkServer.Reset();
-
-        NetworkServer.RegisterHandler(MsgType.Error, OnError);
-        NetworkServer.RegisterHandler(MsgType.Connect, OnConnected);
-        NetworkServer.RegisterHandler(MsgType.Disconnect, OnDisconnected);
-        //NetworkServer.RegisterHandler(MsgType.Ready, OnReady);
-        //NetworkServer.RegisterHandler(MsgType.NotReady, OnNotReady);
-
-        NetworkServer.Listen(networkManager.port);
+        SetupServer();
+        SetupLocalClient();
     }
 
     public void Terminate()
@@ -94,6 +87,27 @@ public sealed class NetworkControllerServer
         networkManager.message = message;
     }
 
+    public void OnConnectedLocalClient(NetworkMessage networkMessage)
+    {
+        if(!ClientScene.ready)
+            ClientScene.Ready(localNetClient.connection);
+
+        string message = "Local client was connected to server.";
+        message += "\nMessage Type : " + networkMessage.msgType;
+        Debug.Log(message);
+
+        networkManager.message = message;
+    }
+
+    public void OnDisconnectedLocalClient(NetworkMessage networkMessage)
+    {
+        string message = "Local client was disconnected from server.";
+        message += "\nMessage Type : " + networkMessage.msgType;
+        Debug.Log(message);
+
+        networkManager.message = message;
+    }
+
     public void OnReady(NetworkMessage networkMessage)
     {
         string message = "Client is ready : " + networkMessage.conn.connectionId;
@@ -106,6 +120,24 @@ public sealed class NetworkControllerServer
     public void OnNotReady(NetworkMessage networkMessage)
     {
         string message = "Client is not ready : " + networkMessage.conn.connectionId;
+        message += "\nMessage Type : " + networkMessage.msgType;
+        Debug.LogError(message);
+
+        networkManager.message = message;
+    }
+
+    public void OnReadyLocalClient(NetworkMessage networkMessage)
+    {
+        string message = "Local client is ready : " + networkMessage.conn.connectionId;
+        message += "\nMessage Type : " + networkMessage.msgType;
+        Debug.Log(message);
+
+        networkManager.message = message;
+    }
+
+    public void OnNotReadyLocalClient(NetworkMessage networkMessage)
+    {
+        string message = "Local client is not ready : " + networkMessage.conn.connectionId;
         message += "\nMessage Type : " + networkMessage.msgType;
         Debug.LogError(message);
 
@@ -126,6 +158,29 @@ public sealed class NetworkControllerServer
         {
             return remoteNetClients.Count;
         }
+    }
+
+    private void SetupServer()
+    {
+        NetworkServer.Reset();
+
+        NetworkServer.RegisterHandler(MsgType.Error, OnError);
+        NetworkServer.RegisterHandler(MsgType.Connect, OnConnected);
+        NetworkServer.RegisterHandler(MsgType.Disconnect, OnDisconnected);
+        NetworkServer.RegisterHandler(MsgType.Ready, OnReady);
+        NetworkServer.RegisterHandler(MsgType.NotReady, OnNotReady);
+
+        NetworkServer.Listen(networkManager.port);
+    }
+
+    private void SetupLocalClient()
+    {
+        localNetClient = ClientScene.ConnectLocalServer();
+        localNetClient.RegisterHandler(MsgType.Error, OnError);
+        localNetClient.RegisterHandler(MsgType.Connect, OnConnectedLocalClient);
+        localNetClient.RegisterHandler(MsgType.Disconnect, OnDisconnectedLocalClient);
+        localNetClient.RegisterHandler(MsgType.Ready, OnReadyLocalClient);
+        localNetClient.RegisterHandler(MsgType.NotReady, OnNotReadyLocalClient);
     }
 
     private NetworkClient AddRemoteNetworkClient(NetworkConnection connection)
