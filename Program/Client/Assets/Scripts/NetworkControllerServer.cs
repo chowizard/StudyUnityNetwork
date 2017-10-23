@@ -43,9 +43,12 @@ public sealed class NetworkControllerServer
         networkManager.message = message;
     }
 
+    #region Events For Server
     public void OnConnected(NetworkMessage networkMessage)
     {
         AddRemoteNetworkClient(networkMessage.conn);
+        NetworkServer.SetClientReady(networkMessage.conn);
+
         //if(!ClientScene.ready)
         //    ClientScene.Ready(networkMessage.conn);
 
@@ -69,24 +72,27 @@ public sealed class NetworkControllerServer
         networkManager.message = message;
     }
 
-    public void OnConnectedClient(NetworkMessage networkMessage)
+    public void OnReady(NetworkMessage networkMessage)
     {
-        string message = "Connected to server.";
+        string message = "Client is ready : " + networkMessage.conn.connectionId;
         message += "\nMessage Type : " + networkMessage.msgType;
         Debug.Log(message);
 
         networkManager.message = message;
     }
 
-    public void OnDisconnectedClient(NetworkMessage networkMessage)
+    public void OnNotReady(NetworkMessage networkMessage)
     {
-        string message = "Disconnected from server.";
+        string message = "Client is not ready : " + networkMessage.conn.connectionId;
         message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
+        Debug.LogError(message);
 
         networkManager.message = message;
     }
+    #endregion
 
+
+    #region Events For Local Client
     public void OnConnectedLocalClient(NetworkMessage networkMessage)
     {
         if(!ClientScene.ready)
@@ -108,24 +114,6 @@ public sealed class NetworkControllerServer
         networkManager.message = message;
     }
 
-    public void OnReady(NetworkMessage networkMessage)
-    {
-        string message = "Client is ready : " + networkMessage.conn.connectionId;
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
-
-        networkManager.message = message;
-    }
-
-    public void OnNotReady(NetworkMessage networkMessage)
-    {
-        string message = "Client is not ready : " + networkMessage.conn.connectionId;
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.LogError(message);
-
-        networkManager.message = message;
-    }
-
     public void OnReadyLocalClient(NetworkMessage networkMessage)
     {
         string message = "Local client is ready : " + networkMessage.conn.connectionId;
@@ -143,6 +131,47 @@ public sealed class NetworkControllerServer
 
         networkManager.message = message;
     }
+    #endregion
+
+    #region Events For Remote Client
+    public void OnConnectedRemoteClient(NetworkMessage networkMessage)
+    {
+        string message = string.Format("Remote client was connected to server. (Connection ID = {0}    Address = {1})",
+                                       networkMessage.conn.connectionId,
+                                       networkMessage.conn.address);
+        message += "\nMessage Type : " + networkMessage.msgType;
+        Debug.Log(message);
+
+        networkManager.message = message;
+    }
+
+    public void OnDisconnectedRemoteClient(NetworkMessage networkMessage)
+    {
+        string message = "Remote client was disconnected from server.";
+        message += "\nMessage Type : " + networkMessage.msgType;
+        Debug.Log(message);
+
+        networkManager.message = message;
+    }
+
+    public void OnReadyRemoteClient(NetworkMessage networkMessage)
+    {
+        string message = "Remote client is ready : " + networkMessage.conn.connectionId;
+        message += "\nMessage Type : " + networkMessage.msgType;
+        Debug.Log(message);
+
+        networkManager.message = message;
+    }
+
+    public void OnNotReadyRemoteClient(NetworkMessage networkMessage)
+    {
+        string message = "Remote client is not ready : " + networkMessage.conn.connectionId;
+        message += "\nMessage Type : " + networkMessage.msgType;
+        Debug.LogError(message);
+
+        networkManager.message = message;
+    }
+    #endregion
 
     public NetworkClient[] NetworkClients
     {
@@ -190,10 +219,10 @@ public sealed class NetworkControllerServer
 
         NetworkClient netClient = new NetworkClient(connection);
         netClient.RegisterHandler(MsgType.Error, OnError);
-        netClient.RegisterHandler(MsgType.Connect, OnConnectedClient);
-        netClient.RegisterHandler(MsgType.Disconnect, OnDisconnectedClient);
-        netClient.RegisterHandler(MsgType.Ready, OnReady);
-        netClient.RegisterHandler(MsgType.NotReady, OnNotReady);
+        netClient.RegisterHandler(MsgType.Connect, OnConnectedRemoteClient);
+        netClient.RegisterHandler(MsgType.Disconnect, OnDisconnectedRemoteClient);
+        netClient.RegisterHandler(MsgType.Ready, OnReadyRemoteClient);
+        netClient.RegisterHandler(MsgType.NotReady, OnNotReadyRemoteClient);
 
         RemoveRemoteNetworkClient(connection.connectionId);
         remoteNetClients.Add(connection.connectionId, netClient);

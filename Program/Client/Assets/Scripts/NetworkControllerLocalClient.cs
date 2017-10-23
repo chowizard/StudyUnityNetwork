@@ -52,6 +52,9 @@ public sealed class NetworkControllerLocalClient
 
     public void OnConnected(NetworkMessage networkMessage)
     {
+        if(!ClientScene.ready)
+            ClientScene.Ready(netClient.connection);
+
         string message = "Connected to server.";
         message += "\nMessage Type : " + networkMessage.msgType;
         Debug.Log(message);
