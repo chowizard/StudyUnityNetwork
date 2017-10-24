@@ -36,7 +36,7 @@ public class SceneMain : MonoBehaviour
         if(networkManager == null)
         {
             Transform findTransform = transform.Find("NetworkManager");
-            if (findTransform != null)
+            if(findTransform != null)
                 networkManager = findTransform.GetComponent<NetworkManager>();
         }
     }
@@ -47,13 +47,19 @@ public class SceneMain : MonoBehaviour
         //if(networkManager.mode == NetworkManager.Mode.Server)
         if(networkManager.mode == NetworkManager.Mode.Client)
         {
-            if (Input.GetKeyDown(KeyCode.Z))
+            if(Input.GetKeyDown(KeyCode.Z))
                 SpawnPlayer();
         }
     }
 
     private void SpawnPlayer()
     {
+        if(!ClientScene.ready)
+        {
+            Debug.LogError("Client Scene is not ready!");
+            return;
+        }
+
         NetworkClient networkClient = networkManager.ClientController.NetClient;
         short playerControllerId = 11;
         networkManager.ClientController.SpawnPlayer(playerControllerId);

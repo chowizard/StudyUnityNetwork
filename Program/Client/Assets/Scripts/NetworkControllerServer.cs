@@ -57,12 +57,12 @@ public sealed class NetworkControllerServer
     #region Events For Server
     public void OnConnected(NetworkMessage networkMessage)
     {
-        string message = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
-        message += "\n[Connection] : " + networkMessage.conn;
-        message += "\n[Message Type] : " + networkMessage.msgType;
-        Debug.Log(message);
+        string logText = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.Log(logText);
 
-        networkManager.message = message;
+        networkManager.message = logText;
 
         //ClientScene.Ready(networkMessage.conn);
         //AddRemoteNetworkClient(networkMessage.conn);
@@ -70,36 +70,36 @@ public sealed class NetworkControllerServer
 
     public void OnDisconnected(NetworkMessage networkMessage)
     {
-        string message = string.Format("Client was disconnected. Address = {0})", networkMessage.conn.address);
-        message += "\n[Connection] : " + networkMessage.conn;
-        message += "\n[Message Type] : " + networkMessage.msgType;
-        Debug.Log(message);
+        string logText = string.Format("Client was disconnected. Address = {0})", networkMessage.conn.address);
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.Log(logText);
 
-        networkManager.message = message;
+        networkManager.message = logText;
 
         //RemoveRemoteNetworkClient(networkMessage.conn.connectionId);
     }
 
     public void OnReady(NetworkMessage networkMessage)
     {
-        string message = "Client is ready : " + networkMessage.conn.connectionId;
-        message += "\n[Connection] : " + networkMessage.conn;
-        message += "\n[Message Type] : " + networkMessage.msgType;
-        Debug.Log(message);
+        string logText = "Client is ready : " + networkMessage.conn.connectionId;
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.Log(logText);
 
-        networkManager.message = message;
+        networkManager.message = logText;
 
         NetworkServer.SetClientReady(networkMessage.conn);
     }
 
     public void OnNotReady(NetworkMessage networkMessage)
     {
-        string message = "Client is not ready : " + networkMessage.conn.connectionId;
-        message += "\n[Connection] : " + networkMessage.conn;
-        message += "\n[Message Type] : " + networkMessage.msgType;
-        Debug.LogError(message);
+        string logText = "Client is not ready : " + networkMessage.conn.connectionId;
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.LogError(logText);
 
-        networkManager.message = message;
+        networkManager.message = logText;
 
         NetworkServer.SetClientNotReady(networkMessage.conn);
     }
@@ -108,12 +108,12 @@ public sealed class NetworkControllerServer
     {
         AddPlayerMessage targetMessage = networkMessage.ReadMessage<AddPlayerMessage>();
 
-        string message = string.Format("Add player. (Player Controller ID : {1})", targetMessage.playerControllerId);
-        message += "\n[Connection] : " + networkMessage.conn;
-        message += "\n[Message Type] : " + networkMessage.msgType;
-        Debug.Log(message);
+        string logText = string.Format("Add player. (Player Controller ID : {0})", targetMessage.playerControllerId);
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.Log(logText);
 
-        networkManager.message = message;
+        networkManager.message = logText;
 
         //ClientScene.AddPlayer(targetMessage.playerControllerId);
     }
@@ -122,12 +122,12 @@ public sealed class NetworkControllerServer
     {
         RemovePlayerMessage targetMessage = networkMessage.ReadMessage<RemovePlayerMessage>();
 
-        string message = string.Format("Remove player. (Player Controller ID : {1})", targetMessage.playerControllerId);
-        message += "\n[Connection] : " + networkMessage.conn;
-        message += "\n[Message Type] : " + networkMessage.msgType;
-        Debug.Log(message);
+        string logText = string.Format("Remove player. (Player Controller ID : {0})", targetMessage.playerControllerId);
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.Log(logText);
 
-        networkManager.message = message;
+        networkManager.message = logText;
 
         //ClientScene.RemovePlayer(targetMessage.playerControllerId);
     }

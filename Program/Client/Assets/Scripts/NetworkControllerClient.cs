@@ -70,11 +70,11 @@ public sealed class NetworkControllerClient
     #region Network Events
     public void OnError(NetworkMessage networkMessage)
     {
-        string message = "Error occured. : ";
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
+        string logText = "Error occured. : ";
+        logText += "\nMessage Type : " + networkMessage.msgType;
+        Debug.Log(logText);
 
-        networkManager.message = message;
+        networkManager.message = logText;
     }
 
     public void OnConnected(NetworkMessage networkMessage)
@@ -82,54 +82,54 @@ public sealed class NetworkControllerClient
         if(!ClientScene.ready)
             ClientScene.Ready(netClient.connection);
 
-        string message = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
-        message += "\n[Connection] : " + networkMessage.conn;
-        message += "\n[Message Type] : " + networkMessage.msgType;
-        Debug.Log(message);
+        string logText = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.Log(logText);
 
-        networkManager.message = message;
+        networkManager.message = logText;
     }
 
     public void OnDisconnected(NetworkMessage networkMessage)
     {
-        string message = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
-        message += "\n[Connection] : " + networkMessage.conn;
-        message += "\n[Message Type] : " + networkMessage.msgType;
-        Debug.Log(message);
+        string logText = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.Log(logText);
 
-        networkManager.message = message;
+        networkManager.message = logText;
     }
 
     public void OnReady(NetworkMessage networkMessage)
     {
-        string message = "ready to send message to server.";
-        message += "\n[Connection] : " + networkMessage.conn;
-        message += "\n[Message Type] : " + networkMessage.msgType;
-        Debug.Log(message);
+        string logText = "ready to send message to server.";
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.Log(logText);
 
-        networkManager.message = message;
+        networkManager.message = logText;
     }
 
     public void OnNotReady(NetworkMessage networkMessage)
     {
-        string message = "Not ready to send message to server.";
-        message += "\n[Connection] : " + networkMessage.conn;
-        message += "\n[Message Type] : " + networkMessage.msgType;
-        Debug.LogError(message);
+        string logText = "Not ready to send message to server.";
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.LogError(logText);
 
-        networkManager.message = message;
+        networkManager.message = logText;
     }
 
     public void OnAddPlayer(NetworkMessage networkMessage)
     {
         AddPlayerMessage targetMessage = networkMessage.ReadMessage<AddPlayerMessage>();
 
-        string message = string.Format("Add player. (Player Controller ID : {0}", targetMessage.playerControllerId);
-        message += "\n[Connection] : " + networkMessage.conn;
-        message += "\n[Message Type] : " + networkMessage.msgType;
-        Debug.Log(message);
+        string logText = string.Format("Add player. (Player Controller ID : {0}", targetMessage.playerControllerId);
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.Log(logText);
 
-        networkManager.message = message;
+        networkManager.message = logText;
 
         SpawnPlayer(targetMessage.playerControllerId);
         ClientScene.AddPlayer(targetMessage.playerControllerId);
