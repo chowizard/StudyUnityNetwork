@@ -36,6 +36,21 @@ public sealed class NetworkControllerClient
         netClient.Connect(networkManager.ip, networkManager.port);
     }
 
+    public void SpawnPlayer(short playerControllerId)
+    {
+        GameObject playerPrefab = Resources.Load<GameObject>("Player");
+        Debug.Assert(playerPrefab != null);
+
+        ClientScene.RegisterPrefab(playerPrefab);
+
+        GameObject myPlayerObject = Object.Instantiate<GameObject>(playerPrefab);
+        myPlayerObject.name = playerPrefab.name;
+        myPlayerObject.transform.position = playerPrefab.transform.position;
+        myPlayerObject.transform.parent = mainScene.entityManager.transform;
+
+        myPlayer = myPlayerObject.transform.GetComponent<PlayerComponentMove>();
+    }
+
     public void Terminate()
     {
         if((netClient != null) && netClient.isConnected)
@@ -67,10 +82,9 @@ public sealed class NetworkControllerClient
         if(!ClientScene.ready)
             ClientScene.Ready(netClient.connection);
 
-        string message = string.Format("Connected to server. (Connection ID = {0}    Address = {1})",
-                                       networkMessage.conn.connectionId,
-                                       networkMessage.conn.address);
-        message += "\nMessage Type : " + networkMessage.msgType;
+        string message = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
+        message += "\n[Connection] : " + networkMessage.conn;
+        message += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(message);
 
         networkManager.message = message;
@@ -78,10 +92,9 @@ public sealed class NetworkControllerClient
 
     public void OnDisconnected(NetworkMessage networkMessage)
     {
-        string message = string.Format("Disconnected from server. (Connection ID = {0}    Address = {1})",
-                                       networkMessage.conn.connectionId,
-                                       networkMessage.conn.address);
-        message += "\nMessage Type : " + networkMessage.msgType;
+        string message = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
+        message += "\n[Connection] : " + networkMessage.conn;
+        message += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(message);
 
         networkManager.message = message;
@@ -90,7 +103,8 @@ public sealed class NetworkControllerClient
     public void OnReady(NetworkMessage networkMessage)
     {
         string message = "ready to send message to server.";
-        message += "\nMessage Type : " + networkMessage.msgType;
+        message += "\n[Connection] : " + networkMessage.conn;
+        message += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(message);
 
         networkManager.message = message;
@@ -99,7 +113,8 @@ public sealed class NetworkControllerClient
     public void OnNotReady(NetworkMessage networkMessage)
     {
         string message = "Not ready to send message to server.";
-        message += "\nMessage Type : " + networkMessage.msgType;
+        message += "\n[Connection] : " + networkMessage.conn;
+        message += "\n[Message Type] : " + networkMessage.msgType;
         Debug.LogError(message);
 
         networkManager.message = message;
@@ -110,7 +125,8 @@ public sealed class NetworkControllerClient
         AddPlayerMessage targetMessage = networkMessage.ReadMessage<AddPlayerMessage>();
 
         string message = string.Format("Add player. (Player Controller ID : {0}", targetMessage.playerControllerId);
-        message += "\nMessage Type : " + networkMessage.msgType;
+        message += "\n[Connection] : " + networkMessage.conn;
+        message += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(message);
 
         networkManager.message = message;
@@ -133,21 +149,6 @@ public sealed class NetworkControllerClient
         UnspawnPlayer(targetMessage.playerControllerId);
     }
     #endregion
-
-    public void SpawnPlayer(short playerControllerId)
-    {
-        GameObject playerPrefab = Resources.Load<GameObject>("Player");
-        Debug.Assert(playerPrefab != null);
-
-        ClientScene.RegisterPrefab(playerPrefab);
-
-        GameObject myPlayerObject = Object.Instantiate<GameObject>(playerPrefab);
-        myPlayerObject.name = playerPrefab.name;
-        myPlayerObject.transform.position = playerPrefab.transform.position;
-        myPlayerObject.transform.parent = mainScene.entityManager.transform;
-
-        myPlayer = myPlayerObject.transform.GetComponent<PlayerComponentMove>();
-    }
 
     private void UnspawnPlayer(short playerControllerId)
     {

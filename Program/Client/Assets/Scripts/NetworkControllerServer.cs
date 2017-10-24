@@ -57,10 +57,9 @@ public sealed class NetworkControllerServer
     #region Events For Server
     public void OnConnected(NetworkMessage networkMessage)
     {
-        string message = string.Format("Connected from client. (Connection ID = {0}    Address = {1})",
-                                       networkMessage.conn.connectionId,
-                                       networkMessage.conn.address);
-        message += "\nMessage Type : " + networkMessage.msgType;
+        string message = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
+        message += "\n[Connection] : " + networkMessage.conn;
+        message += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(message);
 
         networkManager.message = message;
@@ -71,10 +70,9 @@ public sealed class NetworkControllerServer
 
     public void OnDisconnected(NetworkMessage networkMessage)
     {
-        string message = string.Format("Client was disconnected. (Connection ID = {0}    Address = {1})",
-                                       networkMessage.conn.connectionId,
-                                       networkMessage.conn.address);
-        message += "\nMessage Type : " + networkMessage.msgType;
+        string message = string.Format("Client was disconnected. Address = {0})", networkMessage.conn.address);
+        message += "\n[Connection] : " + networkMessage.conn;
+        message += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(message);
 
         networkManager.message = message;
@@ -85,7 +83,8 @@ public sealed class NetworkControllerServer
     public void OnReady(NetworkMessage networkMessage)
     {
         string message = "Client is ready : " + networkMessage.conn.connectionId;
-        message += "\nMessage Type : " + networkMessage.msgType;
+        message += "\n[Connection] : " + networkMessage.conn;
+        message += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(message);
 
         networkManager.message = message;
@@ -96,7 +95,8 @@ public sealed class NetworkControllerServer
     public void OnNotReady(NetworkMessage networkMessage)
     {
         string message = "Client is not ready : " + networkMessage.conn.connectionId;
-        message += "\nMessage Type : " + networkMessage.msgType;
+        message += "\n[Connection] : " + networkMessage.conn;
+        message += "\n[Message Type] : " + networkMessage.msgType;
         Debug.LogError(message);
 
         networkManager.message = message;
@@ -108,10 +108,9 @@ public sealed class NetworkControllerServer
     {
         AddPlayerMessage targetMessage = networkMessage.ReadMessage<AddPlayerMessage>();
 
-        string message = string.Format("Add player. (Connection ID : {0}    Player Controller ID : {1}",
-                                       networkMessage.conn,
-                                       targetMessage.playerControllerId);
-        message += "\nMessage Type : " + networkMessage.msgType;
+        string message = string.Format("Add player. (Player Controller ID : {1})", targetMessage.playerControllerId);
+        message += "\n[Connection] : " + networkMessage.conn;
+        message += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(message);
 
         networkManager.message = message;
@@ -123,10 +122,9 @@ public sealed class NetworkControllerServer
     {
         RemovePlayerMessage targetMessage = networkMessage.ReadMessage<RemovePlayerMessage>();
 
-        string message = string.Format("Remove player. (Connection ID : {0}    Player Controller ID : {1}",
-                                       networkMessage.conn,
-                                       targetMessage.playerControllerId);
-        message += "\nMessage Type : " + networkMessage.msgType;
+        string message = string.Format("Remove player. (Player Controller ID : {1})", targetMessage.playerControllerId);
+        message += "\n[Connection] : " + networkMessage.conn;
+        message += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(message);
 
         networkManager.message = message;
