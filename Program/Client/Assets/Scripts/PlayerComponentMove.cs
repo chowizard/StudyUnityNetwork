@@ -12,6 +12,10 @@ public class PlayerComponentMove : NetworkBehaviour
 
     public GameObject bulletObject;
 
+
+    [SyncVar]
+    public Vector3 currentPosition;
+
     public override void OnStartLocalPlayer()
     {
         GetComponent<MeshRenderer>().material.color = Color.red;
@@ -26,35 +30,61 @@ public class PlayerComponentMove : NetworkBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if(!isLocalPlayer)
-            return;
-
         CheckUpdateMove();
         CheckUpdateFire();
     }
 
     private void CheckUpdateMove()
     {
-        float axisX = Input.GetAxis("Horizontal");
-        float axisZ = Input.GetAxis("Vertical");
+        if(isServer)
+        {
+            if(!IsInvoking("RpcUpdatePosition"))
+                Invoke("RpcUpdatePosition", 0.1f);
+        }
 
-        float moveDeltaHorizontal = axisX * velocity * Time.deltaTime;
-        float moveDeltaVertical = axisZ * velocity * Time.deltaTime;
+        if(isClient)
+        {
+            if(isLocalPlayer)
+            {
+                float axisX = Input.GetAxis("Horizontal");
+                float axisZ = Input.GetAxis("Vertical");
 
-        if((moveDeltaHorizontal != 0.0f) || (moveDeltaVertical != 0.0f))
-            CmdMove(moveDeltaHorizontal, moveDeltaVertical);
+                //if((axisX != 0.0f) || (axisZ != 0.0f))
+                //    Debug.Log(string.Format("axisX = {0}    axisZ = {1}", axisX, axisZ));
+
+                float moveDeltaHorizontal = axisX * velocity * Time.deltaTime;
+                float moveDeltaVertical = axisZ * velocity * Time.deltaTime;
+
+                if((moveDeltaHorizontal != 0.0f) || (moveDeltaVertical != 0.0f))
+                {
+                    //Debug.Log(string.Format("moveSpeedX = {0}    moveSpeedZ = {1}", moveDeltaHorizontal, moveDeltaVertical));
+                    Move(moveDeltaHorizontal, moveDeltaVertical);
+                }
+
+                if(!IsInvoking("CmdUpdatePosition"))
+                    Invoke("CmdUpdatePosition", 0.1f);
+            }
+        }
     }
 
     private void CheckUpdateFire()
     {
+        if(!isLocalPlayer)
+            return;
+
         if(Input.GetKeyDown(KeyCode.Space))
             CmdFire();
     }
 
-    [Command]
-    private void CmdMove(float moveDeltaHorizontal, float moveDeltaVertical)
+    private void Move(float moveDeltaHorizontal, float moveDeltaVertical)
     {
         transform.Translate(moveDeltaHorizontal, transform.position.y, moveDeltaVertical);
+    }
+
+    [Command]
+    private void CmdUpdatePosition()
+    {
+        currentPosition = transform.position;
     }
 
     [Command]
@@ -68,5 +98,11 @@ public class PlayerComponentMove : NetworkBehaviour
         bulletComponent.speed = 4.0f;
 
         Object.Destroy(bullet, 2.0f);
+    }
+
+    [ClientRpc]
+    private void RpcUpdatePosition()
+    {
+        transform.position = currentPosition;
     }
 }

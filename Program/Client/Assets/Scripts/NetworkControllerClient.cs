@@ -11,7 +11,6 @@ public sealed class NetworkControllerClient
     private SceneMain sceneMain;
 
     private NetworkClient netClient;
-    private PlayerComponentMove myPlayer;
 
     public NetworkControllerClient(NetworkManager networkManager)
     {

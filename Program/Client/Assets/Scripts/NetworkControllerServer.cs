@@ -71,6 +71,7 @@ public sealed class NetworkControllerServer
 
     public void OnDisconnected(NetworkMessage networkMessage)
     {
+        OnRemovePlayer(networkMessage);
         RemoveConnection(networkMessage.conn.connectionId);
 
 
@@ -114,6 +115,10 @@ public sealed class NetworkControllerServer
 
         PlayerComponentMove player = networkManager.AddPlayer(targetMessage.playerControllerId);
         NetworkServer.AddPlayerForConnection(networkMessage.conn, player.gameObject, targetMessage.playerControllerId);
+        NetworkIdentity networkIdentity = player.GetComponent<NetworkIdentity>();
+        networkIdentity.AssignClientAuthority(networkMessage.conn);
+
+        //NetworkServer.SpawnWithClientAuthority()
         //foreach(var pair in connections)
         //{
         //    NetworkConnection connection = pair.Value;

@@ -128,9 +128,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34423f687c30f0a45ba988575949ecc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 0.1
+  id: 0
+  velocity: 10
   bulletObject: {fileID: 1565645520298368, guid: 0128dd51c48184245beef2e9244df190,
     type: 2}
+  currentPosition: {x: 0, y: 0, z: 0}
 --- !u!136 &136786348813533642
 CapsuleCollider:
   m_ObjectHideFlags: 1
