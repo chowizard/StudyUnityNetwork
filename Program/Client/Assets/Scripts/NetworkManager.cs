@@ -86,7 +86,7 @@ public class NetworkManager : MonoBehaviour
             GUI.Label(new Rect(2, 50, 150, 100), "Press C for client");
         }
 
-        GUI.Label(new Rect(2, 80, 400, 100), message);
+        GUI.Label(new Rect(2, 80, 600, 100), message);
     }
 
     // Create a server and listen on a port

@@ -59,7 +59,9 @@ public sealed class NetworkControllerClient
         if(!ClientScene.ready)
             ClientScene.Ready(netClient.connection);
 
-        string message = "Connected to server.";
+        string message = string.Format("Connected to server. (Connection ID = {0}    Address = {1})",
+                                       networkMessage.conn.connectionId,
+                                       networkMessage.conn.address);
         message += "\nMessage Type : " + networkMessage.msgType;
         Debug.Log(message);
 
@@ -68,7 +70,9 @@ public sealed class NetworkControllerClient
 
     public void OnDisconnected(NetworkMessage networkMessage)
     {
-        string message = "Disconnected from server.";
+        string message = string.Format("Disconnected from server. (Connection ID = {0}    Address = {1})",
+                                       networkMessage.conn.connectionId,
+                                       networkMessage.conn.address);
         message += "\nMessage Type : " + networkMessage.msgType;
         Debug.Log(message);
 

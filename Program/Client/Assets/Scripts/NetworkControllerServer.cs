@@ -53,9 +53,6 @@ public sealed class NetworkControllerServer
         AddRemoteNetworkClient(networkMessage.conn);
         NetworkServer.SetClientReady(networkMessage.conn);
 
-        //if(!ClientScene.ready)
-        //    ClientScene.Ready(networkMessage.conn);
-
         string message = string.Format("Connected from client. (Connection ID = {0}    Address = {1})",
                                        networkMessage.conn.connectionId,
                                        networkMessage.conn.address);
@@ -67,13 +64,15 @@ public sealed class NetworkControllerServer
 
     public void OnDisconnected(NetworkMessage networkMessage)
     {
-        RemoveRemoteNetworkClient(networkMessage.conn.connectionId);
-
-        string message = "Client was disconnected.";
+        string message = string.Format("Client was disconnected. (Connection ID = {0}    Address = {1})",
+                                       networkMessage.conn.connectionId,
+                                       networkMessage.conn.address);
         message += "\nMessage Type : " + networkMessage.msgType;
         Debug.Log(message);
 
         networkManager.message = message;
+
+        RemoveRemoteNetworkClient(networkMessage.conn.connectionId);
     }
 
     public void OnReady(NetworkMessage networkMessage)
@@ -150,11 +149,15 @@ public sealed class NetworkControllerServer
 
     public void OnDisconnectedRemoteClient(NetworkMessage networkMessage)
     {
-        string message = "Remote client was disconnected from server.";
+        string message = string.Format("Remote client was disconnected from server. (Connection ID = {0}    Address = {1})",
+                                       networkMessage.conn.connectionId,
+                                       networkMessage.conn.address);
         message += "\nMessage Type : " + networkMessage.msgType;
         Debug.Log(message);
 
         networkManager.message = message;
+
+        RemoveRemoteNetworkClient(networkMessage.conn.connectionId);
     }
 
     public void OnReadyRemoteClient(NetworkMessage networkMessage)
