@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 136786348813533642}
   - component: {fileID: 23408983710383830}
   - component: {fileID: 114021811365442036}
+  - component: {fileID: 114840146952577844}
   - component: {fileID: 114821464827041268}
   m_Layer: 0
   m_Name: Player
@@ -133,6 +134,27 @@ MonoBehaviour:
   bulletObject: {fileID: 1565645520298368, guid: 0128dd51c48184245beef2e9244df190,
     type: 2}
   currentPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &114840146952577844
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1851611101664868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.09090909
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!136 &136786348813533642
 CapsuleCollider:
   m_ObjectHideFlags: 1

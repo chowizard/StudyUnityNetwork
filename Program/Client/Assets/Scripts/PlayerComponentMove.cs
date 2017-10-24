@@ -38,8 +38,8 @@ public class PlayerComponentMove : NetworkBehaviour
     {
         if(isServer)
         {
-            if(!IsInvoking("RpcUpdatePosition"))
-                Invoke("RpcUpdatePosition", 0.1f);
+            //if(!IsInvoking("RpcUpdatePosition"))
+            //    Invoke("RpcUpdatePosition", 0.1f);
         }
 
         if(isClient)
@@ -61,8 +61,8 @@ public class PlayerComponentMove : NetworkBehaviour
                     Move(moveDeltaHorizontal, moveDeltaVertical);
                 }
 
-                if(!IsInvoking("CmdUpdatePosition"))
-                    Invoke("CmdUpdatePosition", 0.1f);
+                //if(!IsInvoking("CmdUpdatePosition"))
+                //    Invoke("CmdUpdatePosition", 0.1f);
             }
         }
     }
@@ -84,6 +84,9 @@ public class PlayerComponentMove : NetworkBehaviour
     [Command]
     private void CmdUpdatePosition()
     {
+        if(currentPosition != transform.position)
+            Debug.Log("Update position : " + transform.position);
+
         currentPosition = transform.position;
     }
 
