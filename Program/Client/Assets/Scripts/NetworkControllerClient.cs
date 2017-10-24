@@ -8,7 +8,7 @@ using UnityEngine.Networking.NetworkSystem;
 public sealed class NetworkControllerClient
 {
     private NetworkManager networkManager;
-    private SceneMain mainScene;
+    private SceneMain sceneMain;
 
     private NetworkClient netClient;
     private PlayerComponentMove myPlayer;
@@ -16,39 +16,12 @@ public sealed class NetworkControllerClient
     public NetworkControllerClient(NetworkManager networkManager)
     {
         this.networkManager = networkManager;
-        mainScene = networkManager.transform.parent.GetComponent<SceneMain>();
+        sceneMain = networkManager.transform.parent.GetComponent<SceneMain>();
     }
 
     public void Setup()
     {
-        if(netClient == null)
-        {
-            netClient = new NetworkClient();
-            netClient.RegisterHandler(MsgType.Error, OnError);
-            netClient.RegisterHandler(MsgType.Connect, OnConnected);
-            netClient.RegisterHandler(MsgType.Disconnect, OnDisconnected);
-            netClient.RegisterHandler(MsgType.Ready, OnReady);
-            netClient.RegisterHandler(MsgType.NotReady, OnNotReady);
-            netClient.RegisterHandler(MsgType.AddPlayer, OnAddPlayer);
-            netClient.RegisterHandler(MsgType.RemovePlayer, OnRemovePlayer);
-        }
-
-        netClient.Connect(networkManager.ip, networkManager.port);
-    }
-
-    public void SpawnPlayer(short playerControllerId)
-    {
-        GameObject playerPrefab = Resources.Load<GameObject>("Player");
-        Debug.Assert(playerPrefab != null);
-
-        ClientScene.RegisterPrefab(playerPrefab);
-
-        GameObject myPlayerObject = Object.Instantiate<GameObject>(playerPrefab);
-        myPlayerObject.name = playerPrefab.name;
-        myPlayerObject.transform.position = playerPrefab.transform.position;
-        myPlayerObject.transform.parent = mainScene.entityManager.transform;
-
-        myPlayer = myPlayerObject.transform.GetComponent<PlayerComponentMove>();
+        SetupClient();
     }
 
     public void Terminate()
@@ -131,31 +104,40 @@ public sealed class NetworkControllerClient
 
         networkManager.message = logText;
 
-        SpawnPlayer(targetMessage.playerControllerId);
-        ClientScene.AddPlayer(targetMessage.playerControllerId);
+        networkManager.AddPlayer(targetMessage.playerControllerId);
+        //ClientScene.AddPlayer(targetMessage.playerControllerId);
     }
 
     public void OnRemovePlayer(NetworkMessage networkMessage)
     {
         RemovePlayerMessage targetMessage = networkMessage.ReadMessage<RemovePlayerMessage>();
 
-        string message = string.Format("Add player. (Player Controller ID : {0}", targetMessage.playerControllerId);
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
+        string logText = string.Format("Add player. (Player Controller ID : {0}", targetMessage.playerControllerId);
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.Log(logText);
 
-        networkManager.message = message;
+        networkManager.message = logText;
 
-        ClientScene.RemovePlayer(targetMessage.playerControllerId);
-        UnspawnPlayer(targetMessage.playerControllerId);
+        //ClientScene.RemovePlayer(targetMessage.playerControllerId);
+        networkManager.RemovePlayer(targetMessage.playerControllerId);
     }
     #endregion
 
-    private void UnspawnPlayer(short playerControllerId)
+    private void SetupClient()
     {
-        if(myPlayer != null)
+        if(netClient == null)
         {
-            GameObject.Destroy(myPlayer);
-            myPlayer = null;
+            netClient = new NetworkClient();
+            netClient.RegisterHandler(MsgType.Error, OnError);
+            netClient.RegisterHandler(MsgType.Connect, OnConnected);
+            netClient.RegisterHandler(MsgType.Disconnect, OnDisconnected);
+            netClient.RegisterHandler(MsgType.Ready, OnReady);
+            netClient.RegisterHandler(MsgType.NotReady, OnNotReady);
+            netClient.RegisterHandler(MsgType.AddPlayer, OnAddPlayer);
+            netClient.RegisterHandler(MsgType.RemovePlayer, OnRemovePlayer);
         }
+
+        netClient.Connect(networkManager.ip, networkManager.port);
     }
 }

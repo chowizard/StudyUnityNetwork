@@ -6,6 +6,8 @@ using UnityEngine.Networking;
 
 public class PlayerComponentMove : NetworkBehaviour
 {
+    public int id;
+
     public float velocity;
 
     public GameObject bulletObject;

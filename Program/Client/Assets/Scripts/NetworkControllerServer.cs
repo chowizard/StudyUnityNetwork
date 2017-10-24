@@ -11,7 +11,7 @@ public sealed class NetworkControllerServer
     private NetworkManager networkManager;
     private SceneMain mainScene;
 
-    private Dictionary<int, NetworkClient> remoteNetClients = new Dictionary<int, NetworkClient>();
+    private Dictionary<int, NetworkConnection> connections = new Dictionary<int, NetworkConnection>();
 
     public NetworkControllerServer(NetworkManager networkManager)
     {
@@ -39,10 +39,10 @@ public sealed class NetworkControllerServer
             NetworkServer.Shutdown();
     }
 
-    public NetworkClient GetRemoteNetworkClient(int connectionId)
+    public NetworkConnection GetConnection(int connectionId)
     {
-        NetworkClient data;
-        return remoteNetClients.TryGetValue(connectionId, out data) ? data : null;
+        NetworkConnection data;
+        return connections.TryGetValue(connectionId, out data) ? data : null;
     }
 
     public void OnError(NetworkMessage networkMessage)
@@ -57,56 +57,76 @@ public sealed class NetworkControllerServer
     #region Events For Server
     public void OnConnected(NetworkMessage networkMessage)
     {
+        AddConnection(networkMessage.conn);
+        //ClientScene.Ready(networkMessage.conn);
+
+
         string logText = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
 
         networkManager.message = logText;
-
-        //ClientScene.Ready(networkMessage.conn);
-        //AddRemoteNetworkClient(networkMessage.conn);
     }
 
     public void OnDisconnected(NetworkMessage networkMessage)
     {
+        RemoveConnection(networkMessage.conn.connectionId);
+
+
         string logText = string.Format("Client was disconnected. Address = {0})", networkMessage.conn.address);
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
 
         networkManager.message = logText;
-
-        //RemoveRemoteNetworkClient(networkMessage.conn.connectionId);
     }
 
     public void OnReady(NetworkMessage networkMessage)
     {
+        NetworkServer.SetClientReady(networkMessage.conn);
+
+
         string logText = "Client is ready : " + networkMessage.conn.connectionId;
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
 
         networkManager.message = logText;
-
-        NetworkServer.SetClientReady(networkMessage.conn);
     }
 
     public void OnNotReady(NetworkMessage networkMessage)
     {
+        NetworkServer.SetClientNotReady(networkMessage.conn);
+
+
         string logText = "Client is not ready : " + networkMessage.conn.connectionId;
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.LogError(logText);
 
         networkManager.message = logText;
-
-        NetworkServer.SetClientNotReady(networkMessage.conn);
     }
 
     public void OnAddPlayer(NetworkMessage networkMessage)
     {
         AddPlayerMessage targetMessage = networkMessage.ReadMessage<AddPlayerMessage>();
+
+        PlayerComponentMove player = networkManager.AddPlayer(targetMessage.playerControllerId);
+        NetworkServer.AddPlayerForConnection(networkMessage.conn, player.gameObject, targetMessage.playerControllerId);
+        //foreach(var pair in connections)
+        //{
+        //    NetworkConnection connection = pair.Value;
+        //    if(connection == null || !connection.isConnected)
+        //        continue;
+
+        //    if(connection.connectionId == networkMessage.conn.connectionId)
+        //        continue;
+
+        //    NetworkServer.SendToClient(networkMessage.conn.connectionId, MsgType.AddPlayer, targetMessage);
+        //}
+        //ClientScene.AddPlayer(targetMessage.playerControllerId);
+
 
         string logText = string.Format("Add player. (Player Controller ID : {0})", targetMessage.playerControllerId);
         logText += "\n[Connection] : " + networkMessage.conn;
@@ -114,13 +134,28 @@ public sealed class NetworkControllerServer
         Debug.Log(logText);
 
         networkManager.message = logText;
-
-        //ClientScene.AddPlayer(targetMessage.playerControllerId);
     }
 
     public void OnRemovePlayer(NetworkMessage networkMessage)
     {
         RemovePlayerMessage targetMessage = networkMessage.ReadMessage<RemovePlayerMessage>();
+
+        networkManager.RemovePlayer(targetMessage.playerControllerId);
+        NetworkServer.DestroyPlayersForConnection(networkMessage.conn);
+
+        //foreach(var pair in connections)
+        //{
+        //    NetworkConnection connection = pair.Value;
+        //    if(connection == null || !connection.isConnected)
+        //        continue;
+
+        //    if(connection.connectionId == networkMessage.conn.connectionId)
+        //        continue;
+
+        //    NetworkServer.SendToClient(networkMessage.conn.connectionId, MsgType.RemovePlayer, targetMessage);
+        //}
+        //ClientScene.RemovePlayer(targetMessage.playerControllerId);
+
 
         string logText = string.Format("Remove player. (Player Controller ID : {0})", targetMessage.playerControllerId);
         logText += "\n[Connection] : " + networkMessage.conn;
@@ -128,98 +163,22 @@ public sealed class NetworkControllerServer
         Debug.Log(logText);
 
         networkManager.message = logText;
-
-        //ClientScene.RemovePlayer(targetMessage.playerControllerId);
     }
     #endregion
 
-    #region Events For Remote Client
-    public void OnConnectedRemoteClient(NetworkMessage networkMessage)
-    {
-        string message = string.Format("Remote client was connected to server. (Connection ID = {0}    Address = {1})",
-                                       networkMessage.conn.connectionId,
-                                       networkMessage.conn.address);
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
-
-        networkManager.message = message;
-    }
-
-    public void OnDisconnectedRemoteClient(NetworkMessage networkMessage)
-    {
-        string message = string.Format("Remote client was disconnected from server. (Connection ID = {0}    Address = {1})",
-                                       networkMessage.conn.connectionId,
-                                       networkMessage.conn.address);
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
-
-        networkManager.message = message;
-
-        RemoveRemoteNetworkClient(networkMessage.conn.connectionId);
-    }
-
-    public void OnReadyRemoteClient(NetworkMessage networkMessage)
-    {
-        string message = "Remote client is ready : " + networkMessage.conn.connectionId;
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
-
-        networkManager.message = message;
-    }
-
-    public void OnNotReadyRemoteClient(NetworkMessage networkMessage)
-    {
-        string message = "Remote client is not ready : " + networkMessage.conn.connectionId;
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.LogError(message);
-
-        networkManager.message = message;
-    }
-
-    public void OnAddPlayerRemoteClient(NetworkMessage networkMessage)
-    {
-        AddPlayerMessage targetMessage = networkMessage.ReadMessage<AddPlayerMessage>();
-
-        string message = string.Format("Add player in remote client. (Connection ID : {0}    Player Controller ID : {1}",
-                                       networkMessage.conn.connectionId,
-                                       targetMessage.playerControllerId);
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
-
-        networkManager.message = message;
-
-        ClientScene.AddPlayer(targetMessage.playerControllerId);
-    }
-
-    public void OnRemovePlayerRemoteClient(NetworkMessage networkMessage)
-    {
-        RemovePlayerMessage targetMessage = networkMessage.ReadMessage<RemovePlayerMessage>();
-
-        string message = string.Format("Remove player from remote client. (Connection ID : {0}    Player Controller ID : {1}",
-                                       networkMessage.conn.connectionId,
-                                       targetMessage.playerControllerId);
-        message += "\nMessage Type : " + networkMessage.msgType;
-        Debug.Log(message);
-
-        networkManager.message = message;
-
-        ClientScene.RemovePlayer(targetMessage.playerControllerId);
-    }
-    #endregion
-
-    public NetworkClient[] NetworkClients
+    public NetworkConnection[] Connections
     {
         get
         {
-            return (remoteNetClients.Count > 0) ? remoteNetClients.Values.ToArray() : null;
+            return (connections.Count > 0) ? connections.Values.ToArray() : null;
         }
     }
 
-    public int NetworkClientCount
+    public int ConnectionCount
     {
         get
         {
-            return remoteNetClients.Count;
+            return connections.Count;
         }
     }
 
@@ -238,59 +197,49 @@ public sealed class NetworkControllerServer
         NetworkServer.Listen(networkManager.port);
     }
 
-    private NetworkClient AddRemoteNetworkClient(NetworkConnection connection)
+    private void AddConnection(NetworkConnection connection)
     {
         if(connection == null)
-            return null;
+            return;
 
-        NetworkClient netClient = new NetworkClient(connection);
-        netClient.RegisterHandler(MsgType.Error, OnError);
-        netClient.RegisterHandler(MsgType.Connect, OnConnectedRemoteClient);
-        netClient.RegisterHandler(MsgType.Disconnect, OnDisconnectedRemoteClient);
-        netClient.RegisterHandler(MsgType.Ready, OnReadyRemoteClient);
-        netClient.RegisterHandler(MsgType.NotReady, OnNotReadyRemoteClient);
-        netClient.RegisterHandler(MsgType.AddPlayer, OnAddPlayerRemoteClient);
-        netClient.RegisterHandler(MsgType.RemovePlayer, OnRemovePlayerRemoteClient);
-
-        RemoveRemoteNetworkClient(connection.connectionId);
-        remoteNetClients.Add(connection.connectionId, netClient);
-
-        return netClient;
+        RemoveConnection(connection.connectionId);
+        connections.Add(connection.connectionId, connection);
     }
 
-    private bool RemoveRemoteNetworkClient(int connectionId)
+    private bool RemoveConnection(int connectionId)
     {
-        NetworkClient remoteNetworkClient = GetRemoteNetworkClient(connectionId);
-        if(remoteNetworkClient == null)
+        NetworkConnection connection = GetConnection(connectionId);
+        if(connection == null)
             return false;
 
-        if((remoteNetworkClient != null) && remoteNetworkClient.isConnected)
-            remoteNetworkClient.Disconnect();
+        if((connection != null) && connection.isConnected)
+        {
+            connection.Disconnect();
+            connection.Dispose();
+        }
 
-        remoteNetworkClient.Shutdown();
-
-        return remoteNetClients.Remove(connectionId);
+        return connections.Remove(connectionId);
     }
 
-    private bool RemoveRemoteNetworkClient(NetworkClient networkClient)
+    private bool RemoveConnection(NetworkClient networkClient)
     {
         if(networkClient == null)
             return false;
 
         if(networkClient.connection != null)
         {
-            return RemoveRemoteNetworkClient(networkClient.connection.connectionId);
+            return RemoveConnection(networkClient.connection.connectionId);
         }
         else
         {
-            foreach(var pair in remoteNetClients)
+            foreach(var pair in connections)
             {
-                NetworkClient currentNetClient = pair.Value;
-                if(currentNetClient == null)
+                NetworkConnection currentConnection = pair.Value;
+                if(currentConnection == null)
                     continue;
 
-                if(currentNetClient == networkClient)
-                    return remoteNetClients.Remove(pair.Key);
+                if(currentConnection == networkClient.connection)
+                    return connections.Remove(pair.Key);
             }
 
             return false;

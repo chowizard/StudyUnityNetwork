@@ -22,7 +22,11 @@ public class NetworkManager : MonoBehaviour
     public bool isAtStartup = true;
     public Mode mode = Mode.None;
 
+    public GameObject playerPrefab;
+
     private static NetworkManager singleton;
+
+    private SceneMain sceneMain;
 
     private ConnectionConfig connectionConfiguration;
 
@@ -41,6 +45,14 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
+    public void SetupResources()
+    {
+        playerPrefab = Resources.Load<GameObject>("Player");
+        Debug.Assert(playerPrefab != null);
+
+        ClientScene.RegisterPrefab(playerPrefab);
+    }
+
     private void Awake()
     {
         singleton = this;
@@ -48,7 +60,10 @@ public class NetworkManager : MonoBehaviour
 
     private void Start()
     {
+        sceneMain = transform.parent.GetComponent<SceneMain>();
+
         SetupConnectionConfiguration();
+        SetupResources();
     }
 
     // Update is called once per frame
@@ -128,6 +143,19 @@ public class NetworkManager : MonoBehaviour
         isAtStartup = false;
         mode = Mode.LocalClient;
         message = "Setup local client.";
+    }
+
+    public PlayerComponentMove AddPlayer(int id)
+    {
+        PlayerComponentMove player = sceneMain.entityManager.CreatePlayer(playerPrefab);
+        player.id = id;
+
+        return player;
+    }
+
+    public void RemovePlayer(int id)
+    {
+        sceneMain.entityManager.RemovePlayer(id);
     }
 
     public NetworkControllerServer ServerController
