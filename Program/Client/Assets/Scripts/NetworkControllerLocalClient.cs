@@ -31,6 +31,8 @@ public sealed class NetworkControllerLocalClient
     {
         if((netClient != null) && netClient.isConnected)
             netClient.Disconnect();
+
+        netClient.Shutdown();
     }
 
     public NetworkClient NetClient

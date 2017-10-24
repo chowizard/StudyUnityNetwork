@@ -109,6 +109,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    debug:
+      m_Flags: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &344216050
 GameObject:
@@ -264,9 +266,15 @@ Prefab:
       propertyPath: networkManager
       value: 
       objectReference: {fileID: 1245553461}
+    - target: {fileID: 92108863142538578, guid: 1a6b606490914854dbbd39291f0f5d04,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114038732447425876, guid: 1a6b606490914854dbbd39291f0f5d04, type: 2}
     - {fileID: 114487178132755624, guid: 1a6b606490914854dbbd39291f0f5d04, type: 2}
+    - {fileID: 92108863142538578, guid: 1a6b606490914854dbbd39291f0f5d04, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 1a6b606490914854dbbd39291f0f5d04, type: 2}
   m_IsPrefabParent: 0
 --- !u!114 &1245553461 stripped

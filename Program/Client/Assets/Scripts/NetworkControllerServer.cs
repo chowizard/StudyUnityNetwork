@@ -91,7 +91,6 @@ public sealed class NetworkControllerServer
     }
     #endregion
 
-
     #region Events For Local Client
     public void OnConnectedLocalClient(NetworkMessage networkMessage)
     {
@@ -232,6 +231,15 @@ public sealed class NetworkControllerServer
 
     private bool RemoveRemoteNetworkClient(int connectionId)
     {
+        NetworkClient remoteNetworkClient = GetRemoteNetworkClient(connectionId);
+        if(remoteNetworkClient == null)
+            return false;
+
+        if((remoteNetworkClient != null) && remoteNetworkClient.isConnected)
+            remoteNetworkClient.Disconnect();
+
+        remoteNetworkClient.Shutdown();
+
         return remoteNetClients.Remove(connectionId);
     }
 
