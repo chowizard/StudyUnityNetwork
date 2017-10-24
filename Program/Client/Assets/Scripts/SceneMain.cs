@@ -44,7 +44,8 @@ public class SceneMain : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if(networkManager.mode == NetworkManager.Mode.Server)
+        //if(networkManager.mode == NetworkManager.Mode.Server)
+        if(networkManager.mode == NetworkManager.Mode.Client)
         {
             if (Input.GetKeyDown(KeyCode.Z))
                 SpawnPlayer();
@@ -53,18 +54,9 @@ public class SceneMain : MonoBehaviour
 
     private void SpawnPlayer()
     {
-        GameObject playerPrefab = Resources.Load<GameObject>("Player");
-        Debug.Assert(playerPrefab != null);
-
-        GameObject myPlayer = Instantiate<GameObject>(playerPrefab);
-        myPlayer.name = playerPrefab.name;
-        myPlayer.transform.position = playerPrefab.transform.position;
-        myPlayer.transform.parent = entityManager.transform;
-
-        if(networkManager.ServerController != null)
-        {
-            NetworkClient networkClient = networkManager.ServerController.GetRemoteNetworkClient(1);
-            NetworkServer.SpawnWithClientAuthority(myPlayer, networkClient.connection);
-        }
+        NetworkClient networkClient = networkManager.ClientController.NetClient;
+        short playerControllerId = 11;
+        networkManager.ClientController.SpawnPlayer(playerControllerId);
+        ClientScene.AddPlayer(networkClient.connection, playerControllerId);
     }
 }
