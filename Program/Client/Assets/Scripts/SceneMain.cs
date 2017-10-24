@@ -16,6 +16,11 @@ public class SceneMain : MonoBehaviour
 
     public NetworkManager networkManager;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(transform.root.gameObject);
+    }
+
     // Use this for initialization
     private void Start()
     {

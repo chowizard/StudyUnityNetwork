@@ -109,6 +109,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    debug:
+      m_Flags: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &344216050
 GameObject:
@@ -200,13 +202,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &364737946 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114836935658293598, guid: 1a6b606490914854dbbd39291f0f5d04,
-    type: 2}
-  m_PrefabInternal: {fileID: 1050057741}
-  m_Script: {fileID: 11500000, guid: 5681b6e6f2f2af4468dc6ac9197ecd85, type: 3}
---- !u!1001 &1050057741
+--- !u!1001 &1463462130
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -249,29 +245,6 @@ Prefab:
       propertyPath: m_Name
       value: SceneRoot
       objectReference: {fileID: 0}
-    - target: {fileID: 114106706584889414, guid: 1a6b606490914854dbbd39291f0f5d04,
-        type: 2}
-      propertyPath: entityManager
-      value: 
-      objectReference: {fileID: 364737946}
-    - target: {fileID: 114487178132755624, guid: 1a6b606490914854dbbd39291f0f5d04,
-        type: 2}
-      propertyPath: m_AutoCreatePlayer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114106706584889414, guid: 1a6b606490914854dbbd39291f0f5d04,
-        type: 2}
-      propertyPath: networkManager
-      value: 
-      objectReference: {fileID: 1245553461}
-    m_RemovedComponents:
-    - {fileID: 114038732447425876, guid: 1a6b606490914854dbbd39291f0f5d04, type: 2}
-    - {fileID: 114487178132755624, guid: 1a6b606490914854dbbd39291f0f5d04, type: 2}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1a6b606490914854dbbd39291f0f5d04, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &1245553461 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114716622877680960, guid: 1a6b606490914854dbbd39291f0f5d04,
-    type: 2}
-  m_PrefabInternal: {fileID: 1050057741}
-  m_Script: {fileID: 11500000, guid: 9845ee3a9878f3c46b6edab6655e685e, type: 3}

@@ -19,13 +19,17 @@ public sealed class NetworkControllerServer
     public void Setup()
     {
         SetupServer();
-        SetupLocalClient();
+        //SetupLocalClient();
     }
 
     public void Terminate()
     {
         NetworkServer.DisconnectAll();
         NetworkServer.Reset();
+        NetworkServer.ResetConnectionStats();
+
+        if(NetworkServer.active)
+            NetworkServer.Shutdown();
     }
 
     public NetworkClient GetRemoteNetworkClient(int connectionId)
@@ -191,7 +195,7 @@ public sealed class NetworkControllerServer
 
     private void SetupServer()
     {
-        NetworkServer.Reset();
+        Terminate();
 
         NetworkServer.RegisterHandler(MsgType.Error, OnError);
         NetworkServer.RegisterHandler(MsgType.Connect, OnConnected);
