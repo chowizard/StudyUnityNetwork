@@ -6,19 +6,19 @@ using UnityEngine;
 
 public class EntityManager : MonoBehaviour
 {
-    private Dictionary<int, PlayerComponentMove> players = new Dictionary<int, PlayerComponentMove>();
+    private Dictionary<int, PlayerCharacter> players = new Dictionary<int, PlayerCharacter>();
 
-    public PlayerComponentMove CreatePlayer(GameObject prefab)
+    public PlayerCharacter CreatePlayer(GameObject prefab)
     {
         GameObject myPlayerObject = Object.Instantiate<GameObject>(prefab);
         myPlayerObject.name = prefab.name;
         myPlayerObject.transform.position = prefab.transform.position;
         myPlayerObject.transform.parent = transform;
 
-        return myPlayerObject.transform.GetComponent<PlayerComponentMove>();
+        return myPlayerObject.transform.GetComponent<PlayerCharacter>();
     }
 
-    public void AddPlayer(int id, PlayerComponentMove player)
+    public void AddPlayer(int id, PlayerCharacter player)
     {
         if(player == null)
             return;
@@ -31,7 +31,7 @@ public class EntityManager : MonoBehaviour
         if(!ExistPlayer)
             return;
 
-        PlayerComponentMove player = GetPlayer(id);
+        PlayerCharacter player = GetPlayer(id);
         if(player == null)
             return;
 
@@ -41,13 +41,13 @@ public class EntityManager : MonoBehaviour
         players.Remove(id);
     }
 
-    public PlayerComponentMove GetPlayer(int id)
+    public PlayerCharacter GetPlayer(int id)
     {
-        PlayerComponentMove data;
+        PlayerCharacter data;
         return players.TryGetValue(id, out data) ? data : null;
     }
 
-    public PlayerComponentMove[] Players
+    public PlayerCharacter[] Players
     {
         get
         {

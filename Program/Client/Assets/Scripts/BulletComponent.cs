@@ -24,7 +24,7 @@ public class BulletComponent : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         GameObject hittedTarget = collision.gameObject;
-        PlayerComponentMove moveComponent = hittedTarget.GetComponent<PlayerComponentMove>();
+        PlayerCharacter moveComponent = hittedTarget.GetComponent<PlayerCharacter>();
         if(moveComponent != null)
             Destroy(gameObject);
     }

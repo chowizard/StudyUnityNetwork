@@ -113,7 +113,7 @@ public sealed class NetworkControllerServer
     {
         AddPlayerMessage targetMessage = networkMessage.ReadMessage<AddPlayerMessage>();
 
-        PlayerComponentMove player = networkManager.AddPlayer(networkMessage.conn.connectionId);
+        PlayerCharacter player = networkManager.AddPlayer(networkMessage.conn.connectionId);
         NetworkServer.AddPlayerForConnection(networkMessage.conn, player.gameObject, targetMessage.playerControllerId);
         NetworkIdentity networkIdentity = player.GetComponent<NetworkIdentity>();
         networkIdentity.AssignClientAuthority(networkMessage.conn);

@@ -145,9 +145,9 @@ public class NetworkManager : MonoBehaviour
         message = "Setup local client.";
     }
 
-    public PlayerComponentMove AddPlayer(int id)
+    public PlayerCharacter AddPlayer(int id)
     {
-        PlayerComponentMove player = sceneMain.entityManager.CreatePlayer(playerPrefab);
+        PlayerCharacter player = sceneMain.entityManager.CreatePlayer(playerPrefab);
         player.id = id;
 
         sceneMain.entityManager.AddPlayer(player.id, player);
