@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33569448772668876}
   - component: {fileID: 136786348813533642}
   - component: {fileID: 23408983710383830}
+  - component: {fileID: 54656705846104470}
   - component: {fileID: 114021811365442036}
   - component: {fileID: 114840146952577844}
   - component: {fileID: 114821464827041268}
@@ -86,6 +87,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1851611101664868}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &54656705846104470
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1851611101664868}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.01
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 90
+  m_CollisionDetection: 0
 --- !u!114 &114021811365442036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -152,9 +168,9 @@ MonoBehaviour:
   m_SyncSpin: 0
   m_MovementTheshold: 0.001
   m_VelocityThreshold: 0.0001
-  m_SnapThreshold: 2.5
+  m_SnapThreshold: 0.01
   m_InterpolateRotation: 1
-  m_InterpolateMovement: 0.1
+  m_InterpolateMovement: 0.01
 --- !u!136 &136786348813533642
 CapsuleCollider:
   m_ObjectHideFlags: 1

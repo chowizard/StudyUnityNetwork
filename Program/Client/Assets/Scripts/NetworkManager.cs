@@ -150,6 +150,8 @@ public class NetworkManager : MonoBehaviour
         PlayerComponentMove player = sceneMain.entityManager.CreatePlayer(playerPrefab);
         player.id = id;
 
+        sceneMain.entityManager.AddPlayer(player.id, player);
+
         return player;
     }
 

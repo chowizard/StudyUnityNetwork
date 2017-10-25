@@ -103,7 +103,7 @@ public sealed class NetworkControllerClient
 
         networkManager.message = logText;
 
-        networkManager.AddPlayer(targetMessage.playerControllerId);
+        networkManager.AddPlayer(networkMessage.conn.connectionId);
         //ClientScene.AddPlayer(targetMessage.playerControllerId);
     }
 

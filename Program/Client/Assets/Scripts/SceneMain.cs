@@ -61,8 +61,8 @@ public class SceneMain : MonoBehaviour
         }
 
         NetworkClient networkClient = networkManager.ClientController.NetClient;
-        short playerControllerId = 11;
+        short playerControllerId = 0;
         //networkManager.AddPlayer(playerControllerId);
-        ClientScene.AddPlayer(ClientScene.readyConnection, playerControllerId);
+        ClientScene.AddPlayer(networkClient.connection, playerControllerId);
     }
 }

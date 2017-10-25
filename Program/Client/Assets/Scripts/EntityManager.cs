@@ -15,11 +15,7 @@ public class EntityManager : MonoBehaviour
         myPlayerObject.transform.position = prefab.transform.position;
         myPlayerObject.transform.parent = transform;
 
-        PlayerComponentMove player = myPlayerObject.transform.GetComponent<PlayerComponentMove>();
-
-        AddPlayer(player.id, player);
-
-        return player;
+        return myPlayerObject.transform.GetComponent<PlayerComponentMove>();
     }
 
     public void AddPlayer(int id, PlayerComponentMove player)
