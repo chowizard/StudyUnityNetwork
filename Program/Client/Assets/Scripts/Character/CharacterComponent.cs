@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class CharacterComponent : MonoBehaviour
+public abstract class CharacterComponent : MonoBehaviour
 {
     public enum eState
     {

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public abstract class CharacterComponentAi : CharacterComponent
+public class CharacterComponentAiNonPlayer : CharacterComponentAi
 {
-
     // Use this for initialization
     protected override void Start()
     {

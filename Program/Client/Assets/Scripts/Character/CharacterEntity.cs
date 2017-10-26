@@ -5,10 +5,18 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
+using UnityNet.Client.Character;
+
 public class CharacterEntity : NetworkBehaviour
 {
+    public int id;
+
+    public CharacterEntityProperty property;
+
     /* 최종 목료가 될 변환 */
     public Transform destination;
+
+    public float moveSpeed = 10.0f;
 
     /* 전체 컴포넌트 목록 */
     private Dictionary<System.Type, CharacterComponent> components = new Dictionary<System.Type, CharacterComponent>();
@@ -24,10 +32,10 @@ public class CharacterEntity : NetworkBehaviour
         return components.Remove(typeof(ClassType));
     }
 
-    public CharacterComponent GetCharacterComponent<ClassType>() where ClassType : CharacterComponent
+    public ClassType GetCharacterComponent<ClassType>() where ClassType : CharacterComponent
     {
         CharacterComponent data;
-        return components.TryGetValue(typeof(ClassType), out data) ? data : null;
+        return components.TryGetValue(typeof(ClassType), out data) ? data as ClassType : null;
     }
 
     public bool ActivateCharacterComponent<ClassType>() where ClassType : CharacterComponent
@@ -56,6 +64,11 @@ public class CharacterEntity : NetworkBehaviour
         {
             return (components.Count > 0) ? components.Values.ToArray() : null;
         }
+    }
+
+    private void Awake()
+    {
+        property = new CharacterEntityProperty();
     }
 
     // Use this for initialization

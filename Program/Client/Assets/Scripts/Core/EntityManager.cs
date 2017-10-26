@@ -6,52 +6,63 @@ using UnityEngine;
 
 public class EntityManager : MonoBehaviour
 {
-    private Dictionary<int, PlayerCharacter> players = new Dictionary<int, PlayerCharacter>();
+    private Dictionary<int, CharacterEntity> playerCharacters = new Dictionary<int, CharacterEntity>();
 
-    public PlayerCharacter CreatePlayer(GameObject prefab)
+    private CharacterEntity myCharacter;
+
+    public CharacterEntity CreatePlayerCharacter(GameObject prefab)
     {
         GameObject myPlayerObject = Object.Instantiate<GameObject>(prefab);
         myPlayerObject.name = prefab.name;
         myPlayerObject.transform.position = prefab.transform.position;
         myPlayerObject.transform.parent = transform;
 
-        return myPlayerObject.transform.GetComponent<PlayerCharacter>();
+        CharacterEntity playerCharacter = myPlayerObject.transform.GetComponent<CharacterEntity>();
+
+        playerCharacter.property.isPlayer = true;
+
+        playerCharacter.AddCharacterComponent(new CharacterComponentAction());
+        playerCharacter.AddCharacterComponent(new CharacterComponentAiPlayer());
+        playerCharacter.AddCharacterComponent(new CharacterComponentInputControl());
+        playerCharacter.AddCharacterComponent(new CharacterComponentMove());
+
+        return playerCharacter;
     }
 
-    public void AddPlayer(int id, PlayerCharacter player)
+    public void AddPlayerCharacter(int id, CharacterEntity player)
     {
         if(player == null)
             return;
 
-        players.Add(id, player);
+        playerCharacters.Add(id, player);
     }
 
-    public void RemovePlayer(int id)
+    public void RemovePlayerCharacter(int id)
     {
         if(!ExistPlayer)
             return;
 
-        PlayerCharacter player = GetPlayer(id);
+        CharacterEntity player = GetPlayerCharacter(id);
         if(player == null)
             return;
 
         Destroy(player);
         player = null;
 
-        players.Remove(id);
+        playerCharacters.Remove(id);
     }
 
-    public PlayerCharacter GetPlayer(int id)
+    public CharacterEntity GetPlayerCharacter(int id)
     {
-        PlayerCharacter data;
-        return players.TryGetValue(id, out data) ? data : null;
+        CharacterEntity data;
+        return playerCharacters.TryGetValue(id, out data) ? data : null;
     }
 
-    public PlayerCharacter[] Players
+    public CharacterEntity[] Players
     {
         get
         {
-            return (PlayerCount > 0) ? players.Values.ToArray() : null;
+            return (PlayerCount > 0) ? playerCharacters.Values.ToArray() : null;
         }
     }
 
@@ -59,7 +70,7 @@ public class EntityManager : MonoBehaviour
     {
         get
         {
-            return players.Count;
+            return playerCharacters.Count;
         }
     }
 
@@ -68,6 +79,18 @@ public class EntityManager : MonoBehaviour
         get
         {
             return (PlayerCount > 0) ? true : false;
+        }
+    }
+
+    public CharacterEntity MyCharacter
+    {
+        get
+        {
+            return myCharacter;
+        }
+        set
+        {
+            myCharacter = value;
         }
     }
 

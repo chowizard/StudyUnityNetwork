@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23408983710383830}
   - component: {fileID: 114021811365442036}
   - component: {fileID: 114840146952577844}
-  - component: {fileID: 114821464827041268}
+  - component: {fileID: 114624193723331358}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -118,7 +118,7 @@ MonoBehaviour:
     i15: 169
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
---- !u!114 &114821464827041268
+--- !u!114 &114624193723331358
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -126,14 +126,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1851611101664868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34423f687c30f0a45ba988575949ecc3, type: 3}
+  m_Script: {fileID: 11500000, guid: cc06c82e229f9e94592116eac255ed5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  velocity: 10
-  bulletObject: {fileID: 1565645520298368, guid: 0128dd51c48184245beef2e9244df190,
-    type: 2}
-  currentPosition: {x: 0, y: 0, z: 0}
+  destination: {fileID: 0}
+  moveSpeed: 10
 --- !u!114 &114840146952577844
 MonoBehaviour:
   m_ObjectHideFlags: 1

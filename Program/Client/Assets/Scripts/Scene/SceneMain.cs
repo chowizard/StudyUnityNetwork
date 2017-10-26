@@ -6,18 +6,24 @@ using UnityEngine.Networking;
 
 public class SceneMain : MonoBehaviour
 {
-    public bool flag;
-
-    public int id;
-
     public string sceneName;
-
     public EntityManager entityManager;
-
     public NetworkManager networkManager;
+
+    private static SceneMain singleton;
+
+    public SceneMain Singleton
+    {
+        get
+        {
+            return singleton;
+        }
+    }
 
     private void Awake()
     {
+        singleton = this;
+
         DontDestroyOnLoad(transform.root.gameObject);
     }
 

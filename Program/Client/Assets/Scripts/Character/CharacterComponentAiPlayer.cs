@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class CharacterComponentAiNpc : CharacterComponentAi
+public class CharacterComponentAiPlayer : CharacterComponentAi
 {
     // Use this for initialization
     protected override void Start()

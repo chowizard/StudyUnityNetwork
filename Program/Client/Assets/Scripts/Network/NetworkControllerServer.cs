@@ -113,9 +113,9 @@ public sealed class NetworkControllerServer
     {
         AddPlayerMessage targetMessage = networkMessage.ReadMessage<AddPlayerMessage>();
 
-        PlayerCharacter player = networkManager.AddPlayer(networkMessage.conn.connectionId);
-        NetworkServer.AddPlayerForConnection(networkMessage.conn, player.gameObject, targetMessage.playerControllerId);
-        NetworkIdentity networkIdentity = player.GetComponent<NetworkIdentity>();
+        CharacterEntity playerCharacter = networkManager.AddPlayerCharacter(networkMessage.conn.connectionId);
+        NetworkServer.AddPlayerForConnection(networkMessage.conn, playerCharacter.gameObject, targetMessage.playerControllerId);
+        NetworkIdentity networkIdentity = playerCharacter.GetComponent<NetworkIdentity>();
         networkIdentity.AssignClientAuthority(networkMessage.conn);
 
         //NetworkServer.SpawnWithClientAuthority()
@@ -145,7 +145,7 @@ public sealed class NetworkControllerServer
     {
         RemovePlayerMessage targetMessage = networkMessage.ReadMessage<RemovePlayerMessage>();
 
-        networkManager.RemovePlayer(networkMessage.conn.connectionId);
+        networkManager.RemovePlayerCharacter(networkMessage.conn.connectionId);
         NetworkServer.DestroyPlayersForConnection(networkMessage.conn);
 
         //foreach(var pair in connections)

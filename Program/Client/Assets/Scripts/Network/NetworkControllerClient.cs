@@ -103,7 +103,7 @@ public sealed class NetworkControllerClient
 
         networkManager.message = logText;
 
-        networkManager.AddPlayer(networkMessage.conn.connectionId);
+        networkManager.AddPlayerCharacter(networkMessage.conn.connectionId);
         //ClientScene.AddPlayer(targetMessage.playerControllerId);
     }
 
@@ -119,7 +119,7 @@ public sealed class NetworkControllerClient
         networkManager.message = logText;
 
         //ClientScene.RemovePlayer(targetMessage.playerControllerId);
-        networkManager.RemovePlayer(targetMessage.playerControllerId);
+        networkManager.RemovePlayerCharacter(targetMessage.playerControllerId);
     }
     #endregion
 

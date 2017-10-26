@@ -145,19 +145,19 @@ public class NetworkManager : MonoBehaviour
         message = "Setup local client.";
     }
 
-    public PlayerCharacter AddPlayer(int id)
+    public CharacterEntity AddPlayerCharacter(int id)
     {
-        PlayerCharacter player = sceneMain.entityManager.CreatePlayer(playerPrefab);
+        CharacterEntity player = sceneMain.entityManager.CreatePlayerCharacter(playerPrefab);
         player.id = id;
 
-        sceneMain.entityManager.AddPlayer(player.id, player);
+        sceneMain.entityManager.AddPlayerCharacter(player.id, player);
 
         return player;
     }
 
-    public void RemovePlayer(int id)
+    public void RemovePlayerCharacter(int id)
     {
-        sceneMain.entityManager.RemovePlayer(id);
+        sceneMain.entityManager.RemovePlayerCharacter(id);
     }
 
     public NetworkControllerServer ServerController
