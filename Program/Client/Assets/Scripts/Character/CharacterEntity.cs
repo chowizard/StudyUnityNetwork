@@ -21,14 +21,23 @@ public class CharacterEntity : NetworkBehaviour
     /* 전체 컴포넌트 목록 */
     private Dictionary<System.Type, CharacterComponent> components = new Dictionary<System.Type, CharacterComponent>();
 
-    public void AddCharacterComponent<ClassType>(ClassType component) where ClassType : CharacterComponent
+    public ClassType AddCharacterComponent<ClassType>() where ClassType : CharacterComponent
     {
+        ClassType component = gameObject.AddComponent<ClassType>();
+        if(component == null)
+            return null;
+
         Debug.Assert(components.ContainsKey(typeof(ClassType)) == false);
         components.Add(typeof(ClassType), component);
+
+        return component;
     }
 
     public bool RemoveCharacterComponent<ClassType>() where ClassType : CharacterComponent
     {
+        ClassType component = gameObject.GetComponent<ClassType>();
+        Destroy(component);
+
         return components.Remove(typeof(ClassType));
     }
 
@@ -69,6 +78,11 @@ public class CharacterEntity : NetworkBehaviour
     private void Awake()
     {
         property = new CharacterEntityProperty();
+    }
+
+    public override void OnStartLocalPlayer()
+    {
+        GetComponent<MeshRenderer>().material.color = Color.red;
     }
 
     // Use this for initialization

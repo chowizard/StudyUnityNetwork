@@ -12,19 +12,26 @@ public class EntityManager : MonoBehaviour
 
     public CharacterEntity CreatePlayerCharacter(GameObject prefab)
     {
+        return CreatePlayerCharacter(prefab, Vector3.zero, Quaternion.identity);
+    }
+
+    public CharacterEntity CreatePlayerCharacter(GameObject prefab, Vector3 position, Quaternion rotation)
+    {
         GameObject myPlayerObject = Object.Instantiate<GameObject>(prefab);
         myPlayerObject.name = prefab.name;
         myPlayerObject.transform.position = prefab.transform.position;
         myPlayerObject.transform.parent = transform;
 
         CharacterEntity playerCharacter = myPlayerObject.transform.GetComponent<CharacterEntity>();
+        playerCharacter.transform.position = position;
+        playerCharacter.transform.rotation = rotation;
 
         playerCharacter.property.isPlayer = true;
 
-        playerCharacter.AddCharacterComponent(new CharacterComponentAction());
-        playerCharacter.AddCharacterComponent(new CharacterComponentAiPlayer());
-        playerCharacter.AddCharacterComponent(new CharacterComponentInputControl());
-        playerCharacter.AddCharacterComponent(new CharacterComponentMove());
+        playerCharacter.AddCharacterComponent<CharacterComponentAction>();
+        playerCharacter.AddCharacterComponent<CharacterComponentAiPlayer>();
+        playerCharacter.AddCharacterComponent<CharacterComponentInputControl>();
+        playerCharacter.AddCharacterComponent<CharacterComponentMove>();
 
         return playerCharacter;
     }
