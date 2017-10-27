@@ -251,8 +251,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0277b53e5ef4ad84aaff90e46841a04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flag: 1
-  id: 0
   sceneName: Main
   entityManager: {fileID: 114836935658293598}
   networkManager: {fileID: 114716622877680960}

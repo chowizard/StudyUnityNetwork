@@ -18,7 +18,7 @@ public class CharacterComponentInputControl : CharacterComponent
         float axisX = Input.GetAxis("Horizontal");
         float axisZ = Input.GetAxis("Vertical");
 
-        if((axisX != 0.0f) || (axisX != 0.0f))
+       if((axisX != 0.0f) || (axisZ != 0.0f))
         {
             CharacterComponentMove moveComponent = owner.GetCharacterComponent<CharacterComponentMove>();
             if(moveComponent != null)

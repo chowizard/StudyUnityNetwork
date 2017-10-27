@@ -22,7 +22,7 @@ public class NetworkManager : MonoBehaviour
     public bool isAtStartup = true;
     public Mode mode = Mode.None;
 
-    public GameObject playerPrefab;
+    public Dictionary<string, GameObject> spawningPrefabs = new Dictionary<string, GameObject>();
 
     private ConnectionConfig connectionConfiguration;
 
@@ -41,12 +41,87 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    public void SetupResources()
+    // Create a server and listen on a port
+    public void SetupServer()
     {
-        playerPrefab = Resources.Load<GameObject>("Player");
-        Debug.Assert(playerPrefab != null);
+        if(serverController == null)
+            serverController = new NetworkControllerServer(this);
 
-        ClientScene.RegisterPrefab(playerPrefab);
+        serverController.Setup();
+
+        isAtStartup = false;
+        mode = Mode.Server;
+        message = "Setup server.";
+    }
+
+    // Create a client and connect to the server port
+    public void SetupClient()
+    {
+        if(clientController == null)
+            clientController = new NetworkControllerClient(this);
+
+        clientController.Setup();
+
+        isAtStartup = false;
+        mode = Mode.Client;
+        message = "Setup client.";
+
+        //Debug.Assert(networkClient.isConnected);
+    }
+
+    // Create a local client and connect to the local server
+    public void SetupLocalClient()
+    {
+        if(localClientController == null)
+            localClientController = new NetworkControllerLocalClient(this);
+
+        localClientController.Setup();
+
+        isAtStartup = false;
+        mode = Mode.LocalClient;
+        message = "Setup local client.";
+    }
+
+    public CharacterEntity RegisterPlayerCharacter(int id)
+    {
+        GameObject prefab = GetSpawningPrefab("Player");
+
+        CharacterEntity player = EntityManager.Instance.CreatePlayerCharacter(prefab, id);
+        player.id = id;
+
+        EntityManager.Instance.AddPlayerCharacter(player.id, player);
+
+        return player;
+    }
+
+    public void UnregisterPlayerCharacter(int id)
+    {
+        CharacterEntity player = EntityManager.Instance.RemovePlayerCharacter(id);
+        EntityManager.Instance.DestroyPlayerCharacter(player);
+    }
+
+    public NetworkControllerServer ServerController
+    {
+        get
+        {
+            return serverController;
+        }
+    }
+
+    public NetworkControllerClient ClientController
+    {
+        get
+        {
+            return clientController;
+        }
+    }
+
+    public NetworkControllerLocalClient LocalClientController
+    {
+        get
+        {
+            return localClientController;
+        }
     }
 
     private void Awake()
@@ -97,93 +172,40 @@ public class NetworkManager : MonoBehaviour
         GUI.Label(new Rect(2, 80, 600, 100), message);
     }
 
-    // Create a server and listen on a port
-    public void SetupServer()
-    {
-        if(serverController == null)
-            serverController = new NetworkControllerServer(this);
-
-        serverController.Setup();
-
-        isAtStartup = false;
-        mode = Mode.Server;
-        message = "Setup server.";
-    }
-
-    // Create a client and connect to the server port
-    public void SetupClient()
-    {
-        if(clientController == null)
-            clientController = new NetworkControllerClient(this);
-
-        clientController.Setup();
-
-        isAtStartup = false;
-        mode = Mode.Client;
-        message = "Setup client.";
-
-        //Debug.Assert(networkClient.isConnected);
-    }
-
-    // Create a local client and connect to the local server
-    public void SetupLocalClient()
-    {
-        if(localClientController == null)
-            localClientController = new NetworkControllerLocalClient(this);
-
-        localClientController.Setup();
-
-        isAtStartup = false;
-        mode = Mode.LocalClient;
-        message = "Setup local client.";
-    }
-
-    public CharacterEntity RegisterPlayerCharacter(int id)
-    {
-        CharacterEntity player = EntityManager.Instance.CreatePlayerCharacter(playerPrefab, id);
-        player.id = id;
-
-        EntityManager.Instance.AddPlayerCharacter(player.id, player);
-
-        return player;
-    }
-
-    public void UnregisterPlayerCharacter(int id)
-    {
-        CharacterEntity player = EntityManager.Instance.RemovePlayerCharacter(id);
-        EntityManager.Instance.DestroyPlayerCharacter(player);
-    }
-
-    public NetworkControllerServer ServerController
-    {
-        get
-        {
-            return serverController;
-        }
-    }
-
-    public NetworkControllerClient ClientController
-    {
-        get
-        {
-            return clientController;
-        }
-    }
-
-    public NetworkControllerLocalClient LocalClientController
-    {
-        get
-        {
-            return localClientController;
-        }
-    }
-
     private void SetupConnectionConfiguration()
     {
         if(connectionConfiguration == null)
             connectionConfiguration = new ConnectionConfig();
 
         //connectionConfiguration.AddChannel(QosType.Reliable);
+    }
+
+    private void SetupResources()
+    {
+        ClearSpawningPrefab();
+
+        RegisterSpawningPrefab("Player", "Entity/Player");
+        RegisterSpawningPrefab("Enemy", "Entity/Enemy");
+        RegisterSpawningPrefab("Bullet", "Entity/Bullet");
+    }
+
+    private void RegisterSpawningPrefab(string keyName, string resourcePath)
+    {
+        GameObject prefab = Resources.Load<GameObject>(resourcePath);
+        Debug.Assert(prefab != null);
+
+        AddSpawningPrefab(keyName, prefab);
+        ClientScene.RegisterPrefab(prefab);
+    }
+
+    private void UnregisterSpawningPrefab(string keyName)
+    {
+        GameObject prefab = GetSpawningPrefab(keyName);
+        if(prefab == null)
+            return;
+
+        ClientScene.UnregisterPrefab(prefab);
+        RemoveSpawningPrefab(keyName);
     }
 
     private void Terminate()
@@ -240,5 +262,35 @@ public class NetworkManager : MonoBehaviour
 
         message = "Local Client was terminate.";
         Debug.Log(message);
+    }
+
+    private void ClearSpawningPrefab()
+    {
+        spawningPrefabs.Clear();
+    }
+
+    private void AddSpawningPrefab(string keyName, GameObject prefab)
+    {
+        Debug.Assert(string.IsNullOrEmpty(keyName) == false);
+        Debug.Assert(prefab != null);
+        if(prefab == null)
+            return;
+
+        spawningPrefabs.Add(keyName, prefab);
+    }
+
+    private void RemoveSpawningPrefab(string keyName)
+    {
+        Debug.Assert(string.IsNullOrEmpty(keyName) == false);
+
+        spawningPrefabs.Remove(keyName);
+    }
+
+    private GameObject GetSpawningPrefab(string keyName)
+    {
+        Debug.Assert(string.IsNullOrEmpty(keyName) == false);
+
+        GameObject data;
+        return spawningPrefabs.TryGetValue(keyName, out data) ? data : null;
     }
 }
