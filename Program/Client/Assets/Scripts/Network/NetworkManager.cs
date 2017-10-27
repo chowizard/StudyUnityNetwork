@@ -24,10 +24,6 @@ public class NetworkManager : MonoBehaviour
 
     public GameObject playerPrefab;
 
-    private static NetworkManager singleton;
-
-    private SceneMain sceneMain;
-
     private ConnectionConfig connectionConfiguration;
 
     private NetworkControllerServer serverController;
@@ -37,11 +33,11 @@ public class NetworkManager : MonoBehaviour
     [HideInInspector]
     public string message;
 
-    public static NetworkManager Singleton
+    public static NetworkManager Instance
     {
         get
         {
-            return singleton;
+            return SceneMain.Singleton.networkManager;
         }
     }
 
@@ -55,13 +51,10 @@ public class NetworkManager : MonoBehaviour
 
     private void Awake()
     {
-        singleton = this;
     }
 
     private void Start()
     {
-        sceneMain = transform.parent.GetComponent<SceneMain>();
-
         SetupConnectionConfiguration();
         SetupResources();
     }
@@ -145,19 +138,20 @@ public class NetworkManager : MonoBehaviour
         message = "Setup local client.";
     }
 
-    public CharacterEntity AddPlayerCharacter(int id)
+    public CharacterEntity RegisterPlayerCharacter(int id)
     {
-        CharacterEntity player = sceneMain.entityManager.CreatePlayerCharacter(playerPrefab);
+        CharacterEntity player = EntityManager.Instance.CreatePlayerCharacter(playerPrefab, id);
         player.id = id;
 
-        sceneMain.entityManager.AddPlayerCharacter(player.id, player);
+        EntityManager.Instance.AddPlayerCharacter(player.id, player);
 
         return player;
     }
 
-    public void RemovePlayerCharacter(int id)
+    public void UnregisterPlayerCharacter(int id)
     {
-        sceneMain.entityManager.RemovePlayerCharacter(id);
+        CharacterEntity player = EntityManager.Instance.RemovePlayerCharacter(id);
+        EntityManager.Instance.DestroyPlayerCharacter(player);
     }
 
     public NetworkControllerServer ServerController

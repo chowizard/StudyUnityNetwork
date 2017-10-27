@@ -12,7 +12,7 @@ public class SceneMain : MonoBehaviour
 
     private static SceneMain singleton;
 
-    public SceneMain Singleton
+    public static SceneMain Singleton
     {
         get
         {

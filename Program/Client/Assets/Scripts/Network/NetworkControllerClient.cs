@@ -54,7 +54,7 @@ public sealed class NetworkControllerClient
         if(!ClientScene.ready)
             ClientScene.Ready(netClient.connection);
 
-        string logText = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
+        string logText = string.Format("Connected to server. Address = {0})", networkMessage.conn.address);
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
@@ -64,7 +64,7 @@ public sealed class NetworkControllerClient
 
     public void OnDisconnected(NetworkMessage networkMessage)
     {
-        string logText = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
+        string logText = string.Format("Disconnected from server. Address = {0})", networkMessage.conn.address);
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
@@ -103,7 +103,7 @@ public sealed class NetworkControllerClient
 
         networkManager.message = logText;
 
-        networkManager.AddPlayerCharacter(networkMessage.conn.connectionId);
+        networkManager.RegisterPlayerCharacter(networkMessage.conn.connectionId);
         //ClientScene.AddPlayer(targetMessage.playerControllerId);
     }
 
@@ -119,7 +119,7 @@ public sealed class NetworkControllerClient
         networkManager.message = logText;
 
         //ClientScene.RemovePlayer(targetMessage.playerControllerId);
-        networkManager.RemovePlayerCharacter(targetMessage.playerControllerId);
+        networkManager.UnregisterPlayerCharacter(targetMessage.playerControllerId);
     }
     #endregion
 

@@ -10,53 +10,88 @@ public class EntityManager : MonoBehaviour
 
     private CharacterEntity myCharacter;
 
-    public CharacterEntity CreatePlayerCharacter(GameObject prefab)
+    public static EntityManager Instance
     {
-        return CreatePlayerCharacter(prefab, Vector3.zero, Quaternion.identity);
+        get
+        {
+            return SceneMain.Singleton.entityManager;
+        }
     }
 
-    public CharacterEntity CreatePlayerCharacter(GameObject prefab, Vector3 position, Quaternion rotation)
+    public CharacterEntity CreatePlayerCharacter(GameObject prefab, int id)
+    {
+        return CreatePlayerCharacter(prefab, id, Vector3.zero, Quaternion.identity);
+    }
+
+    public CharacterEntity CreatePlayerCharacter(GameObject prefab,
+                                                 int id,
+                                                 Vector3 position,
+                                                 Quaternion rotation)
     {
         GameObject myPlayerObject = Object.Instantiate<GameObject>(prefab);
         myPlayerObject.name = prefab.name;
         myPlayerObject.transform.position = prefab.transform.position;
-        myPlayerObject.transform.parent = transform;
 
-        CharacterEntity playerCharacter = myPlayerObject.transform.GetComponent<CharacterEntity>();
-        playerCharacter.transform.position = position;
-        playerCharacter.transform.rotation = rotation;
+        CharacterEntity entity = myPlayerObject.transform.GetComponent<CharacterEntity>();
+        entity.transform.position = position;
+        entity.transform.rotation = rotation;
 
-        playerCharacter.property.isPlayer = true;
+        MakePlayerCharacter(entity, id);
 
-        playerCharacter.AddCharacterComponent<CharacterComponentAction>();
-        playerCharacter.AddCharacterComponent<CharacterComponentAiPlayer>();
-        playerCharacter.AddCharacterComponent<CharacterComponentInputControl>();
-        playerCharacter.AddCharacterComponent<CharacterComponentMove>();
-
-        return playerCharacter;
+        return entity;
     }
 
-    public void AddPlayerCharacter(int id, CharacterEntity player)
+    public bool DestroyPlayerCharacter(CharacterEntity entity)
     {
-        if(player == null)
+        if(entity == null)
+            return false;
+
+        Destroy(entity);
+        entity = null;
+
+        return true;
+    }
+
+    public bool MakePlayerCharacter(CharacterEntity entity, int id)
+    {
+        Debug.Assert(entity != null);
+        if(entity == null)
+            return false;
+
+        entity.id = id;
+
+        entity.property.isPlayer = true;
+
+        entity.AddCharacterComponent<CharacterComponentAction>();
+        entity.AddCharacterComponent<CharacterComponentAiPlayer>();
+        entity.AddCharacterComponent<CharacterComponentInputControl>();
+        entity.AddCharacterComponent<CharacterComponentMove>();
+
+        return true;
+    }
+
+    public void AddPlayerCharacter(int id, CharacterEntity entity)
+    {
+        if(entity == null)
             return;
 
-        playerCharacters.Add(id, player);
+        playerCharacters.Add(id, entity);
+
+        entity.transform.parent = transform;
     }
 
-    public void RemovePlayerCharacter(int id)
+    public CharacterEntity RemovePlayerCharacter(int id)
     {
         if(!ExistPlayer)
-            return;
+            return null;
 
         CharacterEntity player = GetPlayerCharacter(id);
         if(player == null)
-            return;
-
-        Destroy(player);
-        player = null;
+            return null;
 
         playerCharacters.Remove(id);
+
+        return player;
     }
 
     public CharacterEntity GetPlayerCharacter(int id)

@@ -27,6 +27,8 @@ public class CharacterEntity : NetworkBehaviour
         if(component == null)
             return null;
 
+        component.owner = this;
+
         Debug.Assert(components.ContainsKey(typeof(ClassType)) == false);
         components.Add(typeof(ClassType), component);
 
@@ -80,9 +82,38 @@ public class CharacterEntity : NetworkBehaviour
         property = new CharacterEntityProperty();
     }
 
+    public override void OnNetworkDestroy()
+    {
+        Debug.Log("OnNetworkDestroy");
+
+        base.OnNetworkDestroy();
+    }
+
     public override void OnStartLocalPlayer()
     {
+        Debug.Log("OnStartLocalPlayer");
+
+        base.OnStartLocalPlayer();
+
+        int playerCharacterId = NetworkManager.Instance.ClientController.NetClient.connection.connectionId;
+        EntityManager.Instance.MakePlayerCharacter(this, playerCharacterId);
+        EntityManager.Instance.AddPlayerCharacter(playerCharacterId, this);
+
         GetComponent<MeshRenderer>().material.color = Color.red;
+    }
+
+    public override void OnStartClient()
+    {
+        Debug.Log("OnStartClient");
+
+        base.OnStartClient();
+    }
+
+    public override void PreStartClient()
+    {
+        Debug.Log("PreStartClient");
+
+        base.PreStartClient();
     }
 
     // Use this for initialization

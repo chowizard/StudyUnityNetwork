@@ -15,7 +15,8 @@ public abstract class CharacterComponent : MonoBehaviour
 
     public eState state = eState.None;
 
-    protected CharacterEntity owner;
+    [HideInInspector]
+    public CharacterEntity owner;
 
     // Use this for initialization
     protected virtual void Start()
