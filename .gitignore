@@ -6,3 +6,6 @@
 /Program/Client/Temp
 /Output
 *.userprefs
+/Program/Client/Assets/UnityVS
+/Program/Client/Assets/UnityVS.meta
+/Program/Client/Assets/StreamingAssets
