@@ -46,7 +46,7 @@ public class EntityManager : MonoBehaviour
         if(entity == null)
             return false;
 
-        Destroy(entity);
+        Destroy(entity.gameObject);
         entity = null;
 
         return true;

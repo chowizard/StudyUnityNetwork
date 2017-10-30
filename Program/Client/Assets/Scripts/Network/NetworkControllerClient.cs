@@ -25,7 +25,21 @@ public sealed class NetworkControllerClient
 
     public void Terminate()
     {
-        if((netClient != null) && netClient.isConnected)
+        if(netClient == null)
+            return;
+
+        if(netClient.connection != null)
+        {
+            /* 플레이어가 있다면 플레이어를 제거한다. */
+            CharacterEntity playerCharacter = EntityManager.Instance.GetPlayerCharacter(netClient.connection.connectionId);
+            if(playerCharacter != null)
+            {
+                EntityManager.Instance.RemovePlayerCharacter(netClient.connection.connectionId);
+                EntityManager.Instance.DestroyPlayerCharacter(playerCharacter);
+            }
+        }
+
+        if(netClient.isConnected)
             netClient.Disconnect();
 
         netClient.Shutdown();

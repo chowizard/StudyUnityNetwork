@@ -71,7 +71,9 @@ public sealed class NetworkControllerServer
 
     public void OnDisconnected(NetworkMessage networkMessage)
     {
-        OnRemovePlayer(networkMessage);
+        networkManager.UnregisterPlayerCharacter(networkMessage.conn.connectionId);
+        NetworkServer.DestroyPlayersForConnection(networkMessage.conn);
+
         RemoveConnection(networkMessage.conn.connectionId);
 
 
@@ -118,20 +120,6 @@ public sealed class NetworkControllerServer
         NetworkIdentity networkIdentity = playerCharacter.GetComponent<NetworkIdentity>();
         networkIdentity.AssignClientAuthority(networkMessage.conn);
 
-        //NetworkServer.SpawnWithClientAuthority()
-        //foreach(var pair in connections)
-        //{
-        //    NetworkConnection connection = pair.Value;
-        //    if(connection == null || !connection.isConnected)
-        //        continue;
-
-        //    if(connection.connectionId == networkMessage.conn.connectionId)
-        //        continue;
-
-        //    NetworkServer.SendToClient(networkMessage.conn.connectionId, MsgType.AddPlayer, targetMessage);
-        //}
-        //ClientScene.AddPlayer(targetMessage.playerControllerId);
-
 
         string logText = string.Format("Add player. (Player Controller ID : {0})", targetMessage.playerControllerId);
         logText += "\n[Connection] : " + networkMessage.conn;
@@ -147,19 +135,6 @@ public sealed class NetworkControllerServer
 
         networkManager.UnregisterPlayerCharacter(networkMessage.conn.connectionId);
         NetworkServer.DestroyPlayersForConnection(networkMessage.conn);
-
-        //foreach(var pair in connections)
-        //{
-        //    NetworkConnection connection = pair.Value;
-        //    if(connection == null || !connection.isConnected)
-        //        continue;
-
-        //    if(connection.connectionId == networkMessage.conn.connectionId)
-        //        continue;
-
-        //    NetworkServer.SendToClient(networkMessage.conn.connectionId, MsgType.RemovePlayer, targetMessage);
-        //}
-        //ClientScene.RemovePlayer(targetMessage.playerControllerId);
 
 
         string logText = string.Format("Remove player. (Player Controller ID : {0})", targetMessage.playerControllerId);
