@@ -86,18 +86,30 @@ public class NetworkManager : MonoBehaviour
     {
         GameObject prefab = GetSpawningPrefab("Player");
 
-        CharacterEntity player = EntityManager.Instance.CreatePlayerCharacter(prefab, id);
-        player.id = id;
+        CharacterEntity entity = EntityManager.Instance.CreatePlayerCharacter(prefab, id);
+        entity.id = id;
 
-        EntityManager.Instance.AddPlayerCharacter(player.id, player);
+        EntityManager.Instance.AddEntity(entity.id, entity);
 
-        return player;
+        return entity;
+    }
+
+    public CharacterEntity RegisterNonPlayerCharacter(int id)
+    {
+        GameObject prefab = GetSpawningPrefab("Enemy");
+
+        CharacterEntity entity = EntityManager.Instance.CreateNonPlayerCharacter(prefab, id);
+        entity.id = id;
+
+        EntityManager.Instance.AddEntity(entity.id, entity);
+
+        return entity;
     }
 
     public void UnregisterPlayerCharacter(int id)
     {
-        CharacterEntity player = EntityManager.Instance.RemovePlayerCharacter(id);
-        EntityManager.Instance.DestroyPlayerCharacter(player);
+        CharacterEntity player = EntityManager.Instance.RemoveEntity(id);
+        EntityManager.Instance.DestroyEntity(player);
     }
 
     public NetworkControllerServer ServerController

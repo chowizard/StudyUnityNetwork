@@ -50,7 +50,12 @@ public class SceneMain : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        //if(networkManager.mode == NetworkManager.Mode.Server)
+        if(networkManager.mode == NetworkManager.Mode.Server)
+        {
+            if(Input.GetKeyDown(KeyCode.X))
+                SpawnNonPlayerCharacters();
+        }
+
         if(networkManager.mode == NetworkManager.Mode.Client)
         {
             if(Input.GetKeyDown(KeyCode.Z))
@@ -68,7 +73,12 @@ public class SceneMain : MonoBehaviour
 
         NetworkClient networkClient = networkManager.ClientController.NetClient;
         short playerControllerId = 0;
-        //networkManager.AddPlayer(playerControllerId);
+
         ClientScene.AddPlayer(networkClient.connection, playerControllerId);
+    }
+
+    private void SpawnNonPlayerCharacters()
+    {
+        //NetworkServer.Spawn();
     }
 }

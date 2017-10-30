@@ -22,9 +22,6 @@ public sealed class NetworkControllerServer
     public void Setup()
     {
         SetupServer();
-
-        // 로컬 클라이언트를 굳이 만들어야 할 필요는 없는 것 같다.
-        //SetupLocalClient();
     }
 
     public void Terminate()
@@ -58,7 +55,6 @@ public sealed class NetworkControllerServer
     public void OnConnected(NetworkMessage networkMessage)
     {
         AddConnection(networkMessage.conn);
-        //ClientScene.Ready(networkMessage.conn);
 
 
         string logText = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
@@ -144,6 +140,26 @@ public sealed class NetworkControllerServer
 
         networkManager.message = logText;
     }
+
+    public void OnObjectSpawn(NetworkMessage networkMessage)
+    {
+        string logText = string.Format("Object was spawned.");
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.Log(logText);
+
+        networkManager.message = logText;
+    }
+
+    public void OnObjectSpawnScene(NetworkMessage networkMessage)
+    {
+        string logText = string.Format("Scene object was spawned.");
+        logText += "\n[Connection] : " + networkMessage.conn;
+        logText += "\n[Message Type] : " + networkMessage.msgType;
+        Debug.Log(logText);
+
+        networkManager.message = logText;
+    }
     #endregion
 
     public NetworkConnection[] Connections
@@ -173,6 +189,8 @@ public sealed class NetworkControllerServer
         NetworkServer.RegisterHandler(MsgType.NotReady, OnNotReady);
         NetworkServer.RegisterHandler(MsgType.AddPlayer, OnAddPlayer);
         NetworkServer.RegisterHandler(MsgType.RemovePlayer, OnRemovePlayer);
+        NetworkServer.RegisterHandler(MsgType.ObjectSpawn, OnObjectSpawn);
+        NetworkServer.RegisterHandler(MsgType.ObjectSpawnScene, OnObjectSpawnScene);
 
         NetworkServer.Listen(networkManager.port);
     }

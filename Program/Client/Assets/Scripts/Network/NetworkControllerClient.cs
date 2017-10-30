@@ -31,11 +31,11 @@ public sealed class NetworkControllerClient
         if(netClient.connection != null)
         {
             /* 플레이어가 있다면 플레이어를 제거한다. */
-            CharacterEntity playerCharacter = EntityManager.Instance.GetPlayerCharacter(netClient.connection.connectionId);
+            CharacterEntity playerCharacter = EntityManager.Instance.GetEntity(netClient.connection.connectionId);
             if(playerCharacter != null)
             {
-                EntityManager.Instance.RemovePlayerCharacter(netClient.connection.connectionId);
-                EntityManager.Instance.DestroyPlayerCharacter(playerCharacter);
+                EntityManager.Instance.RemoveEntity(netClient.connection.connectionId);
+                EntityManager.Instance.DestroyEntity(playerCharacter);
             }
         }
 

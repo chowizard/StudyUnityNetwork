@@ -97,7 +97,7 @@ public class CharacterEntity : NetworkBehaviour
 
         int playerCharacterId = NetworkManager.Instance.ClientController.NetClient.connection.connectionId;
         EntityManager.Instance.MakePlayerCharacter(this, playerCharacterId);
-        EntityManager.Instance.AddPlayerCharacter(playerCharacterId, this);
+        EntityManager.Instance.AddEntity(playerCharacterId, this);
 
         GetComponent<MeshRenderer>().material.color = Color.red;
     }

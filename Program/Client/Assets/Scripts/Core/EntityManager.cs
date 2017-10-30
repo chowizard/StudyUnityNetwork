@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class EntityManager : MonoBehaviour
 {
-    private Dictionary<int, CharacterEntity> playerCharacters = new Dictionary<int, CharacterEntity>();
+    private Dictionary<int, CharacterEntity> entities = new Dictionary<int, CharacterEntity>();
 
     private CharacterEntity myCharacter;
 
@@ -16,6 +16,17 @@ public class EntityManager : MonoBehaviour
         {
             return SceneMain.Singleton.entityManager;
         }
+    }
+
+    public bool DestroyEntity(CharacterEntity entity)
+    {
+        if(entity == null)
+            return false;
+
+        Destroy(entity.gameObject);
+        entity = null;
+
+        return true;
     }
 
     public CharacterEntity CreatePlayerCharacter(GameObject prefab, int id)
@@ -41,17 +52,6 @@ public class EntityManager : MonoBehaviour
         return entity;
     }
 
-    public bool DestroyPlayerCharacter(CharacterEntity entity)
-    {
-        if(entity == null)
-            return false;
-
-        Destroy(entity.gameObject);
-        entity = null;
-
-        return true;
-    }
-
     public bool MakePlayerCharacter(CharacterEntity entity, int id)
     {
         Debug.Assert(entity != null);
@@ -70,49 +70,67 @@ public class EntityManager : MonoBehaviour
         return true;
     }
 
-    public void AddPlayerCharacter(int id, CharacterEntity entity)
+    public CharacterEntity CreateNonPlayerCharacter(GameObject prefab, int id)
+    {
+        return null;
+    }
+
+    public bool MakeNonPlayerCharacter(CharacterEntity entity, int id)
+    {
+        Debug.Assert(entity != null);
+        if(entity == null)
+            return false;
+
+        entity.id = id;
+
+        entity.property.isPlayer = false;
+
+        return true;
+    }
+
+    public void AddEntity(int id, CharacterEntity entity)
     {
         if(entity == null)
             return;
 
-        playerCharacters.Add(id, entity);
+        entities.Add(id, entity);
 
         entity.transform.parent = transform;
     }
 
-    public CharacterEntity RemovePlayerCharacter(int id)
+    public CharacterEntity RemoveEntity(int id)
     {
         if(!ExistPlayer)
             return null;
 
-        CharacterEntity player = GetPlayerCharacter(id);
+        CharacterEntity player = GetEntity(id);
         if(player == null)
             return null;
 
-        playerCharacters.Remove(id);
+        entities.Remove(id);
 
         return player;
     }
 
-    public CharacterEntity GetPlayerCharacter(int id)
+    public CharacterEntity GetEntity(int id)
     {
         CharacterEntity data;
-        return playerCharacters.TryGetValue(id, out data) ? data : null;
+        return entities.TryGetValue(id, out data) ? data : null;
     }
 
-    public CharacterEntity[] Players
+    public CharacterEntity[] Entities
     {
         get
         {
-            return (PlayerCount > 0) ? playerCharacters.Values.ToArray() : null;
+            return (EntityCount > 0) ? entities.Values.ToArray() : null;
         }
     }
 
-    public int PlayerCount
+    public int EntityCount
     {
         get
         {
-            return playerCharacters.Count;
+            return entities.Count;
         }
     }
 
@@ -120,7 +138,7 @@ public class EntityManager : MonoBehaviour
     {
         get
         {
-            return (PlayerCount > 0) ? true : false;
+            return (EntityCount > 0) ? true : false;
         }
     }
 
