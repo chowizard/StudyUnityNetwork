@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using UnityNet.Client.Core;
+
 using UnityEngine;
 
 public class EntityManager : MonoBehaviour
 {
+    public const int NpcIdSeed = 1000;
+
+
     private Dictionary<int, CharacterEntity> entities = new Dictionary<int, CharacterEntity>();
+
+    private IdGenerator npcIdGenerator = new IdGenerator(NpcIdSeed);
 
     private CharacterEntity myCharacter;
 
@@ -70,9 +77,33 @@ public class EntityManager : MonoBehaviour
         return true;
     }
 
+    public int GenerateNpcId()
+    {
+        int id;
+        return (npcIdGenerator.Generate(out id) == true) ? id : -1;
+    }
+
     public CharacterEntity CreateNonPlayerCharacter(GameObject prefab, int id)
     {
-        return null;
+        return CreateNonPlayerCharacter(prefab, id, Vector3.zero, Quaternion.identity);
+    }
+
+    public CharacterEntity CreateNonPlayerCharacter(GameObject prefab,
+                                                    int id,
+                                                    Vector3 position,
+                                                    Quaternion rotation)
+    {
+        GameObject myPlayerObject = Object.Instantiate<GameObject>(prefab);
+        myPlayerObject.name = prefab.name;
+        myPlayerObject.transform.position = prefab.transform.position;
+
+        CharacterEntity entity = myPlayerObject.transform.GetComponent<CharacterEntity>();
+        entity.transform.position = position;
+        entity.transform.rotation = rotation;
+
+        MakePlayerCharacter(entity, id);
+
+        return entity;
     }
 
     public bool MakeNonPlayerCharacter(CharacterEntity entity, int id)
@@ -84,6 +115,10 @@ public class EntityManager : MonoBehaviour
         entity.id = id;
 
         entity.property.isPlayer = false;
+
+        entity.AddCharacterComponent<CharacterComponentAction>();
+        entity.AddCharacterComponent<CharacterComponentAiNonPlayer>();
+        entity.AddCharacterComponent<CharacterComponentMove>();
 
         return true;
     }
@@ -152,17 +187,5 @@ public class EntityManager : MonoBehaviour
         {
             myCharacter = value;
         }
-    }
-
-    // Use this for initialization
-    private void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-
     }
 }

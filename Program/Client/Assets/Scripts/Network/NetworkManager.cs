@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+using UnityNet.Client.Core;
+
 public class NetworkManager : MonoBehaviour
 {
     public enum Mode
@@ -84,7 +86,12 @@ public class NetworkManager : MonoBehaviour
 
     public CharacterEntity RegisterPlayerCharacter(int id)
     {
-        GameObject prefab = GetSpawningPrefab("Player");
+        return RegisterPlayerCharacter(id, Vector3.zero, Quaternion.identity);
+    }
+
+    public CharacterEntity RegisterPlayerCharacter(int id, Vector3 position, Quaternion rotation)
+    {
+        GameObject prefab = GetSpawningPrefab(Defines.SpawningPrefab.Player);
 
         CharacterEntity entity = EntityManager.Instance.CreatePlayerCharacter(prefab, id);
         entity.id = id;
@@ -96,7 +103,12 @@ public class NetworkManager : MonoBehaviour
 
     public CharacterEntity RegisterNonPlayerCharacter(int id)
     {
-        GameObject prefab = GetSpawningPrefab("Enemy");
+        return RegisterNonPlayerCharacter(id, Vector3.zero, Quaternion.identity);
+    }
+
+    public CharacterEntity RegisterNonPlayerCharacter(int id, Vector3 position, Quaternion rotation)
+    {
+        GameObject prefab = GetSpawningPrefab(Defines.SpawningPrefab.Enemy);
 
         CharacterEntity entity = EntityManager.Instance.CreateNonPlayerCharacter(prefab, id);
         entity.id = id;
@@ -196,9 +208,9 @@ public class NetworkManager : MonoBehaviour
     {
         ClearSpawningPrefab();
 
-        RegisterSpawningPrefab("Player", "Entity/Player");
-        RegisterSpawningPrefab("Enemy", "Entity/Enemy");
-        RegisterSpawningPrefab("Bullet", "Entity/Bullet");
+        RegisterSpawningPrefab(Defines.SpawningPrefab.Player, "Entity/Player");
+        RegisterSpawningPrefab(Defines.SpawningPrefab.Enemy, "Entity/Enemy");
+        RegisterSpawningPrefab(Defines.SpawningPrefab.Bullet, "Entity/Bullet");
     }
 
     private void RegisterSpawningPrefab(string keyName, string resourcePath)

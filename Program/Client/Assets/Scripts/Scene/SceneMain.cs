@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+using UnityNet.Client.Core;
+
 public class SceneMain : MonoBehaviour
 {
     public string sceneName;
@@ -79,6 +81,11 @@ public class SceneMain : MonoBehaviour
 
     private void SpawnNonPlayerCharacters()
     {
-        //NetworkServer.Spawn();
+        int id = EntityManager.Instance.GenerateNpcId();
+        if(!IdGenerator.IsValid(id))
+            return;
+
+        CharacterEntity entity = networkManager.RegisterNonPlayerCharacter(id);
+        NetworkServer.Spawn(entity.gameObject);
     }
 }

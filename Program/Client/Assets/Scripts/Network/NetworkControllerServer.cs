@@ -189,8 +189,11 @@ public sealed class NetworkControllerServer
         NetworkServer.RegisterHandler(MsgType.NotReady, OnNotReady);
         NetworkServer.RegisterHandler(MsgType.AddPlayer, OnAddPlayer);
         NetworkServer.RegisterHandler(MsgType.RemovePlayer, OnRemovePlayer);
-        NetworkServer.RegisterHandler(MsgType.ObjectSpawn, OnObjectSpawn);
-        NetworkServer.RegisterHandler(MsgType.ObjectSpawnScene, OnObjectSpawnScene);
+
+        // P.S
+        // : 1 ~ 15까지의 MsgTypes 상수들은 시스템 메시지 값이라서, 커스텀 이벤트로 핸들링할 수 없다.
+        //NetworkServer.RegisterHandler(MsgType.ObjectSpawn, OnObjectSpawn);
+        //NetworkServer.RegisterHandler(MsgType.ObjectSpawnScene, OnObjectSpawnScene);
 
         NetworkServer.Listen(networkManager.port);
     }
