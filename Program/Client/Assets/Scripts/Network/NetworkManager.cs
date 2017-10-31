@@ -39,7 +39,7 @@ public class NetworkManager : MonoBehaviour
     {
         get
         {
-            return SceneMain.Singleton.networkManager;
+            return SceneMain.Singleton.NetworkManager;
         }
     }
 
@@ -310,7 +310,7 @@ public class NetworkManager : MonoBehaviour
         spawningPrefabs.Remove(keyName);
     }
 
-    private GameObject GetSpawningPrefab(string keyName)
+    public GameObject GetSpawningPrefab(string keyName)
     {
         Debug.Assert(string.IsNullOrEmpty(keyName) == false);
 

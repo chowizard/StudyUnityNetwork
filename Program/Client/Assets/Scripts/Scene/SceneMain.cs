@@ -11,8 +11,10 @@ public class SceneMain : MonoBehaviour
     public int npcCount = 100;
 
     public string sceneName;
-    public EntityManager entityManager;
-    public NetworkManager networkManager;
+    public CameraController mainCamera;
+
+    private EntityManager entityManager;
+    private NetworkManager networkManager;
 
     private static SceneMain singleton;
 
@@ -21,6 +23,22 @@ public class SceneMain : MonoBehaviour
         get
         {
             return singleton;
+        }
+    }
+
+    public EntityManager EntityManager
+    {
+        get
+        {
+            return entityManager;
+        }
+    }
+
+    public NetworkManager NetworkManager
+    {
+        get
+        {
+            return networkManager;
         }
     }
 
@@ -60,19 +78,42 @@ public class SceneMain : MonoBehaviour
                 SpawnNonPlayerCharacters();
         }
 
-        if(networkManager.mode == NetworkManager.Mode.Client)
         {
             if(Input.GetKeyDown(KeyCode.Z))
-                SpawnPlayer();
+            {
+                if(networkManager.mode == NetworkManager.Mode.None)
+                    GenerateMyCharacter();
+                if(networkManager.mode == NetworkManager.Mode.Client)
+                    SpawnMyCharacter();
+
+            }
         }
     }
 
-    private void SpawnPlayer()
+    private void GenerateMyCharacter()
+    {
+        GameObject prefab = NetworkManager.Instance.GetSpawningPrefab(Defines.SpawningPrefab.Player);
+
+        CharacterEntity playerCharacter = EntityManager.CreatePlayerCharacter(prefab, 0);
+        EntityManager.Instance.AddEntity(playerCharacter.id, playerCharacter);
+        EntityManager.Instance.MyCharacter = playerCharacter;
+
+        mainCamera.followTarget = playerCharacter.gameObject;
+        mainCamera.isFollowTarget = true;
+    }
+
+    private void SpawnMyCharacter()
     {
         if(!ClientScene.ready)
         {
             Debug.LogError("Client Scene is not ready!");
             return;
+        }
+
+        if(EntityManager.Instance.MyCharacter != null)
+        {
+            EntityManager.Instance.RemoveEntity(EntityManager.Instance.MyCharacter.id);
+            EntityManager.Instance.DestroyEntity(EntityManager.Instance.MyCharacter);
         }
 
         NetworkClient networkClient = networkManager.ClientController.NetClient;

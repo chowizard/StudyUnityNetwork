@@ -21,7 +21,7 @@ public class EntityManager : MonoBehaviour
     {
         get
         {
-            return SceneMain.Singleton.entityManager;
+            return SceneMain.Singleton.EntityManager;
         }
     }
 

@@ -33,7 +33,7 @@ namespace UnityTest
         private IntegrationTestRendererBase[] m_TestLines;
         private string m_CurrectSceneName;
         private TestFilterSettings m_FilterSettings;
-        
+
         Vector2 m_resultTextSize;
         string m_resultText;
         GameObject m_lastSelectedGO;
@@ -150,7 +150,7 @@ namespace UnityTest
             if (selectedInHierarchy) selectedInHierarchy = false;
             else s_Instance.RebuildTestList();
         }
-        
+
         public static TestResult GetResultForTest(TestComponent tc)
         {
             if(!s_Instance) return new TestResult(tc);
@@ -231,11 +231,11 @@ namespace UnityTest
                 testRunner.InitRunner(testComponents, m_DynamicTestsToRun);
             }
         }
-        
+
         private void RebuildTestList()
         {
             m_TestLines = null;
-            if (!TestComponent.AnyTestsOnScene() 
+            if (!TestComponent.AnyTestsOnScene()
                 && !TestComponent.AnyDynamicTestForCurrentScene()) return;
 
             if (!EditorApplication.isPlayingOrWillChangePlaymode)
@@ -283,7 +283,7 @@ namespace UnityTest
             IntegrationTestRendererBase.RunTest = RunTests;
             IntegrationTestGroupLine.FoldMarkers = m_FoldMarkers;
             IntegrationTestLine.Results = m_ResultList;
-            
+
             m_FilterSettings.UpdateCounters(m_ResultList.Cast<ITestResult>());
 
             m_FoldMarkers.RemoveAll(o => o == null);
@@ -369,20 +369,20 @@ namespace UnityTest
                 RebuildTestList();
             }
             EditorGUI.EndDisabledGroup();
-            
+
             GUILayout.FlexibleSpace ();
-            
+
             m_FilterSettings.OnGUI ();
-            
+
             EditorGUILayout.EndHorizontal ();
         }
-        
+
         public void AddItemsToMenu(GenericMenu menu)
         {
             menu.AddItem(m_GUIBlockUI, m_Settings.blockUIWhenRunning, m_Settings.ToggleBlockUIWhenRunning);
             menu.AddItem(m_GUIPauseOnFailure, m_Settings.pauseOnTestFailure, m_Settings.TogglePauseOnTestFailure);
         }
-        
+
         private bool PrintTestList(IntegrationTestRendererBase[] renderedLines)
         {
             if (renderedLines == null) return false;
@@ -432,10 +432,10 @@ namespace UnityTest
             if (m_SelectedLine != null)
                 UpdateResultText(m_SelectedLine);
 
-            EditorGUILayout.SelectableLabel(m_resultText, Styles.info, 
-                                            GUILayout.ExpandHeight(true), 
-                                            GUILayout.ExpandWidth(true), 
-                                            GUILayout.MinWidth(m_resultTextSize.x), 
+            EditorGUILayout.SelectableLabel(m_resultText, Styles.info,
+                                            GUILayout.ExpandHeight(true),
+                                            GUILayout.ExpandWidth(true),
+                                            GUILayout.MinWidth(m_resultTextSize.x),
                                             GUILayout.MinHeight(m_resultTextSize.y));
             EditorGUILayout.EndScrollView();
         }
@@ -545,7 +545,7 @@ namespace UnityTest
                     result.Update(test);
                 else
                     m_Window.m_ResultList.Add(test);
-                    
+
                 if(test.IsFailure && m_Window.m_Settings.pauseOnTestFailure)
                 {
                     EditorUtility.ClearProgressBar();
@@ -561,15 +561,15 @@ namespace UnityTest
 
             private void OnEditorUpdate()
             {
-                if(!EditorApplication.isPlaying) 
+                if(!EditorApplication.isPlaying)
                 {
                     TestRunInterrupted(null);
                     return;
                 }
 
-                if (m_Window.m_Settings.blockUIWhenRunning 
-                    && m_CurrentTest != null 
-                    && !EditorApplication.isPaused 
+                if (m_Window.m_Settings.blockUIWhenRunning
+                    && m_CurrentTest != null
+                    && !EditorApplication.isPaused
                     && EditorUtility.DisplayCancelableProgressBar("Integration Test Runner",
                                                                   "Running " + m_CurrentTest.Name,
                                                                   (float)m_CurrentTestNumber / m_TestNumber))

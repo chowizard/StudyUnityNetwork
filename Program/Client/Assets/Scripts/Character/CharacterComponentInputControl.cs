@@ -20,11 +20,18 @@ public class CharacterComponentInputControl : CharacterComponent
         if(networkIdentity == null)
             return;
 
-        if(networkIdentity.isServer == true)
-            UpdateServer();
-
-        if(networkIdentity.isClient == true)
+        if(NetworkManager.Instance.mode == NetworkManager.Mode.None)
+        {
             UpdateClient();
+        }
+        else
+        {
+            if(networkIdentity.isServer == true)
+                UpdateServer();
+
+            if(networkIdentity.isClient == true)
+                UpdateClient();
+        }
     }
 
     private void UpdateServer()

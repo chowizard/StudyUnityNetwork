@@ -98,6 +98,10 @@ public class CharacterEntity : NetworkBehaviour
         int playerCharacterId = NetworkManager.Instance.ClientController.NetClient.connection.connectionId;
         EntityManager.Instance.MakePlayerCharacter(this, playerCharacterId);
         EntityManager.Instance.AddEntity(playerCharacterId, this);
+        EntityManager.Instance.MyCharacter = this;
+
+        SceneMain.Singleton.mainCamera.followTarget = gameObject;
+        SceneMain.Singleton.mainCamera.isFollowTarget = true;
 
         GetComponent<MeshRenderer>().material.color = Color.red;
     }
