@@ -110,7 +110,7 @@ public class NetworkManager : MonoBehaviour
     {
         GameObject prefab = GetSpawningPrefab(Defines.SpawningPrefab.Enemy);
 
-        CharacterEntity entity = EntityManager.Instance.CreateNonPlayerCharacter(prefab, id);
+        CharacterEntity entity = EntityManager.Instance.CreateNonPlayerCharacter(prefab, id, position, rotation);
         entity.id = id;
 
         EntityManager.Instance.AddEntity(entity.id, entity);

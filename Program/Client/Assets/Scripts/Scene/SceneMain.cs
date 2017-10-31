@@ -8,6 +8,8 @@ using UnityNet.Client.Core;
 
 public class SceneMain : MonoBehaviour
 {
+    public int npcCount = 100;
+
     public string sceneName;
     public EntityManager entityManager;
     public NetworkManager networkManager;
@@ -81,11 +83,26 @@ public class SceneMain : MonoBehaviour
 
     private void SpawnNonPlayerCharacters()
     {
+        for(int count = 0; count < npcCount; ++count)
+        {
+            float positionX = Random.Range(-100.0f, 100.0f);
+            float positionZ = Random.Range(-100.0f, 100.0f);
+            Vector3 position = new Vector3(positionX, 0.0f, positionZ);
+
+            float rotationY = Random.Range(0.0f, 360.0f);
+            Quaternion rotation = Quaternion.Euler(0.0f, rotationY, 0.0f);
+
+            SpawnNonPlayerCharacter(position, rotation);
+        }
+    }
+
+    private void SpawnNonPlayerCharacter(Vector3 position, Quaternion rotation)
+    {
         int id = EntityManager.Instance.GenerateNpcId();
         if(!IdGenerator.IsValid(id))
             return;
 
-        CharacterEntity entity = networkManager.RegisterNonPlayerCharacter(id);
+        CharacterEntity entity = networkManager.RegisterNonPlayerCharacter(id, position, rotation);
         NetworkServer.Spawn(entity.gameObject);
     }
 }
