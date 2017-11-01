@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterEntity))]
 public abstract class CharacterComponent : MonoBehaviour
 {
     public enum eState
@@ -15,13 +16,13 @@ public abstract class CharacterComponent : MonoBehaviour
 
     public eState state = eState.None;
 
-    [HideInInspector]
     public CharacterEntity owner;
 
     // Use this for initialization
     protected virtual void Start()
     {
-
+        if(owner == null)
+            owner = GetComponent<CharacterEntity>();
     }
 
     // Update is called once per frame

@@ -10,12 +10,16 @@ public class CharacterComponentInputControl : CharacterComponent
     // Use this for initialization
     protected override void Start()
     {
+        base.Start();
 
+        owner.AddCharacterComponent(this);
     }
 
     // Update is called once per frame
     protected override void Update()
     {
+        base.Update();
+
         NetworkIdentity networkIdentity = GetComponent<NetworkIdentity>();
         if(networkIdentity == null)
             return;

@@ -7,14 +7,14 @@ namespace UnityNet.Client.Core
 {
     public class IdGenerator
     {
-        public const int Minimum = 0;
-        public const int Maximum = int.MaxValue;
+        public const uint Minimum = 0;
+        public const uint Maximum = uint.MaxValue;
 
-        private int seed = 0;
-        private int current;
-        private Queue<int> discardIds = new Queue<int>();
+        private uint seed = 0;
+        private uint current;
+        private Queue<uint> discardIds = new Queue<uint>();
 
-        public static bool IsValid(int id)
+        public static bool IsValid(uint id)
         {
             return ((id >= Minimum) && (id <= Maximum)) ? true : false;
         }
@@ -24,12 +24,12 @@ namespace UnityNet.Client.Core
         {
         }
 
-        public IdGenerator(int seed)
+        public IdGenerator(uint seed)
         {
             this.seed = this.current = seed;
         }
 
-        public bool Generate(out int id)
+        public bool Generate(out uint id)
         {
             if(!GetDiscardId(out id))
             {
@@ -42,14 +42,14 @@ namespace UnityNet.Client.Core
             return true;
         }
 
-        public void Discard(int id)
+        public void Discard(uint id)
         {
             discardIds.Enqueue(id);
         }
 
-        private bool GetDiscardId(out int id)
+        private bool GetDiscardId(out uint id)
         {
-            id = -1;
+            id = 0;
 
             if(discardIds.Count <= 0)
                 return false;

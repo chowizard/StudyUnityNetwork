@@ -84,44 +84,51 @@ public class NetworkManager : MonoBehaviour
         message = "Setup local client.";
     }
 
-    public CharacterEntity RegisterPlayerCharacter(int id)
+    public CharacterEntity RegisterPlayerCharacter(int ownerNetConnectionId, short playerControllId)
     {
-        return RegisterPlayerCharacter(id, Vector3.zero, Quaternion.identity);
+        return RegisterPlayerCharacter(ownerNetConnectionId, playerControllId, Vector3.zero, Quaternion.identity);
     }
 
-    public CharacterEntity RegisterPlayerCharacter(int id, Vector3 position, Quaternion rotation)
+    public CharacterEntity RegisterPlayerCharacter(int ownerNetConnectionId,
+                                                   short playerControllId,
+                                                   Vector3 position,
+                                                   Quaternion rotation)
     {
         GameObject prefab = GetSpawningPrefab(Defines.SpawningPrefab.PlayerCharacter);
 
-        CharacterEntity entity = EntityManager.Instance.CreatePlayerCharacter(prefab, id);
-        entity.id = id;
-
-        EntityManager.Instance.AddEntity(entity.id, entity);
+        CharacterEntity entity = EntityManager.Instance.CreatePlayerCharacter(prefab, ownerNetConnectionId, playerControllId);
 
         return entity;
     }
 
-    public CharacterEntity RegisterNonPlayerCharacter(int id)
+    public CharacterEntity RegisterNonPlayerCharacter()
     {
-        return RegisterNonPlayerCharacter(id, Vector3.zero, Quaternion.identity);
+        return RegisterNonPlayerCharacter(Vector3.zero, Quaternion.identity);
     }
 
-    public CharacterEntity RegisterNonPlayerCharacter(int id, Vector3 position, Quaternion rotation)
+    public CharacterEntity RegisterNonPlayerCharacter(Vector3 position, Quaternion rotation)
     {
         GameObject prefab = GetSpawningPrefab(Defines.SpawningPrefab.NonPlayerCharacter);
 
-        CharacterEntity entity = EntityManager.Instance.CreateNonPlayerCharacter(prefab, id, position, rotation);
-        entity.id = id;
-
-        EntityManager.Instance.AddEntity(entity.id, entity);
+        CharacterEntity entity = EntityManager.Instance.CreateNonPlayerCharacter(prefab, position, rotation);
 
         return entity;
     }
 
-    public void UnregisterPlayerCharacter(int id)
+    public void UnregisterPlayerCharacter(int ownerNetConnectionId)
     {
-        CharacterEntity player = EntityManager.Instance.RemoveEntity(id);
-        EntityManager.Instance.DestroyEntity(player);
+        CharacterEntity[] myControlledEntities = EntityManager.Instance.GetMyControlledEntities(ownerNetConnectionId);
+        if(myControlledEntities == null)
+            return;
+
+        foreach(CharacterEntity myEntity in myControlledEntities)
+        {
+            if(myEntity == null)
+                continue;
+
+            //EntityManager.Instance.RemoveEntity(myEntity.netId.Value);
+            EntityManager.Instance.DestroyEntity(myEntity);
+        }
     }
 
     public NetworkControllerServer ServerController

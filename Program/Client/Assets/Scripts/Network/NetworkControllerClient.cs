@@ -31,11 +31,11 @@ public sealed class NetworkControllerClient
         if(netClient.connection != null)
         {
             /* 플레이어가 있다면 플레이어를 제거한다. */
-            CharacterEntity playerCharacter = EntityManager.Instance.GetEntity(netClient.connection.connectionId);
-            if(playerCharacter != null)
+            CharacterEntity myCharacter = EntityManager.Instance.MyCharacter;
+            if(myCharacter != null)
             {
-                EntityManager.Instance.RemoveEntity(netClient.connection.connectionId);
-                EntityManager.Instance.DestroyEntity(playerCharacter);
+                //EntityManager.Instance.RemoveEntity(myCharacter.netId.Value);
+                EntityManager.Instance.DestroyEntity(myCharacter);
             }
         }
 
@@ -105,36 +105,6 @@ public sealed class NetworkControllerClient
 
         networkManager.message = logText;
     }
-
-    public void OnAddPlayer(NetworkMessage networkMessage)
-    {
-        AddPlayerMessage targetMessage = networkMessage.ReadMessage<AddPlayerMessage>();
-
-        string logText = string.Format("Add player. (Player Controller ID : {0}", targetMessage.playerControllerId);
-        logText += "\n[Connection] : " + networkMessage.conn;
-        logText += "\n[Message Type] : " + networkMessage.msgType;
-        Debug.Log(logText);
-
-        networkManager.message = logText;
-
-        networkManager.RegisterPlayerCharacter(networkMessage.conn.connectionId);
-        //ClientScene.AddPlayer(targetMessage.playerControllerId);
-    }
-
-    public void OnRemovePlayer(NetworkMessage networkMessage)
-    {
-        RemovePlayerMessage targetMessage = networkMessage.ReadMessage<RemovePlayerMessage>();
-
-        string logText = string.Format("Add player. (Player Controller ID : {0}", targetMessage.playerControllerId);
-        logText += "\n[Connection] : " + networkMessage.conn;
-        logText += "\n[Message Type] : " + networkMessage.msgType;
-        Debug.Log(logText);
-
-        networkManager.message = logText;
-
-        //ClientScene.RemovePlayer(targetMessage.playerControllerId);
-        networkManager.UnregisterPlayerCharacter(targetMessage.playerControllerId);
-    }
     #endregion
 
     private void SetupClient()
@@ -147,8 +117,6 @@ public sealed class NetworkControllerClient
             netClient.RegisterHandler(MsgType.Disconnect, OnDisconnected);
             netClient.RegisterHandler(MsgType.Ready, OnReady);
             netClient.RegisterHandler(MsgType.NotReady, OnNotReady);
-            netClient.RegisterHandler(MsgType.AddPlayer, OnAddPlayer);
-            netClient.RegisterHandler(MsgType.RemovePlayer, OnRemovePlayer);
         }
 
         netClient.Connect(networkManager.ip, networkManager.port);

@@ -111,7 +111,7 @@ public sealed class NetworkControllerServer
     {
         AddPlayerMessage targetMessage = networkMessage.ReadMessage<AddPlayerMessage>();
 
-        CharacterEntity playerCharacter = networkManager.RegisterPlayerCharacter(networkMessage.conn.connectionId);
+        CharacterEntity playerCharacter = networkManager.RegisterPlayerCharacter(networkMessage.conn.connectionId, targetMessage.playerControllerId);
         NetworkServer.AddPlayerForConnection(networkMessage.conn, playerCharacter.gameObject, targetMessage.playerControllerId);
         NetworkIdentity networkIdentity = playerCharacter.GetComponent<NetworkIdentity>();
         networkIdentity.AssignClientAuthority(networkMessage.conn);
@@ -131,7 +131,6 @@ public sealed class NetworkControllerServer
 
         networkManager.UnregisterPlayerCharacter(networkMessage.conn.connectionId);
         NetworkServer.DestroyPlayersForConnection(networkMessage.conn);
-
 
         string logText = string.Format("Remove player. (Player Controller ID : {0})", targetMessage.playerControllerId);
         logText += "\n[Connection] : " + networkMessage.conn;

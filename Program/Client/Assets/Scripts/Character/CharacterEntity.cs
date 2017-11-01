@@ -9,7 +9,8 @@ using UnityNet.Client.Character;
 
 public class CharacterEntity : NetworkBehaviour
 {
-    public int id;
+    public int ownerNetConnectionId;
+    public short playerControllId;
 
     public CharacterEntityProperty property;
 
@@ -30,9 +31,14 @@ public class CharacterEntity : NetworkBehaviour
         component.owner = this;
 
         Debug.Assert(components.ContainsKey(typeof(ClassType)) == false);
-        components.Add(typeof(ClassType), component);
+        AddCharacterComponent(component);
 
         return component;
+    }
+
+    public void AddCharacterComponent<ClassType>(ClassType component) where ClassType : CharacterComponent
+    {
+        components.Add(typeof(ClassType), component);
     }
 
     public bool RemoveCharacterComponent<ClassType>() where ClassType : CharacterComponent
@@ -95,9 +101,6 @@ public class CharacterEntity : NetworkBehaviour
 
         base.OnStartLocalPlayer();
 
-        int playerCharacterId = NetworkManager.Instance.ClientController.NetClient.connection.connectionId;
-        EntityManager.Instance.MakePlayerCharacter(this, playerCharacterId);
-        EntityManager.Instance.AddEntity(playerCharacterId, this);
         EntityManager.Instance.MyCharacter = this;
 
         SceneMain.Singleton.mainCamera.followTarget = gameObject;
@@ -110,12 +113,16 @@ public class CharacterEntity : NetworkBehaviour
     {
         Debug.Log("OnStartServer");
 
+        EntityManager.Instance.AddEntity(netId.Value, this);
+
         base.OnStartServer();
     }
 
     public override void OnStartClient()
     {
         Debug.Log("OnStartClient");
+
+        EntityManager.Instance.AddEntity(netId.Value, this);
 
         base.OnStartClient();
     }
@@ -136,5 +143,10 @@ public class CharacterEntity : NetworkBehaviour
     private void Update()
     {
 
+    }
+
+    private void OnDestroy()
+    {
+        EntityManager.Instance.RemoveEntity(netId.Value);
     }
 }

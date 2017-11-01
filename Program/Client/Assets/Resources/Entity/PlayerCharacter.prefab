@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  owner: {fileID: 0}
+  owner: {fileID: 114624193723331358}
 --- !u!114 &114321685311093182
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  owner: {fileID: 0}
+  owner: {fileID: 114624193723331358}
 --- !u!114 &114365979119963192
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  owner: {fileID: 0}
+  owner: {fileID: 114624193723331358}
 --- !u!114 &114485292177248030
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  owner: {fileID: 0}
+  owner: {fileID: 114624193723331358}
 --- !u!114 &114624193723331358
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -185,7 +185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc06c82e229f9e94592116eac255ed5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
+  ownerNetConnectionId: 0
+  playerControllId: 0
   property:
     isPlayer: 1
   destination: {fileID: 0}

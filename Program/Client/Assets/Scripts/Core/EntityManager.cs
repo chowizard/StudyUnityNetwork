@@ -11,7 +11,7 @@ public class EntityManager : MonoBehaviour
     public const int NpcIdSeed = 1000;
 
 
-    private Dictionary<int, CharacterEntity> entities = new Dictionary<int, CharacterEntity>();
+    private Dictionary<uint, CharacterEntity> entities = new Dictionary<uint, CharacterEntity>();
 
     private IdGenerator npcIdGenerator = new IdGenerator(NpcIdSeed);
 
@@ -36,13 +36,18 @@ public class EntityManager : MonoBehaviour
         return true;
     }
 
-    public CharacterEntity CreatePlayerCharacter(GameObject prefab, int id)
+    public CharacterEntity CreatePlayerCharacter(GameObject prefab, int ownerNetConnectionId, short playerControllId)
     {
-        return CreatePlayerCharacter(prefab, id, Vector3.zero, Quaternion.identity);
+        return CreatePlayerCharacter(prefab,
+                                     ownerNetConnectionId,
+                                     playerControllId,
+                                     Vector3.zero,
+                                     Quaternion.identity);
     }
 
     public CharacterEntity CreatePlayerCharacter(GameObject prefab,
-                                                 int id,
+                                                 int ownerNetConnectionId,
+                                                 short playerControllId,
                                                  Vector3 position,
                                                  Quaternion rotation)
     {
@@ -51,45 +56,25 @@ public class EntityManager : MonoBehaviour
         myPlayerObject.transform.position = prefab.transform.position;
 
         CharacterEntity entity = myPlayerObject.transform.GetComponent<CharacterEntity>();
+        entity.playerControllId = playerControllId;
         entity.transform.position = position;
         entity.transform.rotation = rotation;
-
-        MakePlayerCharacter(entity, id);
 
         return entity;
     }
 
-    public bool MakePlayerCharacter(CharacterEntity entity, int id)
+    public uint GenerateNpcId()
     {
-        Debug.Assert(entity != null);
-        if(entity == null)
-            return false;
-
-        entity.id = id;
-
-        entity.property.isPlayer = true;
-
-        //entity.AddCharacterComponent<CharacterComponentAction>();
-        //entity.AddCharacterComponent<CharacterComponentAiPlayer>();
-        //entity.AddCharacterComponent<CharacterComponentInputControl>();
-        //entity.AddCharacterComponent<CharacterComponentMove>();
-
-        return true;
+        uint id;
+        return (npcIdGenerator.Generate(out id) == true) ? id : 0u;
     }
 
-    public int GenerateNpcId()
+    public CharacterEntity CreateNonPlayerCharacter(GameObject prefab)
     {
-        int id;
-        return (npcIdGenerator.Generate(out id) == true) ? id : -1;
-    }
-
-    public CharacterEntity CreateNonPlayerCharacter(GameObject prefab, int id)
-    {
-        return CreateNonPlayerCharacter(prefab, id, Vector3.zero, Quaternion.identity);
+        return CreateNonPlayerCharacter(prefab, Vector3.zero, Quaternion.identity);
     }
 
     public CharacterEntity CreateNonPlayerCharacter(GameObject prefab,
-                                                    int id,
                                                     Vector3 position,
                                                     Quaternion rotation)
     {
@@ -101,29 +86,10 @@ public class EntityManager : MonoBehaviour
         entity.transform.position = position;
         entity.transform.rotation = rotation;
 
-        MakePlayerCharacter(entity, id);
-
         return entity;
     }
 
-    public bool MakeNonPlayerCharacter(CharacterEntity entity, int id)
-    {
-        Debug.Assert(entity != null);
-        if(entity == null)
-            return false;
-
-        entity.id = id;
-
-        entity.property.isPlayer = false;
-
-        //entity.AddCharacterComponent<CharacterComponentAction>();
-        //entity.AddCharacterComponent<CharacterComponentAiNonPlayer>();
-        //entity.AddCharacterComponent<CharacterComponentMove>();
-
-        return true;
-    }
-
-    public void AddEntity(int id, CharacterEntity entity)
+    public void AddEntity(uint id, CharacterEntity entity)
     {
         if(entity == null)
             return;
@@ -133,9 +99,9 @@ public class EntityManager : MonoBehaviour
         entity.transform.parent = transform;
     }
 
-    public CharacterEntity RemoveEntity(int id)
+    public CharacterEntity RemoveEntity(uint id)
     {
-        if(!ExistPlayer)
+        if(!ExistEntity)
             return null;
 
         CharacterEntity player = GetEntity(id);
@@ -147,10 +113,29 @@ public class EntityManager : MonoBehaviour
         return player;
     }
 
-    public CharacterEntity GetEntity(int id)
+    public CharacterEntity GetEntity(uint id)
     {
         CharacterEntity data;
         return entities.TryGetValue(id, out data) ? data : null;
+    }
+
+    public CharacterEntity[] GetMyControlledEntities(int netConnectionId)
+    {
+        if(ExistEntity == false)
+            return null;
+
+        List<CharacterEntity> myControlledEntities = new List<CharacterEntity>(EntityCount);
+        foreach(var pair in entities)
+        {
+            CharacterEntity entity = pair.Value;
+            if(entity == null)
+                continue;
+
+            if(entity.ownerNetConnectionId == netConnectionId)
+                myControlledEntities.Add(entity);
+        }
+
+        return (myControlledEntities.Count > 0) ? myControlledEntities.ToArray() : null;
     }
 
     public CharacterEntity[] Entities
@@ -169,7 +154,7 @@ public class EntityManager : MonoBehaviour
         }
     }
 
-    public bool ExistPlayer
+    public bool ExistEntity
     {
         get
         {

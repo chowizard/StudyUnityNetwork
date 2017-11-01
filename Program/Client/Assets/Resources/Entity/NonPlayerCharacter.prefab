@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  owner: {fileID: 0}
+  owner: {fileID: 114533049719028304}
 --- !u!114 &114500886305410674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  owner: {fileID: 0}
+  owner: {fileID: 114533049719028304}
 --- !u!114 &114533049719028304
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -138,7 +138,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc06c82e229f9e94592116eac255ed5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
+  ownerNetConnectionId: 0
+  playerControllId: 0
+  property:
+    isPlayer: 0
   destination: {fileID: 0}
   moveSpeed: 10
 --- !u!114 &114541816227708438
@@ -174,7 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  owner: {fileID: 0}
+  owner: {fileID: 114533049719028304}
 --- !u!114 &114872072464993468
 MonoBehaviour:
   m_ObjectHideFlags: 1

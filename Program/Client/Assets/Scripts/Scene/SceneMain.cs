@@ -103,8 +103,8 @@ public class SceneMain : MonoBehaviour
     {
         GameObject prefab = NetworkManager.Instance.GetSpawningPrefab(Defines.SpawningPrefab.PlayerCharacter);
 
-        CharacterEntity playerCharacter = EntityManager.CreatePlayerCharacter(prefab, 0);
-        EntityManager.Instance.AddEntity(playerCharacter.id, playerCharacter);
+        CharacterEntity playerCharacter = EntityManager.CreatePlayerCharacter(prefab, NetworkManager.Instance.ClientController.NetClient.connection.connectionId, 0);
+        EntityManager.Instance.AddEntity(playerCharacter.netId.Value, playerCharacter);
         EntityManager.Instance.MyCharacter = playerCharacter;
 
         mainCamera.followTarget = playerCharacter.gameObject;
@@ -121,7 +121,7 @@ public class SceneMain : MonoBehaviour
 
         if(EntityManager.Instance.MyCharacter != null)
         {
-            EntityManager.Instance.RemoveEntity(EntityManager.Instance.MyCharacter.id);
+            //EntityManager.Instance.RemoveEntity(EntityManager.Instance.MyCharacter.netId.Value);
             EntityManager.Instance.DestroyEntity(EntityManager.Instance.MyCharacter);
         }
 
@@ -148,11 +148,11 @@ public class SceneMain : MonoBehaviour
 
     private void SpawnNonPlayerCharacter(Vector3 position, Quaternion rotation)
     {
-        int id = EntityManager.Instance.GenerateNpcId();
-        if(!IdGenerator.IsValid(id))
-            return;
+        //uint id = EntityManager.Instance.GenerateNpcId();
+        //if(!IdGenerator.IsValid(id))
+        //    return;
 
-        CharacterEntity entity = networkManager.RegisterNonPlayerCharacter(id, position, rotation);
+        CharacterEntity entity = networkManager.RegisterNonPlayerCharacter(position, rotation);
         NetworkServer.Spawn(entity.gameObject);
     }
 }
