@@ -14,8 +14,8 @@ public class CharacterEntity : NetworkBehaviour
 
     public CharacterEntityProperty property;
 
-    /* 최종 목료가 될 변환 */
-    public Transform destination;
+    /* 최종 목료가 될 위치 */
+    public Vector3 destinationPosition;
 
     public float moveSpeed = 10.0f;
 
@@ -83,11 +83,6 @@ public class CharacterEntity : NetworkBehaviour
         }
     }
 
-    private void Awake()
-    {
-        property = new CharacterEntityProperty();
-    }
-
     public override void OnNetworkDestroy()
     {
         Debug.Log("OnNetworkDestroy");
@@ -134,9 +129,15 @@ public class CharacterEntity : NetworkBehaviour
         base.PreStartClient();
     }
 
+    private void Awake()
+    {
+        property = new CharacterEntityProperty();
+    }
+
     // Use this for initialization
     private void Start()
     {
+        destinationPosition = transform.position;
     }
 
     // Update is called once per frame

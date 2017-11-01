@@ -51,7 +51,7 @@ public class CharacterComponentInputControl : CharacterComponent
         {
             CharacterComponentMove moveComponent = owner.GetCharacterComponent<CharacterComponentMove>();
             if(moveComponent != null)
-                moveComponent.Move(axisX, axisZ);
+                moveComponent.Move(new Vector3(axisX, 0.0f, axisZ));
         }
     }
 }

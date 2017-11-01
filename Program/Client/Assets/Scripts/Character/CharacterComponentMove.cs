@@ -5,13 +5,12 @@ using UnityEngine;
 
 public class CharacterComponentMove : CharacterComponent
 {
-    public void Move(float deltaHorizontal, float deltaVertical)
+    public void Move(Vector3 direction)
     {
-        float horizontalValue = deltaHorizontal * Velocity * Time.deltaTime;
-        float verticalValue = deltaVertical * Velocity * Time.deltaTime;
+        Vector3 translation = direction * Velocity * Time.deltaTime;
 
-        if((horizontalValue != 0.0f) || (verticalValue != 0.0f))
-            owner.transform.Translate(horizontalValue, owner.transform.position.y, verticalValue);
+        if(translation != Vector3.zero)
+            owner.transform.Translate(translation);
     }
 
     // Use this for initialization
