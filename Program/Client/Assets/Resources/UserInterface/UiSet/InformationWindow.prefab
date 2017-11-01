@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224178906345185484}
+  - component: {fileID: 114758762829620580}
   - component: {fileID: 114758331441040276}
   m_Layer: 5
   m_Name: InformationWindow
@@ -140,6 +141,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiTextMyCharacterPosition: {fileID: 114378311128368486}
   uiTextObjectCount: {fileID: 114084023353023834}
+--- !u!114 &114758762829620580
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1078355366359660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb376d67a6b426245a5444fc98f53e24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetAnchor: UpperRight
 --- !u!222 &222549404069204966
 CanvasRenderer:
   m_ObjectHideFlags: 1

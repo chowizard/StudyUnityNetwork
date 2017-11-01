@@ -15,6 +15,7 @@ public class SceneMain : MonoBehaviour
 
     private EntityManager entityManager;
     private NetworkManager networkManager;
+    private UiManager uiManager;
 
     private static SceneMain singleton;
 
@@ -39,6 +40,14 @@ public class SceneMain : MonoBehaviour
         get
         {
             return networkManager;
+        }
+    }
+
+    public UiManager UiManager
+    {
+        get
+        {
+            return uiManager;
         }
     }
 
