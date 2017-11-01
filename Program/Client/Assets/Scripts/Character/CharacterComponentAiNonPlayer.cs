@@ -7,7 +7,6 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
 {
     public float commandIntervalSeconds = 3.0f;
 
-    private float lastExcuteCommandTime;
     private float elapsedCommandTime;
 
     private Vector3 startPosition;
@@ -25,13 +24,17 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
     {
         base.Update();
 
-        if(elapsedCommandTime >= lastExcuteCommandTime)
+        if(elapsedCommandTime >= commandIntervalSeconds)
         {
             float positionX = Random.Range(-100.0f, 100.0f);
             float positionZ = Random.Range(-100.0f, 100.0f);
 
             CommandMove(new Vector3(positionX, transform.position.y, positionZ));
             elapsedCommandTime = 0.0f;
+        }
+        else
+        {
+            elapsedCommandTime += Time.deltaTime;
         }
 
         UpdateAiState();
@@ -70,10 +73,12 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
         if(distanceStartToMe.sqrMagnitude >= distanceStartToDest.sqrMagnitude)
         {
             owner.transform.position = owner.destinationPosition;
+            aiState = eAiState.Idle;
         }
         else
         {
-            owner.GetComponent<CharacterComponentMove>().Move(owner.transform.forward);
+            Vector3 distanceMeToDest = owner.destinationPosition - owner.transform.position;
+            owner.GetComponent<CharacterComponentMove>().Move(distanceMeToDest.normalized);
         }
     }
 }
