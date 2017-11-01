@@ -38,9 +38,11 @@ public class CameraController : MonoBehaviour
         if((isFollowTarget == true) && (followTarget != null))
         {
             //Vector3 translation = transform.position - followTarget.transform.position;
-            Vector3 translation = followTarget.transform.position;
-            if(translation != Vector3.zero)
-                Move(translation);
+            //Vector3 translation = followTarget.transform.position;
+            //if(translation != Vector3.zero)
+            //    Move(translation);
+            if(transform.position != followTarget.transform.position)
+                transform.position = followTarget.transform.position;
         }
     }
 }
