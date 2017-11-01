@@ -130,8 +130,8 @@ public class UiManager : MonoBehaviour
 
         uiSet.name = uiPrefab.name;
 
-        targetRectTransform.position = prefabRectTransform.position;
-        targetRectTransform.rotation = prefabRectTransform.rotation;
+        targetRectTransform.localPosition = prefabRectTransform.localPosition;
+        targetRectTransform.localRotation = prefabRectTransform.localRotation;
         targetRectTransform.localScale = prefabRectTransform.localScale;
 
         uiSet.gameObject.SetActive(activeOnLoad);
