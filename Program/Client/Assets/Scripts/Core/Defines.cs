@@ -10,8 +10,8 @@ namespace UnityNet.Client.Core
         public static class SpawningPrefab
         {
             public const string Bullet = "Bullet";
-            public const string Enemy = "Enemy";
-            public const string Player = "Player";
+            public const string NonPlayerCharacter = "NonPlayerCharacter";
+            public const string PlayerCharacter = "PlayerCharacter";
         }
     }
 }

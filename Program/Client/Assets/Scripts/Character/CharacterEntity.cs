@@ -106,6 +106,13 @@ public class CharacterEntity : NetworkBehaviour
         GetComponent<MeshRenderer>().material.color = Color.red;
     }
 
+    public override void OnStartServer()
+    {
+        Debug.Log("OnStartServer");
+
+        base.OnStartServer();
+    }
+
     public override void OnStartClient()
     {
         Debug.Log("OnStartClient");

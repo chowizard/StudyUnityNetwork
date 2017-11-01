@@ -25,8 +25,11 @@ GameObject:
   - component: {fileID: 114872072464993468}
   - component: {fileID: 114541816227708438}
   - component: {fileID: 114533049719028304}
+  - component: {fileID: 114500886305410674}
+  - component: {fileID: 114632364516506608}
+  - component: {fileID: 114480731396199602}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: NonPlayerCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,6 +101,32 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114480731396199602
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1972545923930520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4702f0d5e4a9a14eb2b7c458c768133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  owner: {fileID: 0}
+--- !u!114 &114500886305410674
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1972545923930520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6402b5c8d640dce4b8f211edaeb79e83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  owner: {fileID: 0}
 --- !u!114 &114533049719028304
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -133,6 +162,19 @@ MonoBehaviour:
   m_SnapThreshold: 0.01
   m_InterpolateRotation: 1
   m_InterpolateMovement: 0.01
+--- !u!114 &114632364516506608
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1972545923930520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc3c31f207c75d74492645fe5e88fb22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  owner: {fileID: 0}
 --- !u!114 &114872072464993468
 MonoBehaviour:
   m_ObjectHideFlags: 1

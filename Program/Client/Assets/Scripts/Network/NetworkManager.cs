@@ -91,7 +91,7 @@ public class NetworkManager : MonoBehaviour
 
     public CharacterEntity RegisterPlayerCharacter(int id, Vector3 position, Quaternion rotation)
     {
-        GameObject prefab = GetSpawningPrefab(Defines.SpawningPrefab.Player);
+        GameObject prefab = GetSpawningPrefab(Defines.SpawningPrefab.PlayerCharacter);
 
         CharacterEntity entity = EntityManager.Instance.CreatePlayerCharacter(prefab, id);
         entity.id = id;
@@ -108,7 +108,7 @@ public class NetworkManager : MonoBehaviour
 
     public CharacterEntity RegisterNonPlayerCharacter(int id, Vector3 position, Quaternion rotation)
     {
-        GameObject prefab = GetSpawningPrefab(Defines.SpawningPrefab.Enemy);
+        GameObject prefab = GetSpawningPrefab(Defines.SpawningPrefab.NonPlayerCharacter);
 
         CharacterEntity entity = EntityManager.Instance.CreateNonPlayerCharacter(prefab, id, position, rotation);
         entity.id = id;
@@ -208,8 +208,8 @@ public class NetworkManager : MonoBehaviour
     {
         ClearSpawningPrefab();
 
-        RegisterSpawningPrefab(Defines.SpawningPrefab.Player, "Entity/Player");
-        RegisterSpawningPrefab(Defines.SpawningPrefab.Enemy, "Entity/Enemy");
+        RegisterSpawningPrefab(Defines.SpawningPrefab.PlayerCharacter, "Entity/PlayerCharacter");
+        RegisterSpawningPrefab(Defines.SpawningPrefab.NonPlayerCharacter, "Entity/NonPlayerCharacter");
         RegisterSpawningPrefab(Defines.SpawningPrefab.Bullet, "Entity/Bullet");
     }
 

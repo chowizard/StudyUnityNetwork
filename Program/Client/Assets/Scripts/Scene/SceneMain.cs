@@ -101,7 +101,7 @@ public class SceneMain : MonoBehaviour
 
     private void GenerateMyCharacter()
     {
-        GameObject prefab = NetworkManager.Instance.GetSpawningPrefab(Defines.SpawningPrefab.Player);
+        GameObject prefab = NetworkManager.Instance.GetSpawningPrefab(Defines.SpawningPrefab.PlayerCharacter);
 
         CharacterEntity playerCharacter = EntityManager.CreatePlayerCharacter(prefab, 0);
         EntityManager.Instance.AddEntity(playerCharacter.id, playerCharacter);

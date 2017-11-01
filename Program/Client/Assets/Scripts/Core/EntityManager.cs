@@ -69,10 +69,10 @@ public class EntityManager : MonoBehaviour
 
         entity.property.isPlayer = true;
 
-        entity.AddCharacterComponent<CharacterComponentAction>();
-        entity.AddCharacterComponent<CharacterComponentAiPlayer>();
-        entity.AddCharacterComponent<CharacterComponentInputControl>();
-        entity.AddCharacterComponent<CharacterComponentMove>();
+        //entity.AddCharacterComponent<CharacterComponentAction>();
+        //entity.AddCharacterComponent<CharacterComponentAiPlayer>();
+        //entity.AddCharacterComponent<CharacterComponentInputControl>();
+        //entity.AddCharacterComponent<CharacterComponentMove>();
 
         return true;
     }
@@ -116,9 +116,9 @@ public class EntityManager : MonoBehaviour
 
         entity.property.isPlayer = false;
 
-        entity.AddCharacterComponent<CharacterComponentAction>();
-        entity.AddCharacterComponent<CharacterComponentAiNonPlayer>();
-        entity.AddCharacterComponent<CharacterComponentMove>();
+        //entity.AddCharacterComponent<CharacterComponentAction>();
+        //entity.AddCharacterComponent<CharacterComponentAiNonPlayer>();
+        //entity.AddCharacterComponent<CharacterComponentMove>();
 
         return true;
     }
