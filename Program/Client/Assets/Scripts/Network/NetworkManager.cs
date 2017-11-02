@@ -60,6 +60,7 @@ public class NetworkManager : MonoBehaviour
             break;
         }
 
+        mode = Mode.None;
         isAtStartup = true;
     }
 
@@ -175,32 +176,8 @@ public class NetworkManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if(isAtStartup == true)
-        {
-            if(Input.GetKeyDown(KeyCode.S))
-            {
-                StartByServer();
-            }
-
-            if(Input.GetKeyDown(KeyCode.C))
-            {
-                StartByClient();
-            }
-        }
-
         if(Input.GetKeyDown(KeyCode.Escape))
             Terminate();
-    }
-
-    private void OnGUI()
-    {
-        if(isAtStartup == true)
-        {
-            GUI.Label(new Rect(2, 10, 150, 100), "Press S for server");
-            GUI.Label(new Rect(2, 30, 150, 100), "Press B for both");
-        }
-
-        GUI.Label(new Rect(2, 80, 600, 100), message);
     }
 
     private void SetupConnectionConfiguration()
