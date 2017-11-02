@@ -27,6 +27,21 @@ public class SceneMain : MonoBehaviour
         }
     }
 
+    public void SpawnNonPlayerCharacters()
+    {
+        for(int count = 0; count < npcCount; ++count)
+        {
+            float positionX = Random.Range(-100.0f, 100.0f);
+            float positionZ = Random.Range(-100.0f, 100.0f);
+            Vector3 position = new Vector3(positionX, 0.0f, positionZ);
+
+            float rotationY = Random.Range(0.0f, 360.0f);
+            Quaternion rotation = Quaternion.Euler(0.0f, rotationY, 0.0f);
+
+            SpawnNonPlayerCharacter(position, rotation);
+        }
+    }
+
     public EntityManager EntityManager
     {
         get
@@ -87,15 +102,13 @@ public class SceneMain : MonoBehaviour
                 SpawnNonPlayerCharacters();
         }
 
+        if(Input.GetKeyDown(KeyCode.Z))
         {
-            if(Input.GetKeyDown(KeyCode.Z))
-            {
-                if(networkManager.mode == NetworkManager.Mode.None)
-                    GenerateMyCharacter();
-                if(networkManager.mode == NetworkManager.Mode.Client)
-                    SpawnMyCharacter();
+            if(networkManager.mode == NetworkManager.Mode.None)
+                GenerateMyCharacter();
+            if(networkManager.mode == NetworkManager.Mode.Client)
+                SpawnMyCharacter();
 
-            }
         }
     }
 
@@ -126,21 +139,6 @@ public class SceneMain : MonoBehaviour
         short playerControllerId = 0;
 
         ClientScene.AddPlayer(networkClient.connection, playerControllerId);
-    }
-
-    private void SpawnNonPlayerCharacters()
-    {
-        for(int count = 0; count < npcCount; ++count)
-        {
-            float positionX = Random.Range(-100.0f, 100.0f);
-            float positionZ = Random.Range(-100.0f, 100.0f);
-            Vector3 position = new Vector3(positionX, 0.0f, positionZ);
-
-            float rotationY = Random.Range(0.0f, 360.0f);
-            Quaternion rotation = Quaternion.Euler(0.0f, rotationY, 0.0f);
-
-            SpawnNonPlayerCharacter(position, rotation);
-        }
     }
 
     private void SpawnNonPlayerCharacter(Vector3 position, Quaternion rotation)

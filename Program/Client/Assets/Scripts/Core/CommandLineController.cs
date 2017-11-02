@@ -13,6 +13,7 @@ public class CommandLineController : MonoBehaviour
 
     public string[] arguments;
 
+    private bool isAtStartup = true;
     private int currentIndex = -1;
 
     /* 서버로서 애플리케이션을 시작한다. */
@@ -31,8 +32,15 @@ public class CommandLineController : MonoBehaviour
                 builder.AppendLine(argument);
         }
         Debug.Log(builder.ToString());
+    }
 
-        AnalyzeCommand();
+    private void Update()
+    {
+        if(isAtStartup)
+        {
+            AnalyzeCommand();
+            isAtStartup = false;
+        }
     }
 
     private void AnalyzeCommand()
@@ -63,7 +71,10 @@ public class CommandLineController : MonoBehaviour
         string argumentValue = arguments[argumentIndex + 1];
 
         if(string.Compare(argumentValue, "server") == 0)
+        {
             NetworkManager.Instance.StartByServer();
+            SceneMain.Singleton.SpawnNonPlayerCharacters();
+        }
 
         if(string.Compare(argumentValue, "client") == 0)
             NetworkManager.Instance.StartByClient();
