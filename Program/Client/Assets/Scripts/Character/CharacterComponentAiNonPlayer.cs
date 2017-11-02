@@ -26,6 +26,9 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
     {
         base.Update();
 
+        if(!owner.isServer)
+            return;
+
         UpdateCommandIntervalTime();
         UpdateCommand();
         UpdateAiState();
