@@ -161,6 +161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   owner: {fileID: 114624193723331358}
+  aiState: 0
 --- !u!114 &114485292177248030
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -189,7 +190,7 @@ MonoBehaviour:
   playerControllId: 0
   property:
     isPlayer: 1
-  destination: {fileID: 0}
+  destinationPosition: {x: 0, y: 0, z: 0}
   moveSpeed: 10
 --- !u!114 &114840146952577844
 MonoBehaviour:
@@ -207,11 +208,11 @@ MonoBehaviour:
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
-  m_MovementTheshold: 0.001
+  m_MovementTheshold: 0.1
   m_VelocityThreshold: 0.0001
-  m_SnapThreshold: 0.01
+  m_SnapThreshold: 1
   m_InterpolateRotation: 1
-  m_InterpolateMovement: 0.01
+  m_InterpolateMovement: 1
 --- !u!136 &136786348813533642
 CapsuleCollider:
   m_ObjectHideFlags: 1

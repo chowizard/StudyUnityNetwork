@@ -357,6 +357,11 @@ Prefab:
       propertyPath: m_Name
       value: SceneRoot
       objectReference: {fileID: 0}
+    - target: {fileID: 114106706584889414, guid: 1a6b606490914854dbbd39291f0f5d04,
+        type: 2}
+      propertyPath: npcCount
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1a6b606490914854dbbd39291f0f5d04, type: 2}
   m_IsPrefabParent: 0
