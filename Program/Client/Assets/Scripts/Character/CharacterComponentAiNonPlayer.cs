@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class CharacterComponentAiNonPlayer : CharacterComponentAi
 {
-    public float CommandIntervalSeconds = 3.0f;
+    public float commandIntervalSeconds = 3.0f;
+    public Rect enableMoveBoundary = new Rect(-100.0f, -100.0f, 200.0f, 200.0f);
 
     private float elapsedCommandTime;
+    private bool enableNewCommand;
 
     private Vector3 startPosition;
 
@@ -24,20 +26,35 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
     {
         base.Update();
 
-        if(elapsedCommandTime >= CommandIntervalSeconds)
-        {
-            float positionX = Random.Range(-100.0f, 100.0f);
-            float positionZ = Random.Range(-100.0f, 100.0f);
+        UpdateCommandIntervalTime();
+        UpdateCommand();
+        UpdateAiState();
+    }
 
-            CommandMove(new Vector3(positionX, transform.position.y, positionZ));
+    private void UpdateCommandIntervalTime()
+    {
+        if(elapsedCommandTime >= commandIntervalSeconds)
+        {
             elapsedCommandTime = 0.0f;
+            enableNewCommand = true;
         }
         else
         {
             elapsedCommandTime += Time.deltaTime;
+            enableNewCommand = false;
         }
+    }
 
-        UpdateAiState();
+    private void UpdateCommand()
+    {
+        if(enableNewCommand)
+        {
+            float positionX = Random.Range(enableMoveBoundary.xMin, enableMoveBoundary.xMax);
+            float positionZ = Random.Range(enableMoveBoundary.yMin, enableMoveBoundary.yMax);
+
+            CommandMove(new Vector3(positionX, transform.position.y, positionZ));
+            elapsedCommandTime = 0.0f;
+        }
     }
 
     private void UpdateAiState()
@@ -73,6 +90,12 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
         if(distanceStartToMe.sqrMagnitude >= distanceStartToDest.sqrMagnitude)
         {
             owner.transform.position = owner.destinationPosition;
+            aiState = eAiState.Idle;
+        }
+        else if(enableMoveBoundary.Contains(owner.transform.position) == false)
+        {
+            owner.transform.position = owner.destinationPosition;
+            aiState = eAiState.Idle;
         }
         else
         {

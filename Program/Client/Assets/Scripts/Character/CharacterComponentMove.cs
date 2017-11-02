@@ -10,7 +10,7 @@ public class CharacterComponentMove : CharacterComponent
         Vector3 translation = direction * Velocity * Time.deltaTime;
 
         if(translation != Vector3.zero)
-            owner.transform.Translate(translation);
+            owner.transform.Translate(translation, Space.World);
     }
 
     // Use this for initialization
