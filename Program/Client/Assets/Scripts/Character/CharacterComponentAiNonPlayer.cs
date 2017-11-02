@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CharacterComponentAiNonPlayer : CharacterComponentAi
 {
-    public float commandIntervalSeconds = 3.0f;
+    public float CommandIntervalSeconds = 3.0f;
 
     private float elapsedCommandTime;
 
@@ -24,7 +24,7 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
     {
         base.Update();
 
-        if(elapsedCommandTime >= commandIntervalSeconds)
+        if(elapsedCommandTime >= CommandIntervalSeconds)
         {
             float positionX = Random.Range(-100.0f, 100.0f);
             float positionZ = Random.Range(-100.0f, 100.0f);
@@ -73,7 +73,6 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
         if(distanceStartToMe.sqrMagnitude >= distanceStartToDest.sqrMagnitude)
         {
             owner.transform.position = owner.destinationPosition;
-            aiState = eAiState.Idle;
         }
         else
         {
