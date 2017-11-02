@@ -43,8 +43,28 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
+    public void Terminate()
+    {
+        switch(mode)
+        {
+        case Mode.Server:
+            TerminateAtServer();
+            break;
+
+        case Mode.Client:
+            TerminateAtClient();
+            break;
+
+        case Mode.LocalClient:
+            TerminateAtLocalClient();
+            break;
+        }
+
+        isAtStartup = true;
+    }
+
     // Create a server and listen on a port
-    public void SetupServer()
+    public void StartByServer()
     {
         if(serverController == null)
             serverController = new NetworkControllerServer(this);
@@ -57,7 +77,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     // Create a client and connect to the server port
-    public void SetupClient()
+    public void StartByClient()
     {
         if(clientController == null)
             clientController = new NetworkControllerClient(this);
@@ -69,19 +89,6 @@ public class NetworkManager : MonoBehaviour
         message = "Setup client.";
 
         //Debug.Assert(networkClient.isConnected);
-    }
-
-    // Create a local client and connect to the local server
-    public void SetupLocalClient()
-    {
-        if(localClientController == null)
-            localClientController = new NetworkControllerLocalClient(this);
-
-        localClientController.Setup();
-
-        isAtStartup = false;
-        mode = Mode.LocalClient;
-        message = "Setup local client.";
     }
 
     public CharacterEntity RegisterPlayerCharacter(int ownerNetConnectionId, short playerControllId)
@@ -168,22 +175,16 @@ public class NetworkManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if(isAtStartup)
+        if(isAtStartup == true)
         {
             if(Input.GetKeyDown(KeyCode.S))
             {
-                SetupServer();
+                StartByServer();
             }
 
             if(Input.GetKeyDown(KeyCode.C))
             {
-                SetupClient();
-            }
-
-            if(Input.GetKeyDown(KeyCode.B))
-            {
-                SetupServer();
-                SetupLocalClient();
+                StartByClient();
             }
         }
 
@@ -193,11 +194,10 @@ public class NetworkManager : MonoBehaviour
 
     private void OnGUI()
     {
-        if(isAtStartup)
+        if(isAtStartup == true)
         {
             GUI.Label(new Rect(2, 10, 150, 100), "Press S for server");
             GUI.Label(new Rect(2, 30, 150, 100), "Press B for both");
-            GUI.Label(new Rect(2, 50, 150, 100), "Press C for client");
         }
 
         GUI.Label(new Rect(2, 80, 600, 100), message);
@@ -237,26 +237,6 @@ public class NetworkManager : MonoBehaviour
 
         ClientScene.UnregisterPrefab(prefab);
         RemoveSpawningPrefab(keyName);
-    }
-
-    private void Terminate()
-    {
-        switch(mode)
-        {
-        case Mode.Server:
-            TerminateAtServer();
-            break;
-
-        case Mode.Client:
-            TerminateAtClient();
-            break;
-
-        case Mode.LocalClient:
-            TerminateAtLocalClient();
-            break;
-        }
-
-        isAtStartup = true;
     }
 
     private void TerminateAtServer()

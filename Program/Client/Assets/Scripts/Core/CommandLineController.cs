@@ -63,9 +63,9 @@ public class CommandLineController : MonoBehaviour
         string argumentValue = arguments[argumentIndex + 1];
 
         if(string.Compare(argumentValue, "server") == 0)
-            NetworkManager.Instance.SetupServer();
+            NetworkManager.Instance.StartByServer();
 
         if(string.Compare(argumentValue, "client") == 0)
-            NetworkManager.Instance.SetupClient();
+            NetworkManager.Instance.StartByClient();
     }
 }

@@ -120,10 +120,7 @@ public class SceneMain : MonoBehaviour
         }
 
         if(EntityManager.Instance.MyCharacter != null)
-        {
-            //EntityManager.Instance.RemoveEntity(EntityManager.Instance.MyCharacter.netId.Value);
             EntityManager.Instance.DestroyEntity(EntityManager.Instance.MyCharacter);
-        }
 
         NetworkClient networkClient = networkManager.ClientController.NetClient;
         short playerControllerId = 0;

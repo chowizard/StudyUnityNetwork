@@ -73,6 +73,7 @@ public class UiManager : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
+        LoadUiSetFromFile("UserInterface/UiSet/ControlPanel");
         LoadUiSetFromFile("UserInterface/UiSet/InformationWindow");
         LoadUiSetFromFile("UserInterface/UiSet/LogWindow");
     }
