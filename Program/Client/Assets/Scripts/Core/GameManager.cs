@@ -12,9 +12,11 @@ public class GameManager : MonoBehaviour
 
     public CameraController mainCamera;
 
-    private EntityManager entityManager;
-    private NetworkManager networkManager;
-    private UiManager uiManager;
+    public GameSceneManager gameSceneManager;
+    public GameOptionManager gameOptionManager;
+    public EntityManager entityManager;
+    public NetworkManager networkManager;
+    public UiManager uiManager;
 
     private static GameManager singleton;
 
@@ -38,30 +40,6 @@ public class GameManager : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0.0f, rotationY, 0.0f);
 
             SpawnNonPlayerCharacter(position, rotation);
-        }
-    }
-
-    public EntityManager EntityManager
-    {
-        get
-        {
-            return entityManager;
-        }
-    }
-
-    public NetworkManager NetworkManager
-    {
-        get
-        {
-            return networkManager;
-        }
-    }
-
-    public UiManager UiManager
-    {
-        get
-        {
-            return uiManager;
         }
     }
 
@@ -113,7 +91,7 @@ public class GameManager : MonoBehaviour
     {
         GameObject prefab = NetworkManager.Instance.GetSpawningPrefab(Defines.SpawningPrefab.PlayerCharacter);
 
-        CharacterEntity playerCharacter = EntityManager.CreatePlayerCharacter(prefab, NetworkManager.Instance.ClientController.NetClient.connection.connectionId, 0);
+        CharacterEntity playerCharacter = entityManager.CreatePlayerCharacter(prefab, NetworkManager.Instance.ClientController.NetClient.connection.connectionId, 0);
         EntityManager.Instance.AddEntity(playerCharacter.netId.Value, playerCharacter);
         EntityManager.Instance.MyCharacter = playerCharacter;
 

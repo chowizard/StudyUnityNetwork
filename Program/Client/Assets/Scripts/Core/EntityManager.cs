@@ -21,7 +21,7 @@ public class EntityManager : MonoBehaviour
     {
         get
         {
-            return GameManager.Singleton.EntityManager;
+            return GameManager.Singleton.entityManager;
         }
     }
 

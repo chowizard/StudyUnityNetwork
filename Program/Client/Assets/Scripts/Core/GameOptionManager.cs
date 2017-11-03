@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 
-public class GameSceneManager : MonoBehaviour
+public class GameOptionManager : MonoBehaviour
 {
-    private GameScene currentScene;
-
-    public void ChangeScene(GameScene.eSceneType sceneType)
+    public static GameOptionManager Instance
     {
+        get
+        {
+            return GameManager.Singleton.gameOptionManager;
+        }
     }
 
     // Use this for initialization
