@@ -24,7 +24,7 @@ public class CharacterComponentInputControl : CharacterComponent
         if(networkIdentity == null)
             return;
 
-        if(NetworkManager.Instance.mode == NetworkManager.Mode.None)
+        if(NetworkManager.Instance.mode == NetworkManager.eMode.None)
         {
             UpdateClient();
         }

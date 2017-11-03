@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UiInformationWindow : UiSet
 {
     public Text uiTextCurrentMode;
-    private NetworkManager.Mode networkMode = NetworkManager.Mode.None;
+    private NetworkManager.eMode networkMode = NetworkManager.eMode.None;
 
     public Text uiTextMyCharacterPosition;
     private Vector3 myCharacterPosition;
@@ -49,20 +49,16 @@ public class UiInformationWindow : UiSet
 
         switch(networkMode)
         {
-        case NetworkManager.Mode.None:
+        case NetworkManager.eMode.None:
             uiTextCurrentMode.color = Color.black;
             break;
 
-        case NetworkManager.Mode.Server:
+        case NetworkManager.eMode.Server:
             uiTextCurrentMode.color = new Color(0.4f, 0.25f, 0.1f);
             break;
 
-        case NetworkManager.Mode.Client:
+        case NetworkManager.eMode.Client:
             uiTextCurrentMode.color = new Color(0.25f, 0.4f, 0.1f);
-            break;
-
-        case NetworkManager.Mode.LocalClient:
-            uiTextCurrentMode.color = new Color(0.1f, 0.25f, 0.4f);
             break;
         }
     }

@@ -96,7 +96,7 @@ public class SceneMain : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if(networkManager.mode == NetworkManager.Mode.Server)
+        if(networkManager.mode == NetworkManager.eMode.Server)
         {
             if(Input.GetKeyDown(KeyCode.X))
                 SpawnNonPlayerCharacters();
@@ -104,9 +104,9 @@ public class SceneMain : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Z))
         {
-            if(networkManager.mode == NetworkManager.Mode.None)
+            if(networkManager.mode == NetworkManager.eMode.None)
                 GenerateMyCharacter();
-            if(networkManager.mode == NetworkManager.Mode.Client)
+            if(networkManager.mode == NetworkManager.eMode.Client)
                 SpawnMyCharacter();
 
         }

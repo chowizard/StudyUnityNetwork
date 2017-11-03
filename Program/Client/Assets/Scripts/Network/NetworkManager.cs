@@ -8,13 +8,12 @@ using UnityNet.Client.Core;
 
 public class NetworkManager : MonoBehaviour
 {
-    public enum Mode
+    public enum eMode
     {
         None = 0,
 
         Server,
-        Client,
-        LocalClient
+        Client
     }
 
 
@@ -22,7 +21,7 @@ public class NetworkManager : MonoBehaviour
     public string ip = "127.0.0.1";
     public ushort port = 15632;
     public bool isAtStartup = true;
-    public Mode mode = Mode.None;
+    public eMode mode = eMode.None;
 
     public Dictionary<string, GameObject> spawningPrefabs = new Dictionary<string, GameObject>();
 
@@ -30,7 +29,6 @@ public class NetworkManager : MonoBehaviour
 
     private NetworkControllerServer serverController;
     private NetworkControllerClient clientController;
-    private NetworkControllerLocalClient localClientController;
 
     [HideInInspector]
     public string message;
@@ -47,20 +45,16 @@ public class NetworkManager : MonoBehaviour
     {
         switch(mode)
         {
-        case Mode.Server:
+        case eMode.Server:
             TerminateAtServer();
             break;
 
-        case Mode.Client:
+        case eMode.Client:
             TerminateAtClient();
-            break;
-
-        case Mode.LocalClient:
-            TerminateAtLocalClient();
             break;
         }
 
-        mode = Mode.None;
+        mode = eMode.None;
         isAtStartup = true;
     }
 
@@ -73,7 +67,7 @@ public class NetworkManager : MonoBehaviour
         serverController.Setup();
 
         isAtStartup = false;
-        mode = Mode.Server;
+        mode = eMode.Server;
         message = "Setup server.";
     }
 
@@ -86,7 +80,7 @@ public class NetworkManager : MonoBehaviour
         clientController.Setup();
 
         isAtStartup = false;
-        mode = Mode.Client;
+        mode = eMode.Client;
         message = "Setup client.";
 
         //Debug.Assert(networkClient.isConnected);
@@ -152,14 +146,6 @@ public class NetworkManager : MonoBehaviour
         get
         {
             return clientController;
-        }
-    }
-
-    public NetworkControllerLocalClient LocalClientController
-    {
-        get
-        {
-            return localClientController;
         }
     }
 
@@ -237,18 +223,6 @@ public class NetworkManager : MonoBehaviour
         }
 
         message = "Client was terminate.";
-        Debug.Log(message);
-    }
-
-    private void TerminateAtLocalClient()
-    {
-        if(localClientController != null)
-        {
-            localClientController.Terminate();
-            localClientController = null;
-        }
-
-        message = "Local Client was terminate.";
         Debug.Log(message);
     }
 
