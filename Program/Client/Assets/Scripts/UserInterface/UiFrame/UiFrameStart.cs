@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UiSet1 : MonoBehaviour {
+public class UiFrameStart : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

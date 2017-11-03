@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 224121492934675672}
   - component: {fileID: 114603718765739690}
   m_Layer: 5
-  m_Name: ControlPanel
+  m_Name: UiSetControlPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -373,7 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41870cc2293f76c4f94414d920446e66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetAnchor: UpperLeft
+  anchorType: 5
   uiButtonStartByServer: {fileID: 114155542506996944}
   uiButtonStartByClient: {fileID: 114349012912781208}
   uiButtonTerminate: {fileID: 114834413152920744}

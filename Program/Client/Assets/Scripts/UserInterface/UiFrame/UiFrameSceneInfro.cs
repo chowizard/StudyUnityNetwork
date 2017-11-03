@@ -9,6 +9,10 @@ public class UiFrameSceneInfro : UiFrame
     protected override void Start()
     {
         base.Start();
+
+        LoadUiSetFromFile("UserInterface/UiSet/ControlPanel");
+        LoadUiSetFromFile("UserInterface/UiSet/InformationWindow");
+        LoadUiSetFromFile("UserInterface/UiSet/LogWindow");
     }
 
     // Update is called once per frame

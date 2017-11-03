@@ -5,5 +5,5 @@ using UnityEngine;
 
 public abstract class UiSet : MonoBehaviour
 {
-    public string targetAnchor;
+    public UiFrame.eAnchorType anchorType = UiFrame.eAnchorType.Center;
 }

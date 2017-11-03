@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224178906345185484}
   - component: {fileID: 114758331441040276}
   m_Layer: 5
-  m_Name: InformationWindow
+  m_Name: UiSetInformationWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817d112cbbe4728458cd76132be53b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetAnchor: UpperRight
+  anchorType: 6
   uiTextCurrentMode: {fileID: 114084023353023834}
   uiTextMyCharacterPosition: {fileID: 114378311128368486}
   uiTextObjectCount: {fileID: 114706658112279046}

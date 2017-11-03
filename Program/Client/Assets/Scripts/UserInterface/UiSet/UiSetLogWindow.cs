@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiLogWindow : UiSet
+public class UiSetLogWindow : UiSet
 {
     public RectTransform uiScrollView;
     public Button uiButtonOpenCloseToggle;

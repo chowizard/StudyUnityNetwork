@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiInformationWindow : UiSet
+public class UiSetInformationWindow : UiSet
 {
     public Text uiTextCurrentMode;
     private NetworkManager.eMode networkMode = NetworkManager.eMode.None;

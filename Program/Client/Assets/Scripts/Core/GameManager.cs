@@ -8,6 +8,7 @@ using UnityNet.Client.Core;
 
 public class GameManager : MonoBehaviour
 {
+    public NetworkManager.eMode modeStartAt = NetworkManager.eMode.None;
     public int npcCount = 100;
 
     public CameraController mainCamera;
@@ -53,18 +54,21 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        if(entityManager == null)
-        {
-            Transform findTransform = transform.Find("EntityManager");
-            if(findTransform != null)
-                entityManager = findTransform.GetComponent<EntityManager>();
-        }
+        Debug.Assert(gameSceneManager != null);
+        Debug.Assert(gameOptionManager != null);
+        Debug.Assert(entityManager != null);
+        Debug.Assert(networkManager != null);
+        Debug.Assert(uiManager != null);
 
-        if(networkManager == null)
+        switch(modeStartAt)
         {
-            Transform findTransform = transform.Find("NetworkManager");
-            if(findTransform != null)
-                networkManager = findTransform.GetComponent<NetworkManager>();
+        case NetworkManager.eMode.Server:
+            gameSceneManager.ChangeScene(GameScene.eSceneType.GamePlay);
+            break;
+
+        case NetworkManager.eMode.Client:
+            gameSceneManager.ChangeScene(GameScene.eSceneType.Intro);
+            break;
         }
     }
 

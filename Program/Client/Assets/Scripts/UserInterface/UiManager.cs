@@ -5,77 +5,80 @@ using UnityEngine;
 
 public class UiManager : MonoBehaviour
 {
-    public Canvas canvas;
+    private Dictionary<string, UiFrame> uiFrames = new Dictionary<string, UiFrame>();
 
-    private Dictionary<string, UiSet> uiSets = new Dictionary<string, UiSet>();
+    public static UiManager Instance
+    {
+        get
+        {
+            return GameManager.Singleton.uiManager;
+        }
+    }
 
     public void Clear()
     {
-        foreach(var pair in uiSets)
+        foreach(var pair in uiFrames)
         {
-            UiSet uiSet = pair.Value;
-            if(uiSet == null)
+            UiFrame uiFrame = pair.Value;
+            if(uiFrame == null)
                 continue;
 
-            Destroy(uiSet);
-            uiSet = null;
+            Destroy(uiFrame);
+            uiFrame = null;
         }
-        uiSets.Clear();
+        uiFrames.Clear();
     }
 
-    public void AddUiSet(UiSet uiSet)
+    public void AddUiFrame(UiFrame uiFrame)
     {
-        uiSets.Add(uiSet.name, uiSet);
+        uiFrames.Add(uiFrame.name, uiFrame);
     }
 
-    public void RemoveUiSet(UiSet uiSet)
+    public void RemoveUiFrame(UiFrame uiFrame)
     {
-        if(uiSet == null)
+        if(uiFrame == null)
             return;
 
-        Object.Destroy(uiSet.gameObject);
-        uiSets.Remove(uiSet.name);
+        Object.Destroy(uiFrame.gameObject);
+        uiFrames.Remove(uiFrame.name);
     }
 
-    public UiSet GetUiSet(string name)
+    public UiFrame GetUiFrame(string name)
     {
-        UiSet data;
-        return uiSets.TryGetValue(name, out data) ? data : null;
+        UiFrame data;
+        return uiFrames.TryGetValue(name, out data) ? data : null;
     }
 
     private void SetActive(string name, bool active)
     {
-        UiSet uiSet = GetUiSet(name);
-        SetActive(uiSet, active);
+        UiFrame uiFrame = GetUiFrame(name);
+        SetActive(uiFrame, active);
     }
 
-    private void SetActive(UiSet uiSet, bool active)
+    private void SetActive(UiFrame uiFrame, bool active)
     {
-        if(uiSet == null)
+        if(uiFrame == null)
             return;
 
-        uiSet.gameObject.SetActive(active);
+        uiFrame.gameObject.SetActive(active);
     }
 
-    public UiSet LoadUiSetFromFile(string path, bool activeOnLoad = true)
+    public UiFrame LoadUiFrameFromFile(string path, bool activeOnLoad = true)
     {
         GameObject uiPrefab;
-        if(!LoadUiSetPrefab(path, out uiPrefab))
+        if(!LoadUiFramePrefab(path, out uiPrefab))
             return null;
 
-        UiSet uiSet = CreateUiSet(uiPrefab, activeOnLoad);
-        if(uiSet != null)
-            AddUiSet(uiSet);
+        UiFrame uiFrame = CreateUiFrame(uiPrefab, activeOnLoad);
+        if(uiFrame != null)
+            AddUiFrame(uiFrame);
 
-        return uiSet;
+        return uiFrame;
     }
 
     // Use this for initialization
     private void Start()
     {
-        LoadUiSetFromFile("UserInterface/UiSet/ControlPanel");
-        LoadUiSetFromFile("UserInterface/UiSet/InformationWindow");
-        LoadUiSetFromFile("UserInterface/UiSet/LogWindow");
     }
 
     // Update is called once per frame
@@ -84,7 +87,7 @@ public class UiManager : MonoBehaviour
 
     }
 
-    private bool LoadUiSetPrefab(string path, out GameObject prefab)
+    private bool LoadUiFramePrefab(string path, out GameObject prefab)
     {
         prefab = null;
 
@@ -96,47 +99,30 @@ public class UiManager : MonoBehaviour
         return true;
     }
 
-    private UiSet CreateUiSet(GameObject uiPrefab, bool activeOnLoad)
+    private UiFrame CreateUiFrame(GameObject uiPrefab, bool activeOnLoad)
     {
         if(uiPrefab == null)
             return null;
 
-        GameObject uiSetObject = Object.Instantiate<GameObject>(uiPrefab);
-        if(uiSetObject == null)
+        GameObject uiFrameObject = Object.Instantiate<GameObject>(uiPrefab);
+        if(uiFrameObject == null)
             return null;
 
-        UiSet uiSet = uiSetObject.GetComponent<UiSet>();
-        if(uiSet == null)
+        UiFrame uiFrame = uiFrameObject.GetComponent<UiFrame>();
+        if(uiFrame == null)
         {
-            Destroy(uiSetObject);
+            Destroy(uiFrameObject);
             return null;
         }
 
-        RectTransform canvasRectTransform = canvas.GetComponent<RectTransform>();
-        RectTransform prefabRectTransform = uiPrefab.GetComponent<RectTransform>();
-        RectTransform targetRectTransform = uiSet.GetComponent<RectTransform>();
+        uiFrame.name = uiPrefab.name;
+        uiFrame.transform.parent = transform;
+        uiFrame.transform.localPosition = uiPrefab.transform.localPosition;
+        uiFrame.transform.localRotation = uiPrefab.transform.localRotation;
+        uiFrame.transform.localScale = uiPrefab.transform.localScale;
 
-        if(string.IsNullOrEmpty(uiSet.targetAnchor))
-        {
-            targetRectTransform.parent = canvasRectTransform;
-        }
-        else
-        {
-            Transform anchorTransform = canvas.transform.Find(uiSet.targetAnchor);
-            if(anchorTransform != null)
-                targetRectTransform.parent = anchorTransform.GetComponent<RectTransform>();
-            else
-                targetRectTransform.parent = canvasRectTransform;
-        }
+        uiFrame.gameObject.SetActive(activeOnLoad);
 
-        uiSet.name = uiPrefab.name;
-
-        targetRectTransform.localPosition = prefabRectTransform.localPosition;
-        targetRectTransform.localRotation = prefabRectTransform.localRotation;
-        targetRectTransform.localScale = prefabRectTransform.localScale;
-
-        uiSet.gameObject.SetActive(activeOnLoad);
-
-        return uiSet;
+        return uiFrame;
     }
 }

@@ -21,12 +21,15 @@ public class GameSceneManager : MonoBehaviour
         switch(sceneType)
         {
         case GameScene.eSceneType.Intro:
+            LoadScene("Intro");
             break;
 
         case GameScene.eSceneType.Lobby:
+            LoadScene("Lobby");
             break;
 
         case GameScene.eSceneType.GamePlay:
+            LoadScene("GamePlay");
             break;
         }
     }
