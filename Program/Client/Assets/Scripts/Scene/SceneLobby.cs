@@ -13,6 +13,8 @@ public class SceneLobby : GameScene
     // Use this for initialization
     private void Start()
     {
+        GameSceneManager.Instance.currentScene = this;
+
         Debug.Log(string.Format("Scene [{0}] was started.", name));
     }
 

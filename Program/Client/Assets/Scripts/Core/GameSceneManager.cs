@@ -2,13 +2,38 @@
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameSceneManager : MonoBehaviour
 {
-    private GameScene currentScene;
+    public GameScene currentScene;
+
+    public static GameSceneManager Instance
+    {
+        get
+        {
+            return GameManager.Singleton.gameSceneManager;
+        }
+    }
 
     public void ChangeScene(GameScene.eSceneType sceneType)
     {
+        switch(sceneType)
+        {
+        case GameScene.eSceneType.Intro:
+            break;
+
+        case GameScene.eSceneType.Lobby:
+            break;
+
+        case GameScene.eSceneType.GamePlay:
+            break;
+        }
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
     // Use this for initialization
