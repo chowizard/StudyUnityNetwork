@@ -5,13 +5,15 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public Camera camera;
+    public Camera targetCamera;
     public GameObject followTarget;
     public bool isFollowTarget;
 
+    public float moveSpeed = 10.0f;
+
     public void Move(Vector3 translate)
     {
-        if(camera == null)
+        if(targetCamera == null)
             return;
 
         transform.Translate(translate);
@@ -26,23 +28,40 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if(followTarget == false)
+            UpdateCameraPosition();
     }
 
     private void LateUpdate()
     {
-        UpdateFollowing();
+        if(followTarget == true)
+            UpdateFollowing();
+    }
+
+    private void UpdateCameraPosition()
+    {
+        float axisX = Input.GetAxis("Horizontal");
+        float axisZ = Input.GetAxis("Vertical");
+
+        if((axisX != 0.0f) || (axisZ != 0.0f))
+        {
+            float velocityX = axisX * moveSpeed * Time.deltaTime;
+            float velocityZ = axisZ * moveSpeed * Time.deltaTime;
+            Vector3 velocity = new Vector3(velocityX, transform.position.y, velocityZ);
+
+            transform.Translate(velocity);
+        }
     }
 
     private void UpdateFollowing()
     {
-        if((isFollowTarget == true) && (followTarget != null))
-        {
-            //Vector3 translation = transform.position - followTarget.transform.position;
-            //Vector3 translation = followTarget.transform.position;
-            //if(translation != Vector3.zero)
-            //    Move(translation);
-            if(transform.position != followTarget.transform.position)
-                transform.position = followTarget.transform.position;
-        }
+        if(isFollowTarget == false)
+            return;
+
+        if(followTarget == null)
+            return;
+
+        if(transform.position != followTarget.transform.position)
+            transform.position = followTarget.transform.position;
     }
 }

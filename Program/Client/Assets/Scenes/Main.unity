@@ -202,6 +202,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &522527580 stripped
+Camera:
+  m_PrefabParentObject: {fileID: 20166955355321306, guid: 1a6b606490914854dbbd39291f0f5d04,
+    type: 2}
+  m_PrefabInternal: {fileID: 1375298621}
 --- !u!1001 &1151134459
 Prefab:
   m_ObjectHideFlags: 0
@@ -377,6 +382,11 @@ Prefab:
       propertyPath: arguments.Array.data[1]
       value: -autoStartMode server
       objectReference: {fileID: 0}
+    - target: {fileID: 114438895662124344, guid: 1a6b606490914854dbbd39291f0f5d04,
+        type: 2}
+      propertyPath: targetCamera
+      value: 
+      objectReference: {fileID: 522527580}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1a6b606490914854dbbd39291f0f5d04, type: 2}
   m_IsPrefabParent: 0
