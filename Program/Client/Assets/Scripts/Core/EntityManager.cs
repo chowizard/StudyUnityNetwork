@@ -21,7 +21,7 @@ public class EntityManager : MonoBehaviour
     {
         get
         {
-            return SceneMain.Singleton.EntityManager;
+            return GameManager.Singleton.EntityManager;
         }
     }
 

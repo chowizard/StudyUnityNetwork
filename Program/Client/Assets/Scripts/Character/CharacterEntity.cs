@@ -98,8 +98,8 @@ public class CharacterEntity : NetworkBehaviour
 
         EntityManager.Instance.MyCharacter = this;
 
-        SceneMain.Singleton.mainCamera.followTarget = gameObject;
-        SceneMain.Singleton.mainCamera.isFollowTarget = true;
+        GameManager.Singleton.mainCamera.followTarget = gameObject;
+        GameManager.Singleton.mainCamera.isFollowTarget = true;
 
         GetComponent<MeshRenderer>().material.color = Color.red;
     }

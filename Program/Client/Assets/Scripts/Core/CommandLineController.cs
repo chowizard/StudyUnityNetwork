@@ -73,7 +73,7 @@ public class CommandLineController : MonoBehaviour
         if(string.Compare(argumentValue, "server") == 0)
         {
             NetworkManager.Instance.StartByServer();
-            SceneMain.Singleton.SpawnNonPlayerCharacters();
+            GameManager.Singleton.SpawnNonPlayerCharacters();
         }
 
         if(string.Compare(argumentValue, "client") == 0)

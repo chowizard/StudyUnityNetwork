@@ -6,20 +6,19 @@ using UnityEngine.Networking;
 
 using UnityNet.Client.Core;
 
-public class SceneMain : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     public int npcCount = 100;
 
-    public string sceneName;
     public CameraController mainCamera;
 
     private EntityManager entityManager;
     private NetworkManager networkManager;
     private UiManager uiManager;
 
-    private static SceneMain singleton;
+    private static GameManager singleton;
 
-    public static SceneMain Singleton
+    public static GameManager Singleton
     {
         get
         {
@@ -76,8 +75,6 @@ public class SceneMain : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        Debug.Log(string.Format("Scene [{0}] was started.", sceneName));
-
         if(entityManager == null)
         {
             Transform findTransform = transform.Find("EntityManager");

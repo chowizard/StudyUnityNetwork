@@ -37,7 +37,7 @@ public class NetworkManager : MonoBehaviour
     {
         get
         {
-            return SceneMain.Singleton.NetworkManager;
+            return GameManager.Singleton.NetworkManager;
         }
     }
 

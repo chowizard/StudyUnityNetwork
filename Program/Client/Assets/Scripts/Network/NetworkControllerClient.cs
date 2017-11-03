@@ -8,14 +8,14 @@ using UnityEngine.Networking.NetworkSystem;
 public sealed class NetworkControllerClient
 {
     private NetworkManager networkManager;
-    private SceneMain sceneMain;
+    private GameManager sceneMain;
 
     private NetworkClient netClient;
 
     public NetworkControllerClient(NetworkManager networkManager)
     {
         this.networkManager = networkManager;
-        sceneMain = networkManager.transform.parent.GetComponent<SceneMain>();
+        sceneMain = networkManager.transform.parent.GetComponent<GameManager>();
     }
 
     public void Setup()

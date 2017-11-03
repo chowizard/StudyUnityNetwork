@@ -9,14 +9,14 @@ using UnityEngine.Networking.NetworkSystem;
 public sealed class NetworkControllerServer
 {
     private NetworkManager networkManager;
-    private SceneMain mainScene;
+    private GameManager mainScene;
 
     private Dictionary<int, NetworkConnection> connections = new Dictionary<int, NetworkConnection>();
 
     public NetworkControllerServer(NetworkManager networkManager)
     {
         this.networkManager = networkManager;
-        mainScene = networkManager.transform.parent.GetComponent<SceneMain>();
+        mainScene = networkManager.transform.parent.GetComponent<GameManager>();
     }
 
     public void Setup()
