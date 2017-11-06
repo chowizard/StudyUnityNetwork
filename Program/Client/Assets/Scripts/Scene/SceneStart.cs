@@ -1,18 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
-public class SceneStart : MonoBehaviour
+public class SceneStart : GameScene
 {
+    private void Awake()
+    {
+        sceneType = eSceneType.Start;
+    }
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
+        GameSceneManager.Instance.currentScene = this;
+        Debug.Log(string.Format("Scene [{0}] was started.", sceneType.ToString()));
 
+        UiManager.Instance.LoaUiFrame("UiFrameStart");
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 
     }

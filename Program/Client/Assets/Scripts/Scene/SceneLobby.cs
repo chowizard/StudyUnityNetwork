@@ -14,8 +14,9 @@ public class SceneLobby : GameScene
     private void Start()
     {
         GameSceneManager.Instance.currentScene = this;
+        Debug.Log(string.Format("Scene [{0}] was started.", sceneType.ToString()));
 
-        Debug.Log(string.Format("Scene [{0}] was started.", name));
+        UiManager.Instance.LoaUiFrame("UiFrameLobby");
     }
 
     // Update is called once per frame

@@ -10,9 +10,9 @@ public class UiFrameSceneInfro : UiFrame
     {
         base.Start();
 
-        LoadUiSetFromFile("UserInterface/UiSet/ControlPanel");
-        LoadUiSetFromFile("UserInterface/UiSet/InformationWindow");
-        LoadUiSetFromFile("UserInterface/UiSet/LogWindow");
+        LoadUiSetFromFile("UserInterface/UiSet/Intro/UiSetControlPanel");
+        LoadUiSetFromFile("UserInterface/UiSet/Intro/UiSetInformationWindow");
+        LoadUiSetFromFile("UserInterface/UiSet/Intro/UiSetLogWindow");
     }
 
     // Update is called once per frame

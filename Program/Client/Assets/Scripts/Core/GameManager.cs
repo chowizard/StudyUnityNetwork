@@ -67,6 +67,10 @@ public class GameManager : MonoBehaviour
             break;
 
         case NetworkManager.eMode.Client:
+            gameSceneManager.ChangeScene(GameScene.eSceneType.Start);
+            break;
+
+        default:
             gameSceneManager.ChangeScene(GameScene.eSceneType.Intro);
             break;
         }

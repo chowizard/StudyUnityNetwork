@@ -63,6 +63,16 @@ public class UiManager : MonoBehaviour
         uiFrame.gameObject.SetActive(active);
     }
 
+    public UiFrame LoaUiFrame(string name, bool activeOnLoad = true)
+    {
+        UiFrame uiFrame = GetUiFrame(name);
+        if(uiFrame != null)
+            return uiFrame;
+
+        string path = "UserInterface/UiFrame/" + name;
+        return LoadUiFrameFromFile(path, activeOnLoad);
+    }
+
     public UiFrame LoadUiFrameFromFile(string path, bool activeOnLoad = true)
     {
         GameObject uiPrefab;
@@ -116,7 +126,8 @@ public class UiManager : MonoBehaviour
         }
 
         uiFrame.name = uiPrefab.name;
-        uiFrame.transform.parent = transform;
+        uiFrame.transform.SetParent(transform);
+
         uiFrame.transform.localPosition = uiPrefab.transform.localPosition;
         uiFrame.transform.localRotation = uiPrefab.transform.localRotation;
         uiFrame.transform.localScale = uiPrefab.transform.localScale;

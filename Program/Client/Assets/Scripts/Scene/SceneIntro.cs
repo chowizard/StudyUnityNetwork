@@ -14,12 +14,9 @@ public class SceneIntro : GameScene
     private void Start()
     {
         GameSceneManager.Instance.currentScene = this;
+        Debug.Log(string.Format("Scene [{0}] was started.", sceneType.ToString()));
 
-        Debug.Log(string.Format("Scene [{0}] was started.", name));
-
-        UiManager.Instance.LoadUiFrameFromFile("UserInterface/UiFrame/ControlPanel");
-        UiManager.Instance.LoadUiFrameFromFile("UserInterface/UiFrame/InformationWindow");
-        UiManager.Instance.LoadUiFrameFromFile("UserInterface/UiFrame/LogWindow");
+        UiManager.Instance.LoaUiFrame("UiFrameIntro");
     }
 
     // Update is called once per frame

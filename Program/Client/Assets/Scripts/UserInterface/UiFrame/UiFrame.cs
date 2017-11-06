@@ -158,9 +158,9 @@ public abstract class UiFrame : MonoBehaviour
 
         Transform anchorTransform = uiAnchors[uiSet.anchorType].transform;
         if(anchorTransform != null)
-            uiSet.transform.parent = anchorTransform.GetComponent<RectTransform>();
+            uiSet.transform.SetParent(anchorTransform);
         else
-            uiSet.transform.parent = transform;
+            uiSet.transform.SetParent(transform);
 
         uiSet.name = uiPrefab.name;
 

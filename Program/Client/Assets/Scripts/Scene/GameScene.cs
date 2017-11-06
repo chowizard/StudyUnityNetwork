@@ -10,6 +10,7 @@ public abstract class GameScene : MonoBehaviour
         None = 0,
 
         Intro,
+        Start,
         Lobby,
         GamePlay
     }
