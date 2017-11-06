@@ -16,7 +16,7 @@ public class SceneStart : GameScene
         GameSceneManager.Instance.currentScene = this;
         Debug.Log(string.Format("Scene [{0}] was started.", sceneType.ToString()));
 
-        UiManager.Instance.LoaUiFrame("UiFrameStart");
+        UiManager.Instance.LoadUiFrame("UiFrameStart");
     }
 
     // Update is called once per frame

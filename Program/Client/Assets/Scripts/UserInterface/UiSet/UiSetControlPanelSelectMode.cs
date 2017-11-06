@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiSetControlPanel : UiSet
+public class UiSetControlPanelSelectMode : UiSet
 {
     public Button uiButtonStartByServer;
     public Button uiButtonStartByClient;

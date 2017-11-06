@@ -63,7 +63,7 @@ public class UiManager : MonoBehaviour
         uiFrame.gameObject.SetActive(active);
     }
 
-    public UiFrame LoaUiFrame(string name, bool activeOnLoad = true)
+    public UiFrame LoadUiFrame(string name, bool activeOnLoad = true)
     {
         UiFrame uiFrame = GetUiFrame(name);
         if(uiFrame != null)

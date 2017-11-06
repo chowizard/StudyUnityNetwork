@@ -69,6 +69,8 @@ public class NetworkManager : MonoBehaviour
         isAtStartup = false;
         mode = eMode.Server;
         message = "Setup server.";
+
+        GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
     }
 
     // Create a client and connect to the server port
@@ -83,7 +85,7 @@ public class NetworkManager : MonoBehaviour
         mode = eMode.Client;
         message = "Setup client.";
 
-        //Debug.Assert(networkClient.isConnected);
+        GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.Lobby);
     }
 
     public CharacterEntity RegisterPlayerCharacter(int ownerNetConnectionId, short playerControllId)

@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 224121492934675672}
   - component: {fileID: 114603718765739690}
   m_Layer: 5
-  m_Name: UiSetControlPanel
+  m_Name: UiSetControlPanelSelectMode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
