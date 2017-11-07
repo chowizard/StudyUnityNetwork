@@ -16,6 +16,8 @@ public class UiSetControlPanelSelectMode : UiSet
 
         if(NetworkManager.Instance.isAtStartup == false)
             GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
+        else
+            Debug.LogError("NetworkManager is not startup.");
     }
 
     public void OnClickStartByClient()

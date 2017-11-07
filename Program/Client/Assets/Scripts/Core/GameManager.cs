@@ -29,21 +29,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SpawnNonPlayerCharacters()
-    {
-        for(int count = 0; count < npcCount; ++count)
-        {
-            float positionX = Random.Range(-100.0f, 100.0f);
-            float positionZ = Random.Range(-100.0f, 100.0f);
-            Vector3 position = new Vector3(positionX, 0.0f, positionZ);
-
-            float rotationY = Random.Range(0.0f, 360.0f);
-            Quaternion rotation = Quaternion.Euler(0.0f, rotationY, 0.0f);
-
-            SpawnNonPlayerCharacter(position, rotation);
-        }
-    }
-
     private void Awake()
     {
         singleton = this;
@@ -68,10 +53,9 @@ public class GameManager : MonoBehaviour
                 NetworkManager.Instance.StartByServer();
 
                 if(NetworkManager.Instance.isAtStartup == false)
-                {
                     GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
-                    SpawnNonPlayerCharacters();
-                }
+                else
+                    Debug.LogError("NetworkManager is not startup.");
             }
             break;
 
@@ -91,58 +75,5 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if(networkManager.mode == NetworkManager.eMode.Server)
-        {
-            if(Input.GetKeyDown(KeyCode.X))
-                SpawnNonPlayerCharacters();
-        }
-
-        if(Input.GetKeyDown(KeyCode.Z))
-        {
-            if(networkManager.mode == NetworkManager.eMode.None)
-                GenerateMyCharacter();
-            if(networkManager.mode == NetworkManager.eMode.Client)
-                SpawnMyCharacter();
-
-        }
-    }
-
-    private void GenerateMyCharacter()
-    {
-        GameObject prefab = NetworkManager.Instance.GetSpawningPrefab(Defines.SpawningPrefab.PlayerCharacter);
-
-        CharacterEntity playerCharacter = entityManager.CreatePlayerCharacter(prefab, NetworkManager.Instance.ClientController.NetClient.connection.connectionId, 0);
-        EntityManager.Instance.AddEntity(playerCharacter.netId.Value, playerCharacter);
-        EntityManager.Instance.MyCharacter = playerCharacter;
-
-        mainCamera.followTarget = playerCharacter.gameObject;
-        mainCamera.isFollowTarget = true;
-    }
-
-    private void SpawnMyCharacter()
-    {
-        if(!ClientScene.ready)
-        {
-            Debug.LogError("Client Scene is not ready!");
-            return;
-        }
-
-        if(EntityManager.Instance.MyCharacter != null)
-            EntityManager.Instance.DestroyEntity(EntityManager.Instance.MyCharacter);
-
-        NetworkClient networkClient = networkManager.ClientController.NetClient;
-        short playerControllerId = 0;
-
-        ClientScene.AddPlayer(networkClient.connection, playerControllerId);
-    }
-
-    private void SpawnNonPlayerCharacter(Vector3 position, Quaternion rotation)
-    {
-        //uint id = EntityManager.Instance.GenerateNpcId();
-        //if(!IdGenerator.IsValid(id))
-        //    return;
-
-        CharacterEntity entity = networkManager.RegisterNonPlayerCharacter(position, rotation);
-        NetworkServer.Spawn(entity.gameObject);
     }
 }

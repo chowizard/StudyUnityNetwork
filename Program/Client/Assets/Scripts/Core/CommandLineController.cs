@@ -72,21 +72,24 @@ public class CommandLineController : MonoBehaviour
 
         if(string.Compare(argumentValue, "server") == 0)
         {
+            NetworkManager.Instance.mode = NetworkManager.eMode.Server;
             NetworkManager.Instance.StartByServer();
 
             if(NetworkManager.Instance.isAtStartup == false)
-            {
                 GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
-                GameManager.Singleton.SpawnNonPlayerCharacters();
-            }
+            else
+                Debug.LogError("NetworkManager is not startup.");
         }
 
         if(string.Compare(argumentValue, "client") == 0)
         {
+            NetworkManager.Instance.mode = NetworkManager.eMode.Client;
             NetworkManager.Instance.StartByClient();
 
             if(NetworkManager.Instance.isAtStartup == false)
                 GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
+            else
+                Debug.LogError("NetworkManager is not startup.");
         }
     }
 }
