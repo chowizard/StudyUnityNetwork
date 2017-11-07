@@ -9,6 +9,11 @@ public class UiFrameSceneLobby : UiFrame
     protected override void Start()
     {
         base.Start();
+
+        LoadUiSet("UiSetInformationWindow");
+        LoadUiSet("UiSetLogWindow");
+        LoadUiSet("UiSetGameStart");
+        LoadUiSet("UiSetControlPanelGameStart");
     }
 
     // Update is called once per frame

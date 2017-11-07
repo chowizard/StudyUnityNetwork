@@ -16,6 +16,4 @@ public abstract class GameScene : MonoBehaviour
     }
 
     public eSceneType sceneType = eSceneType.None;
-
-
 }

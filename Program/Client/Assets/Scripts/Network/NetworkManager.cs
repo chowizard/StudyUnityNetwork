@@ -43,6 +43,9 @@ public class NetworkManager : MonoBehaviour
 
     public void Terminate()
     {
+        if(isAtStartup == false)
+            return;
+
         switch(mode)
         {
         case eMode.Server:
@@ -61,6 +64,9 @@ public class NetworkManager : MonoBehaviour
     // Create a server and listen on a port
     public void StartByServer()
     {
+        if(isAtStartup == false)
+            return;
+
         if(serverController == null)
             serverController = new NetworkControllerServer(this);
 
@@ -69,13 +75,14 @@ public class NetworkManager : MonoBehaviour
         isAtStartup = false;
         mode = eMode.Server;
         message = "Setup server.";
-
-        GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
     }
 
     // Create a client and connect to the server port
     public void StartByClient()
     {
+        if(isAtStartup == false)
+            return;
+
         if(clientController == null)
             clientController = new NetworkControllerClient(this);
 
@@ -84,8 +91,6 @@ public class NetworkManager : MonoBehaviour
         isAtStartup = false;
         mode = eMode.Client;
         message = "Setup client.";
-
-        GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.Lobby);
     }
 
     public CharacterEntity RegisterPlayerCharacter(int ownerNetConnectionId, short playerControllId)

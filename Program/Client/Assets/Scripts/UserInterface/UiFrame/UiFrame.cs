@@ -79,6 +79,16 @@ public abstract class UiFrame : MonoBehaviour
         uiSet.gameObject.SetActive(active);
     }
 
+    public UiSet LoadUiSet(string name, bool activeOnLoad = true)
+    {
+        UiSet uiSet = GetUiSet(name);
+        if(uiSet != null)
+            return uiSet;
+
+        string path = "UserInterface/UiSet/" + name;
+        return LoadUiSetFromFile(path, activeOnLoad);
+    }
+
     public UiSet LoadUiSetFromFile(string path, bool activeOnLoad = true)
     {
         GameObject uiPrefab;

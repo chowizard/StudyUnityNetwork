@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class SceneGamePlay : GameScene
 {
+    private UiFrame uiFrameGamePlay;
+
     private void Awake()
     {
         sceneType = eSceneType.GamePlay;
@@ -16,7 +18,8 @@ public class SceneGamePlay : GameScene
         GameSceneManager.Instance.currentScene = this;
         Debug.Log(string.Format("Scene [{0}] was started.", sceneType.ToString()));
 
-        UiManager.Instance.LoadUiFrame("UiFrameGamePlay");
+        uiFrameGamePlay = UiManager.Instance.LoadUiFrame("UiFrameGamePlay");
+        UiManager.Instance.ChangeUiFrame(uiFrameGamePlay);
     }
 
     // Update is called once per frame

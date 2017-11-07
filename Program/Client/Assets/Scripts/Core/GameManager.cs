@@ -63,11 +63,23 @@ public class GameManager : MonoBehaviour
         switch(modeStartAt)
         {
         case NetworkManager.eMode.Server:
-            gameSceneManager.ChangeScene(GameScene.eSceneType.GamePlay);
+            {
+                NetworkManager.Instance.mode = modeStartAt;
+                NetworkManager.Instance.StartByServer();
+
+                if(NetworkManager.Instance.isAtStartup == false)
+                {
+                    GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
+                    SpawnNonPlayerCharacters();
+                }
+            }
             break;
 
         case NetworkManager.eMode.Client:
-            gameSceneManager.ChangeScene(GameScene.eSceneType.Start);
+            {
+                NetworkManager.Instance.mode = modeStartAt;
+                gameSceneManager.ChangeScene(GameScene.eSceneType.Start);
+            }
             break;
 
         default:

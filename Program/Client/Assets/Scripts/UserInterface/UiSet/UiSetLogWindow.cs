@@ -34,6 +34,7 @@ public class UiSetLogWindow : UiSet
     {
         Debug.Assert(uiScrollView != null);
         Debug.Assert(uiButtonOpenCloseToggle != null);
+
         Debug.Assert(uiScrollbarHorizontal != null);
         Debug.Assert(uiScrollbarVertical != null);
         Debug.Assert(uiTextLogView != null);

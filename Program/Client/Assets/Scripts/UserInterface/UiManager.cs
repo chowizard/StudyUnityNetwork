@@ -49,6 +49,44 @@ public class UiManager : MonoBehaviour
         return uiFrames.TryGetValue(name, out data) ? data : null;
     }
 
+    public void ChangeUiFrame(string name)
+    {
+        if(string.IsNullOrEmpty(name))
+            return;
+
+        foreach(var pair in uiFrames)
+        {
+            string key = pair.Key;
+            UiFrame currentUiFrame = pair.Value;
+
+            if(string.IsNullOrEmpty(key))
+                continue;
+
+            if(key == name)
+                currentUiFrame.gameObject.SetActive(true);
+            else
+                currentUiFrame.gameObject.SetActive(false);
+        }
+    }
+
+    public void ChangeUiFrame(UiFrame uiFrame)
+    {
+        if(uiFrame == null)
+            return;
+
+        foreach(var pair in uiFrames)
+        {
+            UiFrame currentUiFrame = pair.Value;
+            if(currentUiFrame == null)
+                continue;
+
+            if(currentUiFrame == uiFrame)
+                currentUiFrame.gameObject.SetActive(true);
+            else
+                currentUiFrame.gameObject.SetActive(false);
+        }
+    }
+
     private void SetActive(string name, bool active)
     {
         UiFrame uiFrame = GetUiFrame(name);

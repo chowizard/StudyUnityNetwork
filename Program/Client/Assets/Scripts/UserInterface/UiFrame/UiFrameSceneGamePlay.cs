@@ -13,13 +13,16 @@ public class UiFrameSceneGamePlay : UiFrame
         switch(NetworkManager.Instance.mode)
         {
         case NetworkManager.eMode.Server:
-            UiManager.Instance.LoadUiFrame("UiSetControlPanelServer");
+            LoadUiSet("UiSetControlPanelServer");
             break;
 
         case NetworkManager.eMode.Client:
-            UiManager.Instance.LoadUiFrame("UiSetControlPanelClient");
+            LoadUiSet("UiSetControlPanelClient");
             break;
         }
+
+        LoadUiSet("UiSetInformationWindow");
+        LoadUiSet("UiSetLogWindow");
     }
 
     // Update is called once per frame

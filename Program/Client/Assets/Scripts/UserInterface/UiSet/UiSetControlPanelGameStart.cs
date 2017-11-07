@@ -4,20 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiSetControlPanelServer : UiSet
+public class UiSetControlPanelGameStart : UiSet
 {
-    public Button buttonTerminate;
+    public Button uiButtonGoToBack;
 
-    public void OnClickTerminate()
+    public void OnClickGoToBack()
     {
-        NetworkManager.Instance.Terminate();
         GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.Intro);
     }
 
     // Use this for initialization
     private void Start()
     {
-        Debug.Assert(buttonTerminate != null);
+        Debug.Assert(uiButtonGoToBack != null);
     }
 
     // Update is called once per frame

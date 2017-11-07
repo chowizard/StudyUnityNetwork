@@ -8,6 +8,10 @@ public class UiFrameStart : UiFrame
     protected override void Start()
     {
         base.Start();
+
+        LoadUiSet("UiSetInformationWindow");
+        LoadUiSet("UiSetLogWindow");
+        LoadUiSet("UiSetControlPanelSelectMode");
     }
 
     // Update is called once per frame
