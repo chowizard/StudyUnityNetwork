@@ -9,6 +9,12 @@ public class UiSetInformationWindow : UiSet
     public Text uiTextCurrentMode;
     private NetworkManager.eMode networkMode = NetworkManager.eMode.None;
 
+    public Text uiTextAddress;
+    private string address;
+
+    public Text uiTextPort;
+    private ushort port;
+
     public Text uiTextMyCharacterPosition;
     private Vector3 myCharacterPosition;
 
@@ -21,6 +27,12 @@ public class UiSetInformationWindow : UiSet
         Debug.Assert(uiTextCurrentMode != null);
         uiTextCurrentMode.text = string.Format("Current Mode : {0}", networkMode);
 
+        Debug.Assert(uiTextAddress != null);
+        uiTextAddress.text = string.Format("Address : {0}", address);
+
+        Debug.Assert(uiTextPort != null);
+        uiTextPort.text = string.Format("Port : {0}", port);
+
         Debug.Assert(uiTextMyCharacterPosition != null);
         uiTextMyCharacterPosition.text = string.Format("My Character Position : {0}", myCharacterPosition);
 
@@ -32,6 +44,8 @@ public class UiSetInformationWindow : UiSet
     private void Update()
     {
         UpdateCurrentMode();
+        UpdateAddress();
+        UpdatePort();
         UpdateMyCharacterPosition();
         UpdateObjectCount();
     }
@@ -61,6 +75,30 @@ public class UiSetInformationWindow : UiSet
             uiTextCurrentMode.color = new Color(0.25f, 0.4f, 0.1f);
             break;
         }
+    }
+
+    private void UpdateAddress()
+    {
+        if(uiTextAddress == null)
+            return;
+
+        if(address == NetworkManager.Instance.address)
+            return;
+
+        address = NetworkManager.Instance.address;
+        uiTextAddress.text = string.Format("Address : {0}", address);
+    }
+
+    private void UpdatePort()
+    {
+        if(uiTextPort == null)
+            return;
+
+        if(port == NetworkManager.Instance.port)
+            return;
+
+        port = NetworkManager.Instance.port;
+        uiTextPort.text = string.Format("Port : {0}", port);
     }
 
     private void UpdateMyCharacterPosition()

@@ -9,6 +9,8 @@ public class CommandLineController : MonoBehaviour
     public static class Keyword
     {
         public const string AutoStartMode = "-autoStartMode";
+        public const string Address = "-address";
+        public const string Port = "-port";
     }
 
     public string[] arguments;
@@ -55,6 +57,10 @@ public class CommandLineController : MonoBehaviour
 
             if(string.Compare(argument, Keyword.AutoStartMode, true) == 0)
                 AnalyzeCommandAutoStartMode(index);
+            else if(string.Compare(argument, Keyword.Address, true) == 0)
+                AnalyzeCommandAddress(index);
+            else if(string.Compare(argument, Keyword.Port, true) == 0)
+                AnalyzeCommandPort(index);
         }
     }
 
@@ -79,8 +85,7 @@ public class CommandLineController : MonoBehaviour
             else
                 Debug.LogError("NetworkManager is not startup.");
         }
-
-        if(string.Compare(argumentValue, "client") == 0)
+        else if(string.Compare(argumentValue, "client") == 0)
         {
             NetworkManager.Instance.StartByClient();
 
@@ -89,5 +94,41 @@ public class CommandLineController : MonoBehaviour
             else
                 Debug.LogError("NetworkManager is not startup.");
         }
+    }
+
+    private void AnalyzeCommandAddress(int argumentIndex)
+    {
+        if(arguments.Length < argumentIndex + 2)
+        {
+            string logText = string.Format("Usage : {0}  [IP Address or URL]", Keyword.Address);
+            Debug.LogError(logText);
+
+            return;
+        }
+
+        string argumentValue = arguments[argumentIndex + 1];
+
+        if(string.IsNullOrEmpty(argumentValue))
+            return;
+
+        NetworkManager.Instance.address = argumentValue;
+    }
+
+    private void AnalyzeCommandPort(int argumentIndex)
+    {
+        if(arguments.Length < argumentIndex + 2)
+        {
+            string logText = string.Format("Usage : {0}  [Port]", Keyword.Port);
+            Debug.LogError(logText);
+
+            return;
+        }
+
+        string argumentValue = arguments[argumentIndex + 1];
+
+        if(string.IsNullOrEmpty(argumentValue))
+            return;
+
+        NetworkManager.Instance.port = System.Convert.ToUInt16(argumentValue);
     }
 }

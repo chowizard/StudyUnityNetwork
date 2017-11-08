@@ -135,6 +135,6 @@ public sealed class NetworkControllerClient
             netClient.RegisterHandler(MsgType.NotReady, OnNotReady);
         }
 
-        netClient.Connect(networkManager.ip, networkManager.port);
+        netClient.Connect(networkManager.address, networkManager.port);
     }
 }

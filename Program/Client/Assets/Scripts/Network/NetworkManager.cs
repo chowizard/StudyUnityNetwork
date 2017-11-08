@@ -18,7 +18,7 @@ public class NetworkManager : MonoBehaviour
 
 
 
-    public string ip = "127.0.0.1";
+    public string address = "127.0.0.1";
     public ushort port = 15632;
     public bool isAtStartup = true;
     public eMode mode = eMode.None;
