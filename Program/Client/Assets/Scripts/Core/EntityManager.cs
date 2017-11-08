@@ -175,6 +175,44 @@ public class EntityManager : MonoBehaviour
         }
     }
 
+    public CharacterEntity[] Players
+    {
+        get
+        {
+            List<CharacterEntity> players = new List<CharacterEntity>(EntityCount);
+            foreach(var pair in entities)
+            {
+                CharacterEntity entity = pair.Value;
+                if(entity == null)
+                    continue;
+
+                if(entity.property.isPlayer == true)
+                    players.Add(entity);
+            }
+
+            return (players.Count > 0) ? players.ToArray() : null;
+        }
+    }
+
+    public int PlayerCount
+    {
+        get
+        {
+            int playerCount = 0;
+            foreach(var pair in entities)
+            {
+                CharacterEntity entity = pair.Value;
+                if(entity == null)
+                    continue;
+
+                if(entity.property.isPlayer == true)
+                    ++playerCount;
+            }
+
+            return playerCount;
+        }
+    }
+
     public CharacterEntity MyCharacter
     {
         get

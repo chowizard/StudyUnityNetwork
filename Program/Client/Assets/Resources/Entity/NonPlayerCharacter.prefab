@@ -29,21 +29,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1709429430501162
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4622218795934842}
-  m_Layer: 0
-  m_Name: Sensor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1972545923930520
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,6 +43,7 @@ GameObject:
   - component: {fileID: 114500886305410674}
   - component: {fileID: 114632364516506608}
   - component: {fileID: 114480731396199602}
+  - component: {fileID: 114266854010356458}
   m_Layer: 0
   m_Name: NonPlayerCharacter
   m_TagString: Untagged
@@ -78,19 +64,6 @@ Transform:
   m_Father: {fileID: 4798063180599630}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4622218795934842
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1709429430501162}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4798063180599630}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4798063180599630
 Transform:
   m_ObjectHideFlags: 1
@@ -102,7 +75,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4281812860224552}
-  - {fileID: 4622218795934842}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -159,6 +131,30 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114266854010356458
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1972545923930520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a8d7878aaa29674e98ef29a19635798, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  owner: {fileID: 114533049719028304}
+  sensorNormal: {fileID: 0}
+  sensorClose: {fileID: 0}
+  sensorFar: {fileID: 0}
+  currentSensorLevel: 0
+  sensorDistanceLimitNormal: 10
+  sensorDistanceLimitClose: 2
+  sensorDistanceLimitFar: 20
+  syncRateNormal: 10
+  syncRateClose: 15
+  syncRateFar: 5
+  sensorTickSeconds: 1
 --- !u!114 &114480731396199602
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -171,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  owner: {fileID: 0}
+  owner: {fileID: 114533049719028304}
 --- !u!114 &114500886305410674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -184,7 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  owner: {fileID: 0}
+  owner: {fileID: 114533049719028304}
 --- !u!114 &114533049719028304
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -201,7 +197,7 @@ MonoBehaviour:
   property:
     isPlayer: 0
   model: {fileID: 1539762425961968}
-  sensor: {fileID: 1709429430501162}
+  sensor: {fileID: 0}
   destinationPosition: {x: 0, y: 0, z: 0}
   moveSpeed: 10
 --- !u!114 &114541816227708438
@@ -237,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  owner: {fileID: 0}
+  owner: {fileID: 114533049719028304}
   aiState: 0
   commandIntervalSeconds: 3
   enableMoveBoundary:

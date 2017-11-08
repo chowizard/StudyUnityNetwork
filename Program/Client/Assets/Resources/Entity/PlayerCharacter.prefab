@@ -11,21 +11,6 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1851611101664868}
   m_IsPrefabParent: 1
---- !u!1 &1234616511466030
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4669029803920908}
-  m_Layer: 0
-  m_Name: Sensor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1331452213942746
 GameObject:
   m_ObjectHideFlags: 0
@@ -35,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4822143663268480}
   - component: {fileID: 33874071292127704}
-  - component: {fileID: 136451188225357574}
+  - component: {fileID: 136031029981161318}
   - component: {fileID: 23171497984066804}
   m_Layer: 0
   m_Name: Model
@@ -56,8 +41,8 @@ GameObject:
   - component: {fileID: 114840146952577844}
   - component: {fileID: 114624193723331358}
   - component: {fileID: 114321685311093182}
-  - component: {fileID: 114365979119963192}
-  - component: {fileID: 114485292177248030}
+  - component: {fileID: 114606940779956636}
+  - component: {fileID: 114010893415240258}
   - component: {fileID: 114037600376819630}
   m_Layer: 0
   m_Name: PlayerCharacter
@@ -66,19 +51,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4669029803920908
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1234616511466030}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4922881360736190}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4822143663268480
 Transform:
   m_ObjectHideFlags: 1
@@ -90,7 +62,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4922881360736190}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4922881360736190
 Transform:
@@ -102,7 +74,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4669029803920908}
   - {fileID: 4822143663268480}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -148,6 +119,19 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1331452213942746}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114010893415240258
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1851611101664868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c97638a4ad828d49b5183f4fc5447ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  owner: {fileID: 114624193723331358}
 --- !u!114 &114021811365442036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -192,7 +176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  owner: {fileID: 0}
+  owner: {fileID: 114624193723331358}
 --- !u!114 &114321685311093182
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -205,8 +189,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  owner: {fileID: 0}
---- !u!114 &114365979119963192
+  owner: {fileID: 114624193723331358}
+--- !u!114 &114606940779956636
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -218,21 +202,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  owner: {fileID: 0}
+  owner: {fileID: 114624193723331358}
   aiState: 0
---- !u!114 &114485292177248030
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1851611101664868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c97638a4ad828d49b5183f4fc5447ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: 0
-  owner: {fileID: 0}
 --- !u!114 &114624193723331358
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -249,7 +220,7 @@ MonoBehaviour:
   property:
     isPlayer: 1
   model: {fileID: 1331452213942746}
-  sensor: {fileID: 1234616511466030}
+  sensor: {fileID: 0}
   destinationPosition: {x: 0, y: 0, z: 0}
   moveSpeed: 10
 --- !u!114 &114840146952577844
@@ -273,7 +244,7 @@ MonoBehaviour:
   m_SnapThreshold: 1
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
---- !u!136 &136451188225357574
+--- !u!136 &136031029981161318
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
