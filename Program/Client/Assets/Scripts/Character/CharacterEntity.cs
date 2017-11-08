@@ -85,14 +85,14 @@ public class CharacterEntity : NetworkBehaviour
 
     public override void OnNetworkDestroy()
     {
-        Debug.Log("OnNetworkDestroy");
+        //Debug.Log("OnNetworkDestroy : NetID = " + netId);
 
         base.OnNetworkDestroy();
     }
 
     public override void OnStartLocalPlayer()
     {
-        Debug.Log("OnStartLocalPlayer");
+        //Debug.Log("OnStartLocalPlayer : NetID = " + netId);
 
         base.OnStartLocalPlayer();
 
@@ -106,7 +106,7 @@ public class CharacterEntity : NetworkBehaviour
 
     public override void OnStartServer()
     {
-        Debug.Log("OnStartServer");
+        //Debug.Log("OnStartServer : NetID = " + netId);
 
         EntityManager.Instance.AddEntity(netId.Value, this);
 
@@ -115,7 +115,7 @@ public class CharacterEntity : NetworkBehaviour
 
     public override void OnStartClient()
     {
-        Debug.Log("OnStartClient");
+        //Debug.Log("OnStartClient : NetID = " + netId);
 
         EntityManager.Instance.AddEntity(netId.Value, this);
 
@@ -124,7 +124,7 @@ public class CharacterEntity : NetworkBehaviour
 
     public override void PreStartClient()
     {
-        Debug.Log("PreStartClient");
+        //Debug.Log("PreStartClient : NetID = " + netId);
 
         base.PreStartClient();
     }

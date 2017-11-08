@@ -25,6 +25,11 @@ public class SceneGamePlay : GameScene
         }
     }
 
+    public void ClearEntities()
+    {
+        EntityManager.Instance.Clear();
+    }
+
     private void Awake()
     {
         sceneType = eSceneType.GamePlay;
@@ -58,7 +63,16 @@ public class SceneGamePlay : GameScene
     // Update is called once per frame
     private void Update()
     {
+    }
 
+    private void OnDestroy()
+    {
+        ClearEntities();
+    }
+
+    private void OnApplicationQuit()
+    {
+        ClearEntities();
     }
 
     private void GenerateMyCharacter()

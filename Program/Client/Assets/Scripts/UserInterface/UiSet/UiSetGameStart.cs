@@ -15,10 +15,10 @@ public class UiSetGameStart : UiSet
 
         NetworkManager.Instance.StartByClient();
 
-        if(NetworkManager.Instance.isAtStartup == false)
-            GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
-        else
-            Debug.LogError("NetworkManager is not startup.");
+        //if(NetworkManager.Instance.isAtStartup == false)
+        //    GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
+        //else
+        //    Debug.LogError("NetworkManager is not startup.");
     }
 
     // Use this for initialization

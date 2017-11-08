@@ -11,7 +11,6 @@ public class UiSetControlPanelSelectMode : UiSet
 
     public void OnClickStartByServer()
     {
-        NetworkManager.Instance.mode = NetworkManager.eMode.Server;
         NetworkManager.Instance.StartByServer();
 
         if(NetworkManager.Instance.isAtStartup == false)

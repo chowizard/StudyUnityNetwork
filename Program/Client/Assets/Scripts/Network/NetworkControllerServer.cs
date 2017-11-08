@@ -56,13 +56,14 @@ public sealed class NetworkControllerServer
     {
         AddConnection(networkMessage.conn);
 
-
+        #region Log
         string logText = string.Format("Connected from client. Address = {0})", networkMessage.conn.address);
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
 
         networkManager.message = logText;
+        #endregion
     }
 
     public void OnDisconnected(NetworkMessage networkMessage)
@@ -72,39 +73,42 @@ public sealed class NetworkControllerServer
 
         RemoveConnection(networkMessage.conn.connectionId);
 
-
+        #region Log
         string logText = string.Format("Client was disconnected. Address = {0})", networkMessage.conn.address);
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
 
         networkManager.message = logText;
+        #endregion
     }
 
     public void OnReady(NetworkMessage networkMessage)
     {
         NetworkServer.SetClientReady(networkMessage.conn);
 
-
+        #region Log
         string logText = "Client is ready : " + networkMessage.conn.connectionId;
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
 
         networkManager.message = logText;
+        #endregion
     }
 
     public void OnNotReady(NetworkMessage networkMessage)
     {
         NetworkServer.SetClientNotReady(networkMessage.conn);
 
-
+        #region Log
         string logText = "Client is not ready : " + networkMessage.conn.connectionId;
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.LogError(logText);
 
         networkManager.message = logText;
+        #endregion
     }
 
     public void OnAddPlayer(NetworkMessage networkMessage)
@@ -116,13 +120,14 @@ public sealed class NetworkControllerServer
         NetworkIdentity networkIdentity = playerCharacter.GetComponent<NetworkIdentity>();
         networkIdentity.AssignClientAuthority(networkMessage.conn);
 
-
+        #region Log
         string logText = string.Format("Add player. (Player Controller ID : {0})", targetMessage.playerControllerId);
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
 
         networkManager.message = logText;
+        #endregion
     }
 
     public void OnRemovePlayer(NetworkMessage networkMessage)
@@ -132,32 +137,38 @@ public sealed class NetworkControllerServer
         networkManager.UnregisterPlayerCharacter(networkMessage.conn.connectionId);
         NetworkServer.DestroyPlayersForConnection(networkMessage.conn);
 
+        #region Log
         string logText = string.Format("Remove player. (Player Controller ID : {0})", targetMessage.playerControllerId);
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
 
         networkManager.message = logText;
+        #endregion
     }
 
     public void OnObjectSpawn(NetworkMessage networkMessage)
     {
+        #region Log
         string logText = string.Format("Object was spawned.");
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
 
         networkManager.message = logText;
+        #endregion
     }
 
     public void OnObjectSpawnScene(NetworkMessage networkMessage)
     {
+        #region Log
         string logText = string.Format("Scene object was spawned.");
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
 
         networkManager.message = logText;
+        #endregion
     }
     #endregion
 

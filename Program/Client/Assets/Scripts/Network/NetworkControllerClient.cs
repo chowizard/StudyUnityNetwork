@@ -68,42 +68,58 @@ public sealed class NetworkControllerClient
         if(!ClientScene.ready)
             ClientScene.Ready(netClient.connection);
 
+        if(!ClientScene.ready)
+            return;
+
+        GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
+
+        #region Log
         string logText = string.Format("Connected to server. Address = {0})", networkMessage.conn.address);
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
 
         networkManager.message = logText;
+        #endregion
     }
 
     public void OnDisconnected(NetworkMessage networkMessage)
     {
+        NetworkManager.Instance.Terminate();
+        GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.Intro);
+
+        #region Log
         string logText = string.Format("Disconnected from server. Address = {0})", networkMessage.conn.address);
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
 
         networkManager.message = logText;
+        #endregion
     }
 
     public void OnReady(NetworkMessage networkMessage)
     {
+        #region Log
         string logText = "ready to send message to server.";
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.Log(logText);
 
         networkManager.message = logText;
+        #endregion
     }
 
     public void OnNotReady(NetworkMessage networkMessage)
     {
+        #region Log
         string logText = "Not ready to send message to server.";
         logText += "\n[Connection] : " + networkMessage.conn;
         logText += "\n[Message Type] : " + networkMessage.msgType;
         Debug.LogError(logText);
 
         networkManager.message = logText;
+        #endregion
     }
     #endregion
 

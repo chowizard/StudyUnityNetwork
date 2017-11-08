@@ -43,7 +43,7 @@ public class NetworkManager : MonoBehaviour
 
     public void Terminate()
     {
-        if(isAtStartup == false)
+        if(isAtStartup == true)
             return;
 
         switch(mode)
@@ -57,7 +57,6 @@ public class NetworkManager : MonoBehaviour
             break;
         }
 
-        mode = eMode.None;
         isAtStartup = true;
     }
 
@@ -72,8 +71,8 @@ public class NetworkManager : MonoBehaviour
 
         serverController.Setup();
 
-        isAtStartup = false;
         mode = eMode.Server;
+        isAtStartup = false;
         message = "Setup server.";
     }
 
@@ -88,8 +87,8 @@ public class NetworkManager : MonoBehaviour
 
         clientController.Setup();
 
-        isAtStartup = false;
         mode = eMode.Client;
+        isAtStartup = false;
         message = "Setup client.";
     }
 

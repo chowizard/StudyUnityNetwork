@@ -25,6 +25,19 @@ public class EntityManager : MonoBehaviour
         }
     }
 
+    public void Clear()
+    {
+        foreach(var pair in entities)
+        {
+            CharacterEntity entity = pair.Value;
+            if(entity == null)
+                continue;
+
+            DestroyEntity(entity);
+        }
+        entities.Clear();
+    }
+
     public bool DestroyEntity(CharacterEntity entity)
     {
         if(entity == null)
