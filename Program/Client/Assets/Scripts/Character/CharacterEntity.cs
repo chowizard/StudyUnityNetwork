@@ -14,6 +14,9 @@ public class CharacterEntity : NetworkBehaviour
 
     public CharacterEntityProperty property;
 
+    public GameObject model;
+    public GameObject sensor;
+
     /* 최종 목료가 될 위치 */
     public Vector3 destinationPosition;
 
@@ -101,7 +104,7 @@ public class CharacterEntity : NetworkBehaviour
         GameManager.Singleton.mainCamera.followTarget = gameObject;
         GameManager.Singleton.mainCamera.isFollowTarget = true;
 
-        GetComponent<MeshRenderer>().material.color = Color.red;
+        model.GetComponent<MeshRenderer>().material.color = Color.red;
     }
 
     public override void OnStartServer()
@@ -137,6 +140,9 @@ public class CharacterEntity : NetworkBehaviour
     // Use this for initialization
     private void Start()
     {
+        Debug.Assert(model != null);
+        Debug.Assert(sensor != null);
+
         destinationPosition = transform.position;
     }
 

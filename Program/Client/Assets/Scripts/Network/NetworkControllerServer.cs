@@ -19,9 +19,9 @@ public sealed class NetworkControllerServer
         mainScene = networkManager.transform.parent.GetComponent<GameManager>();
     }
 
-    public void Setup()
+    public bool Setup()
     {
-        SetupServer();
+        return SetupServer();
     }
 
     public void Terminate()
@@ -188,7 +188,7 @@ public sealed class NetworkControllerServer
         }
     }
 
-    private void SetupServer()
+    private bool SetupServer()
     {
         Terminate();
 
@@ -205,7 +205,7 @@ public sealed class NetworkControllerServer
         //NetworkServer.RegisterHandler(MsgType.ObjectSpawn, OnObjectSpawn);
         //NetworkServer.RegisterHandler(MsgType.ObjectSpawnScene, OnObjectSpawnScene);
 
-        NetworkServer.Listen(networkManager.port);
+        return NetworkServer.Listen(networkManager.port);
     }
 
     private void AddConnection(NetworkConnection connection)

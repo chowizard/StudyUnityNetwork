@@ -61,26 +61,29 @@ public class NetworkManager : MonoBehaviour
     }
 
     // Create a server and listen on a port
-    public void StartByServer()
+    public bool StartByServer()
     {
         if(isAtStartup == false)
-            return;
+            return false;
 
         if(serverController == null)
             serverController = new NetworkControllerServer(this);
 
-        serverController.Setup();
+        if(serverController.Setup() == false)
+            return false;
 
         mode = eMode.Server;
         isAtStartup = false;
         message = "Setup server.";
+
+        return true;
     }
 
     // Create a client and connect to the server port
-    public void StartByClient()
+    public bool StartByClient()
     {
         if(isAtStartup == false)
-            return;
+            return false;
 
         if(clientController == null)
             clientController = new NetworkControllerClient(this);
@@ -90,6 +93,8 @@ public class NetworkManager : MonoBehaviour
         mode = eMode.Client;
         isAtStartup = false;
         message = "Setup client.";
+
+        return true;
     }
 
     public CharacterEntity RegisterPlayerCharacter(int ownerNetConnectionId, short playerControllId)

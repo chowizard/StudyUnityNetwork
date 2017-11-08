@@ -18,9 +18,9 @@ public sealed class NetworkControllerClient
         sceneMain = networkManager.transform.parent.GetComponent<GameManager>();
     }
 
-    public void Setup()
+    public bool Setup()
     {
-        SetupClient();
+        return SetupClient();
     }
 
     public void Terminate()
@@ -123,7 +123,7 @@ public sealed class NetworkControllerClient
     }
     #endregion
 
-    private void SetupClient()
+    private bool SetupClient()
     {
         if(netClient == null)
         {
@@ -135,6 +135,16 @@ public sealed class NetworkControllerClient
             netClient.RegisterHandler(MsgType.NotReady, OnNotReady);
         }
 
-        netClient.Connect(networkManager.address, networkManager.port);
+        try
+        {
+            netClient.Connect(networkManager.address, networkManager.port);
+        }
+        catch(System.Exception exception)
+        {
+            Debug.LogException(exception);
+            return false;
+        }
+
+        return true;
     }
 }
