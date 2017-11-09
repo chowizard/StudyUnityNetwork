@@ -15,7 +15,6 @@ public class CharacterEntity : NetworkBehaviour
     public CharacterEntityProperty property;
 
     public GameObject model;
-    public GameObject sensor;
 
     /* 최종 목료가 될 위치 */
     public Vector3 destinationPosition;
@@ -141,7 +140,6 @@ public class CharacterEntity : NetworkBehaviour
     private void Start()
     {
         Debug.Assert(model != null);
-        Debug.Assert(sensor != null);
 
         destinationPosition = transform.position;
     }

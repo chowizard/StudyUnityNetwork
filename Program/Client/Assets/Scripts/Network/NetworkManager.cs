@@ -160,6 +160,34 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
+    public bool IsReadyByServer
+    {
+        get
+        {
+            if(mode != eMode.Server)
+                return false;
+
+            if(isAtStartup == true)
+                return false;
+
+            return true;
+        }
+    }
+
+    public bool IsReadyByClient
+    {
+        get
+        {
+            if(mode != eMode.Client)
+                return false;
+
+            if(isAtStartup == true)
+                return false;
+
+            return true;
+        }
+    }
+
     private void Awake()
     {
     }

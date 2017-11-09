@@ -9,7 +9,7 @@ using UnityNet.Client.Core;
 public class GameManager : MonoBehaviour
 {
     public NetworkManager.eMode modeStartAt = NetworkManager.eMode.None;
-    public int npcCount = 100;
+    public int initialNpcSpawningCount = 100;
 
     public CameraController mainCamera;
 

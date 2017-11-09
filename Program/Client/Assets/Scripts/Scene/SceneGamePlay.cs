@@ -10,9 +10,9 @@ public class SceneGamePlay : GameScene
 {
     private UiFrame uiFrameGamePlay;
 
-    public void SpawnNonPlayerCharacters()
+    public void SpawnNonPlayerCharacters(int spawningCount)
     {
-        for(int count = 0; count < GameManager.Singleton.npcCount; ++count)
+        for(int count = 0; count < spawningCount; ++count)
         {
             float positionX = Random.Range(-100.0f, 100.0f);
             float positionZ = Random.Range(-100.0f, 100.0f);
@@ -48,7 +48,7 @@ public class SceneGamePlay : GameScene
         {
         case NetworkManager.eMode.Server:
             {
-                SpawnNonPlayerCharacters();
+                SpawnNonPlayerCharacters(GameManager.Singleton.initialNpcSpawningCount);
             }
             break;
 
