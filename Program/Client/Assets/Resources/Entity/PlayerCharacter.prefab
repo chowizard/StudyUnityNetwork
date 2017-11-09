@@ -220,7 +220,6 @@ MonoBehaviour:
   property:
     isPlayer: 1
   model: {fileID: 1331452213942746}
-  sensor: {fileID: 0}
   destinationPosition: {x: 0, y: 0, z: 0}
   moveSpeed: 10
 --- !u!114 &114840146952577844
