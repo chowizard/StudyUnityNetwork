@@ -23,10 +23,13 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
 
     public float positionThreshold = 0.01f;
     public float positionInterpolationFactor = 0.01f;
+    private float elapsedTimeReceivedPosition;
+    //private float interpolationRatio;
 
     public eRotationAxis rotationAxis = eRotationAxis.XYZ;
     public float rotationThresholdEulerAngle = 0.01f;
     public float rotationInterpolationFactor = 0.01f;
+    private float elapsedTimeReceivedRotation;
 
     [SyncVar]
     private Vector3 position;
@@ -55,16 +58,18 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
     {
         position = transform.position;
         rotationEulerAngles = transform.localEulerAngles;
+
+        positionInterpolationFactor = GetComponent<CharacterEntity>().moveSpeed;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if(isLocalPlayer == true)
-            return;
-
-        UpdateInterpolatePosition();
-        UpdateInterpolateRotation();
+        if(hasAuthority == false)
+        {
+            UpdateInterpolatePosition();
+            UpdateInterpolateRotation();
+        }
     }
 
     private void FixedUpdate()
@@ -126,18 +131,28 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
 
     private void UpdateInterpolatePosition()
     {
+        elapsedTimeReceivedPosition += Time.deltaTime;
+
         Vector3 previousPosition = transform.position;
-        float delta = positionInterpolationFactor * Time.deltaTime;
+        float delta = positionInterpolationFactor * elapsedTimeReceivedPosition;
 
         transform.position = Vector3.Lerp(previousPosition, position, delta);
+        //transform.position = position;
     }
 
     private void UpdateInterpolateRotation()
     {
+        elapsedTimeReceivedRotation += Time.deltaTime;
+
         Quaternion nowRotation = Quaternion.Euler(rotationEulerAngles);
-        float delta = rotationInterpolationFactor * Time.deltaTime;
+        float delta;
+        if(rotationInterpolationFactor <= 0.0f)
+            delta = 1.0f;
+        else
+            delta = rotationInterpolationFactor * elapsedTimeReceivedRotation;
 
         transform.rotation = Quaternion.Lerp(transform.rotation, nowRotation, delta);
+        //transform.rotation = nowRotation;
     }
 
     [Command(channel = Channels.DefaultUnreliable)]
@@ -163,19 +178,24 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
     private void RpcMovePosition(Vector3 position)
     {
         this.position = position;
+        elapsedTimeReceivedPosition = 0.0f;
     }
 
     [ClientRpc(channel = Channels.DefaultUnreliable)]
     private void RpcMoveRotation(Vector3 rotationEulerAngles)
     {
         this.rotationEulerAngles = rotationEulerAngles;
+        elapsedTimeReceivedRotation = 0.0f;
     }
 
     [ClientRpc(channel = Channels.DefaultUnreliable)]
     private void RpcMoveTransform(Vector3 position, Vector3 rotationEulerAngles)
     {
         this.position = position;
+        elapsedTimeReceivedPosition = 0.0f;
+
         this.rotationEulerAngles = rotationEulerAngles;
+        elapsedTimeReceivedRotation = 0.0f;
     }
 
     private bool IsPositionChanged

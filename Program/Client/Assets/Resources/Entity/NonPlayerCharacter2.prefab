@@ -143,10 +143,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sendRate: 5
-  positionThreshold: 0.01
+  positionThreshold: 0.2
   positionInterpolationFactor: 1
   rotationAxis: 7
-  rotationThresholdEulerAngle: 0.01
+  rotationThresholdEulerAngle: 0.1
   rotationInterpolationFactor: 1
 --- !u!114 &114722044546307236
 MonoBehaviour:

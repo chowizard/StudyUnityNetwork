@@ -244,7 +244,7 @@ Prefab:
     - target: {fileID: 114553981418331146, guid: 1a6b606490914854dbbd39291f0f5d04,
         type: 2}
       propertyPath: initialNpcSpawningCount
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1a6b606490914854dbbd39291f0f5d04, type: 2}
