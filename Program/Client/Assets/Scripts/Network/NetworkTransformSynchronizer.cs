@@ -60,6 +60,7 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
         rotationEulerAngles = transform.localEulerAngles;
 
         positionInterpolationFactor = GetComponent<CharacterEntity>().moveSpeed;
+        //positionInterpolationFactor = 1.0f;
     }
 
     // Update is called once per frame
@@ -131,19 +132,26 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
 
     private void UpdateInterpolatePosition()
     {
-        elapsedTimeReceivedPosition += Time.deltaTime;
-
         Vector3 previousPosition = transform.position;
         float delta = positionInterpolationFactor * elapsedTimeReceivedPosition;
 
+        //float distanceSqr2 = Vector3.SqrMagnitude(position - previousPosition);
+        //if(distanceSqr2 >= delta * delta)
+        //{
+        //    transform.position = position;
+        //}
+        //else
+        //{
+        //    transform.position = Vector3.Lerp(previousPosition, position, delta);
+        //}
+
         transform.position = Vector3.Lerp(previousPosition, position, delta);
-        //transform.position = position;
+
+        elapsedTimeReceivedPosition += Time.deltaTime;
     }
 
     private void UpdateInterpolateRotation()
     {
-        elapsedTimeReceivedRotation += Time.deltaTime;
-
         Quaternion nowRotation = Quaternion.Euler(rotationEulerAngles);
         float delta;
         if(rotationInterpolationFactor <= 0.0f)
@@ -152,21 +160,25 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
             delta = rotationInterpolationFactor * elapsedTimeReceivedRotation;
 
         transform.rotation = Quaternion.Lerp(transform.rotation, nowRotation, delta);
-        //transform.rotation = nowRotation;
+
+        elapsedTimeReceivedRotation += Time.deltaTime;
     }
 
+    //[Command(channel = Channels.DefaultReliable)]
     [Command(channel = Channels.DefaultUnreliable)]
     private void CmdMovePosition(Vector3 position)
     {
         this.position = position;
     }
 
+    //[Command(channel = Channels.DefaultReliable)]
     [Command(channel = Channels.DefaultUnreliable)]
     private void CmdMoveRotation(Vector3 rotationEulerAngles)
     {
         this.rotationEulerAngles = rotationEulerAngles;
     }
 
+    //[Command(channel = Channels.DefaultReliable)]
     [Command(channel = Channels.DefaultUnreliable)]
     private void CmdMoveTransform(Vector3 position, Vector3 rotationEulerAngles)
     {
