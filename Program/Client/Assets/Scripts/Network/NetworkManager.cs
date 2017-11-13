@@ -210,6 +210,8 @@ public class NetworkManager : MonoBehaviour
         if(connectionConfiguration == null)
             connectionConfiguration = new ConnectionConfig();
 
+        connectionConfiguration.PingTimeout = 500;
+        connectionConfiguration.DisconnectTimeout = 2000;
         //connectionConfiguration.AddChannel(QosType.Reliable);
     }
 
@@ -217,8 +219,8 @@ public class NetworkManager : MonoBehaviour
     {
         ClearSpawningPrefab();
 
-        RegisterSpawningPrefab(Defines.SpawningPrefab.PlayerCharacter, "Entity/PlayerCharacter");
-        RegisterSpawningPrefab(Defines.SpawningPrefab.NonPlayerCharacter, "Entity/NonPlayerCharacter");
+        RegisterSpawningPrefab(Defines.SpawningPrefab.PlayerCharacter, "Entity/PlayerCharacter2");
+        RegisterSpawningPrefab(Defines.SpawningPrefab.NonPlayerCharacter, "Entity/NonPlayerCharacter2");
         RegisterSpawningPrefab(Defines.SpawningPrefab.Bullet, "Entity/Bullet");
     }
 
