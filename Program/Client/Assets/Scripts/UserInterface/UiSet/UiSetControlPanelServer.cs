@@ -102,24 +102,24 @@ public class UiSetControlPanelServer : UiSet
         {
             npcSendRate = (int)uiSliderNpcSendRate.value;
 
-            //CharacterEntity[] entities = EntityManager.Instance.Entities;
-            //if(entities != null)
-            //{
-            //    foreach(CharacterEntity characterEntity in entities)
-            //    {
-            //        if(characterEntity == null)
-            //            continue;
+            CharacterEntity[] entities = EntityManager.Instance.Entities;
+            if(entities != null)
+            {
+                foreach(CharacterEntity characterEntity in entities)
+                {
+                    if(characterEntity == null)
+                        continue;
 
-            //        if(characterEntity.property.isPlayer == true)
-            //            continue;
+                    if(characterEntity.property.isPlayer == true)
+                        continue;
 
-            //        NetworkTransform networkTransform = characterEntity.GetComponent<NetworkTransform>();
-            //        if(networkTransform == null)
-            //            continue;
+                    NetworkTransformSynchronizer networkTransformSync = characterEntity.GetComponent<NetworkTransformSynchronizer>();
+                    if(networkTransformSync == null)
+                        continue;
 
-            //        //networkTransform.
-            //    }
-            //}
+                    networkTransformSync.sendRate = npcSendRate;
+                }
+            }
 
             uiTextNpcSendRate.text = string.Format("NPC Network Send Rate : {0} per seconds.", npcSendRate);
         }
@@ -130,6 +130,26 @@ public class UiSetControlPanelServer : UiSet
         if(uiSliderNpcMovementThreshold.value != npcMovementThreshold)
         {
             npcMovementThreshold = uiSliderNpcMovementThreshold.value;
+
+            CharacterEntity[] entities = EntityManager.Instance.Entities;
+            if(entities != null)
+            {
+                foreach(CharacterEntity characterEntity in entities)
+                {
+                    if(characterEntity == null)
+                        continue;
+
+                    if(characterEntity.property.isPlayer == true)
+                        continue;
+
+                    NetworkTransformSynchronizer networkTransformSync = characterEntity.GetComponent<NetworkTransformSynchronizer>();
+                    if(networkTransformSync == null)
+                        continue;
+
+                    networkTransformSync.positionThreshold = npcMovementThreshold;
+                }
+            }
+
             uiTextNpcMovementThreshold.text = string.Format("NPC Network Movement Threshold : {0}", npcMovementThreshold);
         }
     }
@@ -148,6 +168,26 @@ public class UiSetControlPanelServer : UiSet
         if(uiSliderNpcInterpolateMovementFactor.value != npcInterpolateMovementFactor)
         {
             npcInterpolateMovementFactor = uiSliderNpcInterpolateMovementFactor.value;
+
+            CharacterEntity[] entities = EntityManager.Instance.Entities;
+            if(entities != null)
+            {
+                foreach(CharacterEntity characterEntity in entities)
+                {
+                    if(characterEntity == null)
+                        continue;
+
+                    if(characterEntity.property.isPlayer == true)
+                        continue;
+
+                    NetworkTransformSynchronizer networkTransformSync = characterEntity.GetComponent<NetworkTransformSynchronizer>();
+                    if(networkTransformSync == null)
+                        continue;
+
+                    networkTransformSync.positionInterpolationFactor = npcInterpolateMovementFactor;
+                }
+            }
+
             uiTextNpcInterpolateMovementFactor.text = string.Format("NPC Network Interpolate Movement Factor : {0}", npcInterpolateMovementFactor);
         }
     }
