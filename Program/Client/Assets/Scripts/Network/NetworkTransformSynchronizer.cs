@@ -23,12 +23,14 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
 
     public float positionThreshold = 0.01f;
     public float positionInterpolationFactor = 0.01f;
+    public float positionSnapThreshold = 1.0f;
     private float elapsedTimeReceivedPosition;
     //private float interpolationRatio;
 
     public eRotationAxis rotationAxis = eRotationAxis.XYZ;
-    public float rotationThresholdEulerAngle = 0.01f;
+    public float rotationThreshold = 0.01f;
     public float rotationInterpolationFactor = 0.01f;
+    public float rotationSnapThreshold = 1.0f;
     private float elapsedTimeReceivedRotation;
 
     [SyncVar]
@@ -51,6 +53,10 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
             base.GetNetworkSendInterval();
 
         return sendInterval;
+    }
+
+    public override void OnNetworkDestroy()
+    {
     }
 
     // Use this for initialization
@@ -133,17 +139,13 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
     private void UpdateInterpolatePosition()
     {
         Vector3 previousPosition = transform.position;
-        float delta = positionInterpolationFactor * elapsedTimeReceivedPosition;
+        float distanceSqr2 = Vector3.SqrMagnitude(position - previousPosition);
 
-        //float distanceSqr2 = Vector3.SqrMagnitude(position - previousPosition);
-        //if(distanceSqr2 >= delta * delta)
-        //{
-        //    transform.position = position;
-        //}
-        //else
-        //{
-        //    transform.position = Vector3.Lerp(previousPosition, position, delta);
-        //}
+        float delta;
+        if(distanceSqr2 >= positionSnapThreshold * positionSnapThreshold)
+            delta = 1.0f;
+        else
+            delta = positionInterpolationFactor * elapsedTimeReceivedPosition;
 
         transform.position = Vector3.Lerp(previousPosition, position, delta);
 
@@ -153,11 +155,18 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
     private void UpdateInterpolateRotation()
     {
         Quaternion nowRotation = Quaternion.Euler(rotationEulerAngles);
+        float distanceSqr2 = Vector3.SqrMagnitude(rotationEulerAngles - transform.localEulerAngles);
+
         float delta;
-        if(rotationInterpolationFactor <= 0.0f)
+        if((rotationInterpolationFactor <= 0.0f) ||
+           (distanceSqr2 >= rotationSnapThreshold * rotationSnapThreshold))
+        {
             delta = 1.0f;
+        }
         else
+        {
             delta = rotationInterpolationFactor * elapsedTimeReceivedRotation;
+        }
 
         transform.rotation = Quaternion.Lerp(transform.rotation, nowRotation, delta);
 
@@ -224,7 +233,7 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
     {
         get
         {
-            float rotationThresholdEulerAngleSqr2 = rotationThresholdEulerAngle * rotationThresholdEulerAngle;
+            float rotationThresholdEulerAngleSqr2 = rotationThreshold * rotationThreshold;
             float distanceSqr2 = Vector3.SqrMagnitude(transform.localEulerAngles - rotationEulerAngles);
             return (distanceSqr2 > rotationThresholdEulerAngleSqr2) ? true : false;
         }

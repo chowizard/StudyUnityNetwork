@@ -8,8 +8,13 @@ public abstract class CharacterComponentAi : CharacterComponent
     public enum eAiState
     {
         Idle = 0,
-        Move
+        Move,
+        Rotate,
     }
+
+    public const int AiStateMinimum = (int)eAiState.Idle;
+    public const int AiStateMaximum = (int)eAiState.Rotate;
+    public const int AiStateSize = AiStateMaximum + 1;
 
     public eAiState aiState = eAiState.Idle;
 

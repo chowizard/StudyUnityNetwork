@@ -12,6 +12,7 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
     private bool enableNewCommand;
 
     private Vector3 startPosition;
+    private Quaternion startRotation;
 
     // Use this for initialization
     protected override void Start()
@@ -52,10 +53,35 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
     {
         if(enableNewCommand)
         {
-            float positionX = Random.Range(enableMoveBoundary.xMin, enableMoveBoundary.xMax);
-            float positionZ = Random.Range(enableMoveBoundary.yMin, enableMoveBoundary.yMax);
+            int random = Random.Range(AiStateMinimum, AiStateSize);
 
-            CommandMove(new Vector3(positionX, transform.position.y, positionZ));
+            switch((eAiState)random)
+            {
+            case eAiState.Idle:
+                {
+                    CommandIdle();
+                }
+                break;
+
+            case eAiState.Move:
+                {
+                    float positionX = Random.Range(enableMoveBoundary.xMin, enableMoveBoundary.xMax);
+                    float positionZ = Random.Range(enableMoveBoundary.yMin, enableMoveBoundary.yMax);
+
+                    CommandMove(new Vector3(positionX, transform.position.y, positionZ));
+                }
+                break;
+
+            case eAiState.Rotate:
+                {
+                    float angle = Random.Range(0.0f, 360.0f);
+                    Quaternion rotation = Quaternion.AngleAxis(angle, owner.transform.localEulerAngles);
+
+                    CommandRotate(rotation);
+                }
+                break;
+            }
+
             elapsedCommandTime = 0.0f;
         }
     }
@@ -71,7 +97,16 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
         case eAiState.Move:
             UpdateAiStateMove();
             break;
+
+        case eAiState.Rotate:
+            UpdateAiStateRotate();
+            break;
         }
+    }
+
+    private void CommandIdle()
+    {
+        owner.GetCharacterComponent<CharacterComponentMove>().Stop();
     }
 
     private void CommandMove(Vector3 targetPosition)
@@ -80,6 +115,16 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
         owner.destinationPosition = targetPosition;
 
         aiState = eAiState.Move;
+    }
+
+    private void CommandRotate(Quaternion targetRotation)
+    {
+        startRotation = owner.transform.rotation;
+        owner.destinationRotation = targetRotation;
+
+        owner.GetCharacterComponent<CharacterComponentMove>().Rotate(owner.destinationRotation);
+
+        aiState = eAiState.Rotate;
     }
 
     private void UpdateAiStateIdle()
@@ -104,6 +149,16 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
         {
             Vector3 distanceMeToDest = owner.destinationPosition - owner.transform.position;
             owner.GetComponent<CharacterComponentMove>().Move(distanceMeToDest.normalized);
+        }
+    }
+
+    private void UpdateAiStateRotate()
+    {
+        float delta = Quaternion.Angle(transform.rotation, owner.destinationRotation);
+        if(Mathf.Abs(delta) <= 0.001f)
+        {
+            owner.transform.rotation = owner.destinationRotation;
+            aiState = eAiState.Idle;
         }
     }
 }
