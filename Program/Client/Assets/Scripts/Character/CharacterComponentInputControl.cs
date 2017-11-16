@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+[DisallowMultipleComponent]
 public class CharacterComponentInputControl : CharacterComponent
 {
 

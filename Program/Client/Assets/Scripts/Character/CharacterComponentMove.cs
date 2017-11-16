@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class CharacterComponentMove : CharacterComponent
 {
     private Quaternion targetRotation;

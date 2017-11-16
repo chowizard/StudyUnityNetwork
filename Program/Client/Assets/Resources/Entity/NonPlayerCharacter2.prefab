@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncType: 1
-  sendRate: 0
+  sendRate: 5
   channel: 1
   positionThreshold: 0.2
   positionInterpolationFactor: 1

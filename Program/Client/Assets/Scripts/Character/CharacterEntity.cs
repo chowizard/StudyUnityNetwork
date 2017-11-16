@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 
 using UnityNet.Client.Character;
 
+[DisallowMultipleComponent]
 public class CharacterEntity : NetworkBehaviour
 {
     public int ownerNetConnectionId;
@@ -26,6 +27,8 @@ public class CharacterEntity : NetworkBehaviour
 
     /* 전체 컴포넌트 목록 */
     private Dictionary<System.Type, CharacterComponent> components = new Dictionary<System.Type, CharacterComponent>();
+
+    private float elapsedTimeToCheckSyncDiatance;
 
     public ClassType AddCharacterComponent<ClassType>() where ClassType : CharacterComponent
     {
@@ -136,7 +139,7 @@ public class CharacterEntity : NetworkBehaviour
 
     private void Awake()
     {
-        property = new CharacterEntityProperty();
+        //property = new CharacterEntityProperty();
     }
 
     // Use this for initialization
@@ -147,14 +150,68 @@ public class CharacterEntity : NetworkBehaviour
         destinationPosition = transform.position;
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
+        if(isServer == true)
+        {
+            if(elapsedTimeToCheckSyncDiatance >= NetworkManager.Instance.checkSyncDiatanceInterval)
+            {
+                UpdateSyncDistance();
+                elapsedTimeToCheckSyncDiatance = 0.0f;
+            }
+            else
+            {
+                elapsedTimeToCheckSyncDiatance += Time.fixedDeltaTime;
+            }
+        }
+    }
 
+    private void OnDrawGizmosSelected()
+    {
+        if(property.isPlayer == true)
+        {
+            Gizmos.color = new Color(0.0f, 8.0f, 0.1f);
+            Gizmos.DrawWireSphere(transform.position, NetworkManager.Instance.enableToSyncDistance);
+        }
     }
 
     private void OnDestroy()
     {
         EntityManager.Instance.RemoveEntity(netId.Value);
+    }
+
+    [Server]
+    private void UpdateSyncDistance()
+    {
+        NetworkTransformSynchronizer synchronizar = GetComponent<NetworkTransformSynchronizer>();
+        if(synchronizar == null)
+            return;
+
+        if(EntityManager.Instance.PlayerCount <= 0)
+            return;
+
+        bool enableToSync = false;
+
+        CharacterEntity[] players = EntityManager.Instance.Players;
+        foreach(CharacterEntity player in players)
+        {
+            if(player == null)
+                continue;
+
+            Vector3 myPosition = transform.position;
+            Vector3 playerPosition = player.transform.position;
+            float distanceSqr2 = Vector3.SqrMagnitude(playerPosition - myPosition);
+            float enableToSyncDistanceSqr2 = NetworkManager.Instance.enableToSyncDistance * NetworkManager.Instance.enableToSyncDistance;
+
+            if(distanceSqr2 <= enableToSyncDistanceSqr2)
+            {
+                enableToSync = true;
+                break;
+            }
+        }
+
+        if(synchronizar.enabled != enableToSync)
+            synchronizar.enabled = enableToSync;
+
     }
 }

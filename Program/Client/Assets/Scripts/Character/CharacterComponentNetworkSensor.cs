@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class CharacterComponentNetworkSensor : CharacterComponent
 {
     public enum eSensorLevel

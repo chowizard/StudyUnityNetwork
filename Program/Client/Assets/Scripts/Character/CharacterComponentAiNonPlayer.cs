@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class CharacterComponentAiNonPlayer : CharacterComponentAi
 {
     public float commandIntervalSeconds = 3.0f;

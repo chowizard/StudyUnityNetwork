@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class CharacterComponentAction : CharacterComponent
 {
     // Use this for initialization

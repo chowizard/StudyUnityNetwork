@@ -23,6 +23,10 @@ public class NetworkManager : MonoBehaviour
     public bool isAtStartup = true;
     public eMode mode = eMode.None;
 
+    [Space]
+    public float enableToSyncDistance = 5.0f;
+    public float checkSyncDiatanceInterval = 1.0f;
+
     public Dictionary<string, GameObject> spawningPrefabs = new Dictionary<string, GameObject>();
 
     private ConnectionConfig connectionConfiguration;
@@ -186,10 +190,6 @@ public class NetworkManager : MonoBehaviour
 
             return true;
         }
-    }
-
-    private void Awake()
-    {
     }
 
     private void Start()
