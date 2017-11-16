@@ -142,12 +142,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1716c0eab9d66a241b7ca68f71cc2634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sendRate: 5
+  syncType: 1
+  sendRate: 0
+  channel: 1
   positionThreshold: 0.2
   positionInterpolationFactor: 1
+  positionSnapThreshold: 1
   rotationAxis: 7
-  rotationThresholdEulerAngle: 0.1
+  rotationThreshold: 0.01
   rotationInterpolationFactor: 1
+  rotationSnapThreshold: 1
 --- !u!114 &114722044546307236
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -161,6 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   owner: {fileID: 114923807747402844}
+  isStartedRotation: 0
 --- !u!114 &114779810632250774
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -245,6 +250,8 @@ MonoBehaviour:
   model: {fileID: 1590283730044926}
   destinationPosition: {x: 0, y: 0, z: 0}
   moveSpeed: 10
+  destinationRotation: {x: 0, y: 0, z: 0, w: 0}
+  rotationSpeed: 0
 --- !u!114 &114992534961798170
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -6,6 +6,15 @@ using UnityEngine.Networking;
 
 public class NetworkTransformSynchronizer : NetworkBehaviour
 {
+    public enum eSyncType
+    {
+        None = 0,
+
+        Transform,
+        Rigidbody2D,
+        Rigidbody3D
+    }
+
     public enum eRotationAxis
     {
         None = 0,
@@ -19,18 +28,34 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
         XYZ
     }
 
+    public eSyncType syncType = eSyncType.Transform;
+    [Range(min: 1, max: 30)]
     public int sendRate;
+    public int channel = Channels.DefaultUnreliable;
 
+    [Range(min: 0.0f, max: 100.0f)]
     public float positionThreshold = 0.01f;
+
+    [Range(min: 0.01f, max: 100.0f)]
     public float positionInterpolationFactor = 0.01f;
+
+    [Range(min: 0.01f, max: 100.0f)]
     public float positionSnapThreshold = 1.0f;
+
     private float elapsedTimeReceivedPosition;
     //private float interpolationRatio;
 
     public eRotationAxis rotationAxis = eRotationAxis.XYZ;
+
+    [Range(min: 0.0f, max: 360.0f)]
     public float rotationThreshold = 0.01f;
+
+    [Range(min: 0.01f, max: 100.0f)]
     public float rotationInterpolationFactor = 0.01f;
+
+    [Range(min: 0.01f, max: 360.0f)]
     public float rotationSnapThreshold = 1.0f;
+
     private float elapsedTimeReceivedRotation;
 
     [SyncVar]
@@ -41,7 +66,7 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
 
     public override int GetNetworkChannel()
     {
-        return Channels.DefaultUnreliable;
+        return channel;
     }
 
     public override float GetNetworkSendInterval()
@@ -50,7 +75,7 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
         if(sendRate > 0)
             sendInterval = 1.0f / (float)sendRate;
         else
-            base.GetNetworkSendInterval();
+            sendInterval = base.GetNetworkSendInterval();
 
         return sendInterval;
     }
@@ -72,6 +97,8 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
     // Update is called once per frame
     private void Update()
     {
+        UpdateSynchonizationType();
+
         if(hasAuthority == false)
         {
             UpdateInterpolatePosition();
@@ -136,6 +163,40 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
         }
     }
 
+    private void UpdateSynchonizationType()
+    {
+        switch(syncType)
+        {
+        case eSyncType.None:
+            {
+                if(enabled == true)
+                    enabled = false;
+            }
+            break;
+
+        case eSyncType.Transform:
+            {
+                if(enabled == false)
+                    enabled = true;
+            }
+            break;
+
+        case eSyncType.Rigidbody2D:
+            {
+                if(enabled == false)
+                    enabled = true;
+            }
+            break;
+
+        case eSyncType.Rigidbody3D:
+            {
+                if(enabled == false)
+                    enabled = true;
+            }
+            break;
+        }
+    }
+
     private void UpdateInterpolatePosition()
     {
         Vector3 previousPosition = transform.position;
@@ -173,43 +234,40 @@ public class NetworkTransformSynchronizer : NetworkBehaviour
         elapsedTimeReceivedRotation += Time.deltaTime;
     }
 
-    //[Command(channel = Channels.DefaultReliable)]
-    [Command(channel = Channels.DefaultUnreliable)]
+    [Command]
     private void CmdMovePosition(Vector3 position)
     {
         this.position = position;
     }
 
-    //[Command(channel = Channels.DefaultReliable)]
-    [Command(channel = Channels.DefaultUnreliable)]
+    [Command]
     private void CmdMoveRotation(Vector3 rotationEulerAngles)
     {
         this.rotationEulerAngles = rotationEulerAngles;
     }
 
-    //[Command(channel = Channels.DefaultReliable)]
-    [Command(channel = Channels.DefaultUnreliable)]
+    [Command]
     private void CmdMoveTransform(Vector3 position, Vector3 rotationEulerAngles)
     {
         this.position = position;
         this.rotationEulerAngles = rotationEulerAngles;
     }
 
-    [ClientRpc(channel = Channels.DefaultUnreliable)]
+    [ClientRpc]
     private void RpcMovePosition(Vector3 position)
     {
         this.position = position;
         elapsedTimeReceivedPosition = 0.0f;
     }
 
-    [ClientRpc(channel = Channels.DefaultUnreliable)]
+    [ClientRpc]
     private void RpcMoveRotation(Vector3 rotationEulerAngles)
     {
         this.rotationEulerAngles = rotationEulerAngles;
         elapsedTimeReceivedRotation = 0.0f;
     }
 
-    [ClientRpc(channel = Channels.DefaultUnreliable)]
+    [ClientRpc]
     private void RpcMoveTransform(Vector3 position, Vector3 rotationEulerAngles)
     {
         this.position = position;
