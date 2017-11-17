@@ -12,6 +12,8 @@ public class EntityManager : MonoBehaviour
 
 
     private Dictionary<uint, CharacterEntity> entities = new Dictionary<uint, CharacterEntity>();
+    //private Dictionary<uint, CharacterEntity> playerCharacters = new Dictionary<uint, CharacterEntity>();
+    //private Dictionary<uint, CharacterEntity> nonPlayerCharacters = new Dictionary<uint, CharacterEntity>();
 
     private IdGenerator npcIdGenerator = new IdGenerator(NpcIdSeed);
 

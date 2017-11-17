@@ -34,6 +34,8 @@ public class NetworkManager : MonoBehaviour
     private NetworkControllerServer serverController;
     private NetworkControllerClient clientController;
 
+    private float elapsedTimeToCheckSyncDiatance;
+
     [HideInInspector]
     public string message;
 
@@ -205,6 +207,22 @@ public class NetworkManager : MonoBehaviour
             Terminate();
     }
 
+    private void FixedUpdate()
+    {
+        if(mode == eMode.Server)
+        {
+            if(elapsedTimeToCheckSyncDiatance >= NetworkManager.Instance.checkSyncDiatanceInterval)
+            {
+                UpdateSyncDistance();
+                elapsedTimeToCheckSyncDiatance = 0.0f;
+            }
+            else
+            {
+                elapsedTimeToCheckSyncDiatance += Time.fixedDeltaTime;
+            }
+        }
+    }
+
     private void SetupConnectionConfiguration()
     {
         if(connectionConfiguration == null)
@@ -295,5 +313,55 @@ public class NetworkManager : MonoBehaviour
 
         GameObject data;
         return spawningPrefabs.TryGetValue(keyName, out data) ? data : null;
+    }
+
+    private void UpdateSyncDistance()
+    {
+        if(EntityManager.Instance.EntityCount <= 0)
+            return;
+
+        if(EntityManager.Instance.PlayerCount <= 0)
+            return;
+
+        int syncCharactersCount = 0;
+        CharacterEntity[] characters = EntityManager.Instance.Entities;
+        CharacterEntity[] playerCharacters = EntityManager.Instance.Players;
+        foreach(CharacterEntity character in characters)
+        {
+            if(character == null)
+                continue;
+
+            if(character.property.isPlayer == true)
+                continue;
+
+            NetworkTransformSynchronizer networkTransformSync = character.GetComponent<NetworkTransformSynchronizer>();
+            if(networkTransformSync == null)
+                continue;
+
+            bool enableToSync = false;
+
+            foreach(CharacterEntity player in playerCharacters)
+            {
+                if(player == null)
+                    continue;
+
+                Vector3 myPosition = character.transform.position;
+                Vector3 playerPosition = player.transform.position;
+                float distanceSqr2 = Vector3.SqrMagnitude(playerPosition - myPosition);
+                float enableToSyncDistanceSqr2 = enableToSyncDistance * enableToSyncDistance;
+
+                if(distanceSqr2 <= enableToSyncDistanceSqr2)
+                {
+                    enableToSync = true;
+                    ++syncCharactersCount;
+                    break;
+                }
+            }
+
+            if(networkTransformSync.enabled != enableToSync)
+                networkTransformSync.enabled = enableToSync;
+        }
+
+        Debug.Log("Synchroize transform character count : " + syncCharactersCount);
     }
 }
