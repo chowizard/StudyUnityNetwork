@@ -223,7 +223,7 @@ public sealed class NetworkControllerServer
         if(connection == null)
             return false;
 
-        if((connection != null) && connection.isConnected)
+        if((connection != null) && (connection.isConnected == true))
         {
             connection.Disconnect();
             connection.Dispose();
