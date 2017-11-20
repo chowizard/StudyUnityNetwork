@@ -21,18 +21,51 @@ public abstract class CharacterComponentAi : CharacterComponent
     public eAiState aiState = eAiState.Idle;
 
     public Dictionary<AiState.eType, AiState> aiStates = new Dictionary<AiState.eType, AiState>();
-    public AiState.eType currentAiState = AiState.eType.None;
-    public AiState.eType nextAiState = AiState.eType.None;
+    public AiState currentAiState;
+    public AiState nextAiState;
+
+    public int updateAiRatePerSeconds;
+    private float elapsedUpdateAiTime;
 
     public virtual void ChangeAiState(AiState.eType aiState)
     {
-        nextAiState = aiState;
+        nextAiState = GetAiState(aiState);
+        Debug.Assert(nextAiState != null);
+
+        currentAiState.Exit();
     }
 
     public AiState GetAiState(AiState.eType type)
     {
         AiState data;
         return aiStates.TryGetValue(type, out data) ? data : null;
+    }
+
+    protected virtual void UpdateAiState()
+    {
+        if(currentAiState == null)
+            return;
+
+        if(nextAiState != null)
+        {
+            currentAiState = nextAiState;
+            nextAiState = null;
+
+            currentAiState.Enter();
+        }
+        else
+        {
+            currentAiState.Update();
+        }
+    }
+
+    protected virtual float GetUpdateAiTimeInterval()
+    {
+        if(updateAiRatePerSeconds <= 0)
+            return 0.0f;
+
+        float updateTimeInterval = 1.0f / (float)updateAiRatePerSeconds;
+        return updateTimeInterval;
     }
 
     // Use this for initialization
@@ -45,6 +78,17 @@ public abstract class CharacterComponentAi : CharacterComponent
     protected override void Update()
     {
         base.Update();
+
+        float updateTimeInterval = GetUpdateAiTimeInterval();
+        if((updateTimeInterval <= 0.0f) || (elapsedUpdateAiTime >= updateTimeInterval))
+        {
+            UpdateAiState();
+            elapsedUpdateAiTime = 0.0f;
+        }
+        else
+        {
+            elapsedUpdateAiTime += Time.deltaTime;
+        }
     }
 
     protected void ClearAiStates()
