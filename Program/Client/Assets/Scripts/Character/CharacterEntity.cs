@@ -109,7 +109,10 @@ public class CharacterEntity : NetworkBehaviour
         GameManager.Singleton.mainCamera.followTarget = gameObject;
         GameManager.Singleton.mainCamera.isFollowTarget = true;
 
-        model.GetComponent<MeshRenderer>().material.color = Color.red;
+        Transform bodyTransform = model.transform.Find("Body");
+        Debug.Assert(bodyTransform != null);
+        if(bodyTransform != null)
+            bodyTransform.GetComponent<MeshRenderer>().material.color = Color.red;
     }
 
     public override void OnStartServer()

@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     {
         get
         {
+            if(singleton == null)
+                singleton = FindObjectOfType<GameManager>();
+
             return singleton;
         }
     }
