@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace SnowFamily.UnityNet.Client.Ai
 {
-    public class AiStateCombat : AiState
+    public class CharacterAiStateReturn : CharacterAiState
     {
-        public AiStateCombat(CharacterComponentAi stateManager) :
+        public CharacterAiStateReturn(CharacterComponentAi stateManager) :
             base(stateManager)
         {
-            type = eType.Combat;
+            type = eType.Return;
         }
 
         public override void Enter()

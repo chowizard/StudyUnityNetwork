@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace SnowFamily.UnityNet.Client.Ai
 {
-    public class AiStateMove : AiState
+    public class CharacterAiStateMove : CharacterAiState
     {
-        public AiStateMove(CharacterComponentAi stateManager) :
+        public CharacterAiStateMove(CharacterComponentAi stateManager) :
             base(stateManager)
         {
             type = eType.Move;

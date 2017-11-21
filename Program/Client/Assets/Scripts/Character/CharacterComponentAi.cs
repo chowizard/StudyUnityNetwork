@@ -18,16 +18,19 @@ public abstract class CharacterComponentAi : CharacterComponent
     public const int AiStateMaximum = (int)eAiState.Rotate;
     public const int AiStateSize = AiStateMaximum + 1;
 
+    public const int DefaultUpdateAiStateRate = 30;
+
+
     public eAiState aiState = eAiState.Idle;
 
-    public Dictionary<AiState.eType, AiState> aiStates = new Dictionary<AiState.eType, AiState>();
-    public AiState currentAiState;
-    public AiState nextAiState;
+    public Dictionary<CharacterAiState.eType, CharacterAiState> aiStates = new Dictionary<CharacterAiState.eType, CharacterAiState>();
+    public CharacterAiState currentAiState;
+    public CharacterAiState nextAiState;
 
-    public int updateAiRatePerSeconds;
+    public int updateAiRatePerSeconds = DefaultUpdateAiStateRate;
     private float elapsedUpdateAiTime;
 
-    public virtual void ChangeAiState(AiState.eType aiState)
+    public virtual void ChangeAiState(CharacterAiState.eType aiState)
     {
         nextAiState = GetAiState(aiState);
         Debug.Assert(nextAiState != null);
@@ -35,11 +38,13 @@ public abstract class CharacterComponentAi : CharacterComponent
         currentAiState.Exit();
     }
 
-    public AiState GetAiState(AiState.eType type)
+    public CharacterAiState GetAiState(CharacterAiState.eType type)
     {
-        AiState data;
+        CharacterAiState data;
         return aiStates.TryGetValue(type, out data) ? data : null;
     }
+
+    protected abstract void RegisterAiStates();
 
     protected virtual void UpdateAiState()
     {
@@ -96,10 +101,10 @@ public abstract class CharacterComponentAi : CharacterComponent
         aiStates.Clear();
     }
 
-    protected void AddAiState(AiState aiState)
+    protected void AddAiState(CharacterAiState aiState)
     {
         Debug.Assert(aiState != null);
-        Debug.Assert(aiState.Type != AiState.eType.None);
+        Debug.Assert(aiState.Type != CharacterAiState.eType.None);
         Debug.Assert(aiStates.ContainsKey(aiState.Type) == false);
 
         aiStates.Add(aiState.Type, aiState);

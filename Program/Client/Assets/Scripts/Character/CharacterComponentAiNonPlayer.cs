@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using SnowFamily.UnityNet.Client;
+using SnowFamily.UnityNet.Client.Ai;
+
 [DisallowMultipleComponent]
 public class CharacterComponentAiNonPlayer : CharacterComponentAi
 {
@@ -28,12 +31,30 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
     {
         base.Update();
 
+#if BLOCKED
         if(!owner.isServer)
             return;
 
         UpdateCommandIntervalTime();
         UpdateCommand();
-        UpdateAiState();
+        UpdateAiStateOld();
+#endif
+    }
+
+    protected override void RegisterAiStates()
+    {
+        AddAiState(new CharacterAiStateNormalNonPlayer(this));
+        AddAiState(new CharacterAiStateCombat(this));
+        AddAiState(new CharacterAiStateMove(this));
+        AddAiState(new CharacterAiStateReturn(this));
+    }
+
+    protected override void UpdateAiState()
+    {
+        if(!owner.isServer)
+            return;
+
+        base.UpdateAiState();
     }
 
     private void UpdateCommandIntervalTime()
@@ -87,24 +108,6 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
         }
     }
 
-    private void UpdateAiState()
-    {
-        switch(aiState)
-        {
-        case eAiState.Idle:
-            UpdateAiStateIdle();
-            break;
-
-        case eAiState.Move:
-            UpdateAiStateMove();
-            break;
-
-        case eAiState.Rotate:
-            UpdateAiStateRotate();
-            break;
-        }
-    }
-
     private void CommandIdle()
     {
         owner.GetCharacterComponent<CharacterComponentMove>().Stop();
@@ -126,6 +129,24 @@ public class CharacterComponentAiNonPlayer : CharacterComponentAi
         owner.GetCharacterComponent<CharacterComponentMove>().Rotate(owner.destinationRotation);
 
         aiState = eAiState.Rotate;
+    }
+
+    private void UpdateAiStateOld()
+    {
+        switch(aiState)
+        {
+        case eAiState.Idle:
+            UpdateAiStateIdle();
+            break;
+
+        case eAiState.Move:
+            UpdateAiStateMove();
+            break;
+
+        case eAiState.Rotate:
+            UpdateAiStateRotate();
+            break;
+        }
     }
 
     private void UpdateAiStateIdle()

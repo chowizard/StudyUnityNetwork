@@ -5,12 +5,17 @@ using UnityEngine;
 
 namespace SnowFamily.UnityNet.Client.Ai
 {
-    public class AiStateReturn : AiState
+    public sealed class CharacterAiStateNormalNonPlayer : CharacterAiStateNormal
     {
-        public AiStateReturn(CharacterComponentAi stateManager) :
+        public float CommandIntervalSeconds = 3.0f;
+        private float elapsedCommandTime;
+
+
+
+        public CharacterAiStateNormalNonPlayer(CharacterComponentAi stateManager) :
             base(stateManager)
         {
-            type = eType.Return;
+            type = eType.Normal;
         }
 
         public override void Enter()
@@ -21,6 +26,8 @@ namespace SnowFamily.UnityNet.Client.Ai
         public override void Update()
         {
             base.Update();
+
+
         }
 
         public override void Exit()

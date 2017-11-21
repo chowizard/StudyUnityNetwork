@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SnowFamily.UnityNet.Client.Ai
 {
-    public abstract class AiState
+    public abstract class CharacterAiState
     {
         public enum eType
         {
@@ -30,7 +30,7 @@ namespace SnowFamily.UnityNet.Client.Ai
         protected eState state = eState.None;
         protected CharacterComponentAi stateManager;
 
-        public AiState(CharacterComponentAi stateManager)
+        public CharacterAiState(CharacterComponentAi stateManager)
         {
             this.stateManager = stateManager;
         }

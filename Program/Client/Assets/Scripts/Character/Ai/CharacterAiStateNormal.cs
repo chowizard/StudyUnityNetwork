@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace SnowFamily.UnityNet.Client.Ai
 {
-    public class AiStateNormal : AiState
+    public class CharacterAiStateNormal : CharacterAiState
     {
-        public AiStateNormal(CharacterComponentAi stateManager) :
+        public CharacterAiStateNormal(CharacterComponentAi stateManager) :
             base(stateManager)
         {
             type = eType.Normal;
