@@ -4,25 +4,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiSetControlPanelClient : UiSet
+using Chowizard.UnityNetwork.Client.Core;
+using Chowizard.UnityNetwork.Client.Network;
+using Chowizard.UnityNetwork.Client.Scene;
+
+namespace Chowizard.UnityNetwork.Client.Ui
 {
-    public Button buttonTerminate;
-
-    public void OnClickTerminate()
+    public class UiSetControlPanelClient : UiSet
     {
-        NetworkManager.Instance.Terminate();
-        GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.Lobby);
-    }
+        public Button buttonTerminate;
 
-    // Use this for initialization
-    private void Start()
-    {
-        Debug.Assert(buttonTerminate != null);
-    }
+        public void OnClickTerminate()
+        {
+            NetworkManager.Instance.Terminate();
+            GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.Lobby);
+        }
 
-    // Update is called once per frame
-    private void Update()
-    {
+        // Use this for initialization
+        private void Start()
+        {
+            Debug.Assert(buttonTerminate != null);
+        }
 
+        // Update is called once per frame
+        private void Update()
+        {
+
+        }
     }
 }

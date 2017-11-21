@@ -2,193 +2,202 @@
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.Networking;
+//using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class UiSetControlPanelServer : UiSet
+using Chowizard.UnityNetwork.Client.Character;
+using Chowizard.UnityNetwork.Client.Core;
+using Chowizard.UnityNetwork.Client.Network;
+using Chowizard.UnityNetwork.Client.Scene;
+
+namespace Chowizard.UnityNetwork.Client.Ui
 {
-    public Button uiButtonTerminate;
-
-
-    public Button uiButtonAddNpc;
-    public Slider uiSliderAddNpcUnitCount;
-    public Text uiTextAddNpcUnitCount;
-    public int addNpcUnitMinimum = 1;
-    public int addNpcUnitMaximum = 10;
-    private int currentAddNpcUnitCount;
-
-
-    public Slider uiSliderNpcSendRate;
-    public Text uiTextNpcSendRate;
-    private int npcSendRate;
-
-    public Slider uiSliderNpcMovementThreshold;
-    public Text uiTextNpcMovementThreshold;
-    private float npcMovementThreshold;
-
-    public Slider uiSliderNpcSnapThreshold;
-    public Text uiTextNpcSnapThreshold;
-    private float npcSnapThreshold;
-
-    public Slider uiSliderNpcInterpolateMovementFactor;
-    public Text uiTextNpcInterpolateMovementFactor;
-    private float npcInterpolateMovementFactor;
-
-    public void OnClickTerminate()
+    public class UiSetControlPanelServer : UiSet
     {
-        NetworkManager.Instance.Terminate();
-        GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.Intro);
-    }
+        public Button uiButtonTerminate;
 
-    public void OnClickAddNpc()
-    {
-        if(GameSceneManager.Instance.currentScene == null)
-            return;
 
-        if(GameSceneManager.Instance.currentScene.sceneType != GameScene.eSceneType.GamePlay)
-            return;
+        public Button uiButtonAddNpc;
+        public Slider uiSliderAddNpcUnitCount;
+        public Text uiTextAddNpcUnitCount;
+        public int addNpcUnitMinimum = 1;
+        public int addNpcUnitMaximum = 10;
+        private int currentAddNpcUnitCount;
 
-        if(NetworkManager.Instance.IsReadyByServer == false)
-            return;
 
-        SceneGamePlay scene = GameSceneManager.Instance.currentScene as SceneGamePlay;
-        Debug.Assert(scene != null);
+        public Slider uiSliderNpcSendRate;
+        public Text uiTextNpcSendRate;
+        private int npcSendRate;
 
-        scene.SpawnNonPlayerCharacters(currentAddNpcUnitCount);
-    }
+        public Slider uiSliderNpcMovementThreshold;
+        public Text uiTextNpcMovementThreshold;
+        private float npcMovementThreshold;
 
-    // Use this for initialization
-    private void Start()
-    {
-        Debug.Assert(uiButtonTerminate != null);
-        Debug.Assert(uiButtonAddNpc != null);
-        Debug.Assert(uiSliderAddNpcUnitCount != null);
-        Debug.Assert(uiTextAddNpcUnitCount != null);
-    }
+        public Slider uiSliderNpcSnapThreshold;
+        public Text uiTextNpcSnapThreshold;
+        private float npcSnapThreshold;
 
-    // Update is called once per frame
-    private void Update()
-    {
-        UpdateAddNpcUnitCount();
-        UpdateNetworkConfiguration();
-    }
+        public Slider uiSliderNpcInterpolateMovementFactor;
+        public Text uiTextNpcInterpolateMovementFactor;
+        private float npcInterpolateMovementFactor;
 
-    private void UpdateAddNpcUnitCount()
-    {
-        if(uiSliderAddNpcUnitCount.minValue != addNpcUnitMinimum)
-            uiSliderAddNpcUnitCount.minValue = addNpcUnitMinimum;
-
-        if(uiSliderAddNpcUnitCount.maxValue != addNpcUnitMaximum)
-            uiSliderAddNpcUnitCount.maxValue = addNpcUnitMaximum;
-
-        if(uiSliderAddNpcUnitCount.value != currentAddNpcUnitCount)
+        public void OnClickTerminate()
         {
-            currentAddNpcUnitCount = (int)uiSliderAddNpcUnitCount.value;
-            uiTextAddNpcUnitCount.text = string.Format("Add NPC Unit Count : {0}", currentAddNpcUnitCount);
+            NetworkManager.Instance.Terminate();
+            GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.Intro);
         }
-    }
 
-    private void UpdateNetworkConfiguration()
-    {
-        UpdateNpcSendRate();
-        UpdateNpcMovementThreshold();
-        UpdateNpcSnapThreshold();
-        UpdateNpcInterpolateMovementFactor();
-    }
-
-    private void UpdateNpcSendRate()
-    {
-        if(uiSliderNpcSendRate.value != npcSendRate)
+        public void OnClickAddNpc()
         {
-            npcSendRate = (int)uiSliderNpcSendRate.value;
+            if(GameSceneManager.Instance.currentScene == null)
+                return;
 
-            CharacterEntity[] entities = EntityManager.Instance.Entities;
-            if(entities != null)
+            if(GameSceneManager.Instance.currentScene.sceneType != GameScene.eSceneType.GamePlay)
+                return;
+
+            if(NetworkManager.Instance.IsReadyByServer == false)
+                return;
+
+            SceneGamePlay scene = GameSceneManager.Instance.currentScene as SceneGamePlay;
+            Debug.Assert(scene != null);
+
+            scene.SpawnNonPlayerCharacters(currentAddNpcUnitCount);
+        }
+
+        // Use this for initialization
+        private void Start()
+        {
+            Debug.Assert(uiButtonTerminate != null);
+            Debug.Assert(uiButtonAddNpc != null);
+            Debug.Assert(uiSliderAddNpcUnitCount != null);
+            Debug.Assert(uiTextAddNpcUnitCount != null);
+        }
+
+        // Update is called once per frame
+        private void Update()
+        {
+            UpdateAddNpcUnitCount();
+            UpdateNetworkConfiguration();
+        }
+
+        private void UpdateAddNpcUnitCount()
+        {
+            if(uiSliderAddNpcUnitCount.minValue != addNpcUnitMinimum)
+                uiSliderAddNpcUnitCount.minValue = addNpcUnitMinimum;
+
+            if(uiSliderAddNpcUnitCount.maxValue != addNpcUnitMaximum)
+                uiSliderAddNpcUnitCount.maxValue = addNpcUnitMaximum;
+
+            if(uiSliderAddNpcUnitCount.value != currentAddNpcUnitCount)
             {
-                foreach(CharacterEntity characterEntity in entities)
-                {
-                    if(characterEntity == null)
-                        continue;
-
-                    if(characterEntity.property.isPlayer == true)
-                        continue;
-
-                    NetworkTransformSynchronizer networkTransformSync = characterEntity.GetComponent<NetworkTransformSynchronizer>();
-                    if(networkTransformSync == null)
-                        continue;
-
-                    networkTransformSync.sendRate = npcSendRate;
-                }
+                currentAddNpcUnitCount = (int)uiSliderAddNpcUnitCount.value;
+                uiTextAddNpcUnitCount.text = string.Format("Add NPC Unit Count : {0}", currentAddNpcUnitCount);
             }
-
-            uiTextNpcSendRate.text = string.Format("NPC Network Send Rate : {0} per seconds.", npcSendRate);
         }
-    }
 
-    private void UpdateNpcMovementThreshold()
-    {
-        if(uiSliderNpcMovementThreshold.value != npcMovementThreshold)
+        private void UpdateNetworkConfiguration()
         {
-            npcMovementThreshold = uiSliderNpcMovementThreshold.value;
+            UpdateNpcSendRate();
+            UpdateNpcMovementThreshold();
+            UpdateNpcSnapThreshold();
+            UpdateNpcInterpolateMovementFactor();
+        }
 
-            CharacterEntity[] entities = EntityManager.Instance.Entities;
-            if(entities != null)
+        private void UpdateNpcSendRate()
+        {
+            if(uiSliderNpcSendRate.value != npcSendRate)
             {
-                foreach(CharacterEntity characterEntity in entities)
+                npcSendRate = (int)uiSliderNpcSendRate.value;
+
+                CharacterEntity[] entities = EntityManager.Instance.Entities;
+                if(entities != null)
                 {
-                    if(characterEntity == null)
-                        continue;
+                    foreach(CharacterEntity characterEntity in entities)
+                    {
+                        if(characterEntity == null)
+                            continue;
 
-                    if(characterEntity.property.isPlayer == true)
-                        continue;
+                        if(characterEntity.property.isPlayer == true)
+                            continue;
 
-                    NetworkTransformSynchronizer networkTransformSync = characterEntity.GetComponent<NetworkTransformSynchronizer>();
-                    if(networkTransformSync == null)
-                        continue;
+                        NetworkTransformSynchronizer networkTransformSync = characterEntity.GetComponent<NetworkTransformSynchronizer>();
+                        if(networkTransformSync == null)
+                            continue;
 
-                    networkTransformSync.positionThreshold = npcMovementThreshold;
+                        networkTransformSync.sendRate = npcSendRate;
+                    }
                 }
+
+                uiTextNpcSendRate.text = string.Format("NPC Network Send Rate : {0} per seconds.", npcSendRate);
             }
-
-            uiTextNpcMovementThreshold.text = string.Format("NPC Network Movement Threshold : {0}", npcMovementThreshold);
         }
-    }
 
-    private void UpdateNpcSnapThreshold()
-    {
-        if(uiSliderNpcSnapThreshold.value != npcSnapThreshold)
+        private void UpdateNpcMovementThreshold()
         {
-            npcSnapThreshold = uiSliderNpcSnapThreshold.value;
-            uiTextNpcSnapThreshold.text = string.Format("NPC Network Snap Threshold : {0}", npcSnapThreshold);
-        }
-    }
-
-    private void UpdateNpcInterpolateMovementFactor()
-    {
-        if(uiSliderNpcInterpolateMovementFactor.value != npcInterpolateMovementFactor)
-        {
-            npcInterpolateMovementFactor = uiSliderNpcInterpolateMovementFactor.value;
-
-            CharacterEntity[] entities = EntityManager.Instance.Entities;
-            if(entities != null)
+            if(uiSliderNpcMovementThreshold.value != npcMovementThreshold)
             {
-                foreach(CharacterEntity characterEntity in entities)
+                npcMovementThreshold = uiSliderNpcMovementThreshold.value;
+
+                CharacterEntity[] entities = EntityManager.Instance.Entities;
+                if(entities != null)
                 {
-                    if(characterEntity == null)
-                        continue;
+                    foreach(CharacterEntity characterEntity in entities)
+                    {
+                        if(characterEntity == null)
+                            continue;
 
-                    if(characterEntity.property.isPlayer == true)
-                        continue;
+                        if(characterEntity.property.isPlayer == true)
+                            continue;
 
-                    NetworkTransformSynchronizer networkTransformSync = characterEntity.GetComponent<NetworkTransformSynchronizer>();
-                    if(networkTransformSync == null)
-                        continue;
+                        NetworkTransformSynchronizer networkTransformSync = characterEntity.GetComponent<NetworkTransformSynchronizer>();
+                        if(networkTransformSync == null)
+                            continue;
 
-                    networkTransformSync.positionInterpolationFactor = npcInterpolateMovementFactor;
+                        networkTransformSync.positionThreshold = npcMovementThreshold;
+                    }
                 }
-            }
 
-            uiTextNpcInterpolateMovementFactor.text = string.Format("NPC Network Interpolate Movement Factor : {0}", npcInterpolateMovementFactor);
+                uiTextNpcMovementThreshold.text = string.Format("NPC Network Movement Threshold : {0}", npcMovementThreshold);
+            }
+        }
+
+        private void UpdateNpcSnapThreshold()
+        {
+            if(uiSliderNpcSnapThreshold.value != npcSnapThreshold)
+            {
+                npcSnapThreshold = uiSliderNpcSnapThreshold.value;
+                uiTextNpcSnapThreshold.text = string.Format("NPC Network Snap Threshold : {0}", npcSnapThreshold);
+            }
+        }
+
+        private void UpdateNpcInterpolateMovementFactor()
+        {
+            if(uiSliderNpcInterpolateMovementFactor.value != npcInterpolateMovementFactor)
+            {
+                npcInterpolateMovementFactor = uiSliderNpcInterpolateMovementFactor.value;
+
+                CharacterEntity[] entities = EntityManager.Instance.Entities;
+                if(entities != null)
+                {
+                    foreach(CharacterEntity characterEntity in entities)
+                    {
+                        if(characterEntity == null)
+                            continue;
+
+                        if(characterEntity.property.isPlayer == true)
+                            continue;
+
+                        NetworkTransformSynchronizer networkTransformSync = characterEntity.GetComponent<NetworkTransformSynchronizer>();
+                        if(networkTransformSync == null)
+                            continue;
+
+                        networkTransformSync.positionInterpolationFactor = npcInterpolateMovementFactor;
+                    }
+                }
+
+                uiTextNpcInterpolateMovementFactor.text = string.Format("NPC Network Interpolate Movement Factor : {0}", npcInterpolateMovementFactor);
+            }
         }
     }
 }
+

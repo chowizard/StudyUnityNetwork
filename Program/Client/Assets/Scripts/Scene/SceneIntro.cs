@@ -3,30 +3,38 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class SceneIntro : GameScene
+using Chowizard.UnityNetwork.Client.Core;
+using Chowizard.UnityNetwork.Client.Network;
+using Chowizard.UnityNetwork.Client.Ui;
+
+namespace Chowizard.UnityNetwork.Client.Scene
 {
-    private UiFrame uiFrameIntro;
-
-    private void Awake()
+    public class SceneIntro : GameScene
     {
-        sceneType = eSceneType.Intro;
-    }
+        private UiFrame uiFrameIntro;
 
-    // Use this for initialization
-    private void Start()
-    {
-        GameSceneManager.Instance.currentScene = this;
-        Debug.Log(string.Format("Scene [{0}] was started.", sceneType.ToString()));
+        private void Awake()
+        {
+            sceneType = eSceneType.Intro;
+        }
 
-        NetworkManager.Instance.mode = NetworkManager.eMode.None;
+        // Use this for initialization
+        private void Start()
+        {
+            GameSceneManager.Instance.currentScene = this;
+            Debug.Log(string.Format("Scene [{0}] was started.", sceneType.ToString()));
 
-        uiFrameIntro = UiManager.Instance.LoadUiFrame("UiFrameIntro");
-        UiManager.Instance.ChangeUiFrame(uiFrameIntro);
-    }
+            NetworkManager.Instance.mode = NetworkManager.eMode.None;
 
-    // Update is called once per frame
-    private void Update()
-    {
+            uiFrameIntro = UiManager.Instance.LoadUiFrame("UiFrameIntro");
+            UiManager.Instance.ChangeUiFrame(uiFrameIntro);
+        }
 
+        // Update is called once per frame
+        private void Update()
+        {
+
+        }
     }
 }
+

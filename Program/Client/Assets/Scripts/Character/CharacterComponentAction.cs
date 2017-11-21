@@ -3,20 +3,24 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-[DisallowMultipleComponent]
-public class CharacterComponentAction : CharacterComponent
+namespace Chowizard.UnityNetwork.Client.Character
 {
-    // Use this for initialization
-    protected override void Start()
+    [DisallowMultipleComponent]
+    public class CharacterComponentAction : CharacterComponent
     {
-        base.Start();
+        // Use this for initialization
+        protected override void Start()
+        {
+            base.Start();
 
-        owner.AddCharacterComponent(this);
-    }
+            owner.AddCharacterComponent(this);
+        }
 
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
+        // Update is called once per frame
+        protected override void Update()
+        {
+            base.Update();
+        }
     }
 }
+

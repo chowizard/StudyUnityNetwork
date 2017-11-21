@@ -2,25 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameOptionManager : MonoBehaviour
+namespace Chowizard.UnityNetwork.Client.Core
 {
-    public static GameOptionManager Instance
+    public class GameOptionManager : MonoBehaviour
     {
-        get
+        public static GameOptionManager Instance
         {
-            return GameManager.Singleton.gameOptionManager;
+            get
+            {
+                return GameManager.Singleton.gameOptionManager;
+            }
         }
-    }
 
-    // Use this for initialization
-    private void Start()
-    {
+        // Use this for initialization
+        private void Start()
+        {
 
-    }
+        }
 
-    // Update is called once per frame
-    private void Update()
-    {
+        // Update is called once per frame
+        private void Update()
+        {
 
+        }
     }
 }

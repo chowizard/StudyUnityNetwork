@@ -4,32 +4,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiSetGameStart : UiSet
+using Chowizard.UnityNetwork.Client.Core;
+using Chowizard.UnityNetwork.Client.Network;
+
+namespace Chowizard.UnityNetwork.Client.Ui
 {
-    public Button buttonGameStart;
-
-    public void OnClickGameStart()
+    public class UiSetGameStart : UiSet
     {
-        if(NetworkManager.Instance.mode != NetworkManager.eMode.Client)
-            return;
+        public Button buttonGameStart;
 
-        NetworkManager.Instance.StartByClient();
+        public void OnClickGameStart()
+        {
+            if(NetworkManager.Instance.mode != NetworkManager.eMode.Client)
+                return;
 
-        //if(NetworkManager.Instance.isAtStartup == false)
-        //    GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
-        //else
-        //    Debug.LogError("NetworkManager is not startup.");
-    }
+            NetworkManager.Instance.StartByClient();
 
-    // Use this for initialization
-    private void Start()
-    {
-        Debug.Assert(buttonGameStart != null);
-    }
+            //if(NetworkManager.Instance.isAtStartup == false)
+            //    GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
+            //else
+            //    Debug.LogError("NetworkManager is not startup.");
+        }
 
-    // Update is called once per frame
-    private void Update()
-    {
+        // Use this for initialization
+        private void Start()
+        {
+            Debug.Assert(buttonGameStart != null);
+        }
 
+        // Update is called once per frame
+        private void Update()
+        {
+
+        }
     }
 }
+

@@ -5,7 +5,7 @@ using System.Linq;
 
 using UnityEngine;
 
-namespace UnityNet.Client.Character
+namespace Chowizard.UnityNetwork.Client.Character
 {
     [System.Serializable]
     public class CharacterEntityProperty

@@ -3,7 +3,13 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public abstract class UiSet : MonoBehaviour
+using Chowizard.UnityNetwork.Client.Core;
+using Chowizard.UnityNetwork.Client.Network;
+
+namespace Chowizard.UnityNetwork.Client.Ui
 {
-    public UiFrame.eAnchorType anchorType = UiFrame.eAnchorType.Center;
+    public abstract class UiSet : MonoBehaviour
+    {
+        public UiFrame.eAnchorType anchorType = UiFrame.eAnchorType.Center;
+    }
 }

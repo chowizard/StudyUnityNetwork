@@ -4,36 +4,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiSetControlPanelSelectMode : UiSet
+using Chowizard.UnityNetwork.Client.Core;
+using Chowizard.UnityNetwork.Client.Network;
+using Chowizard.UnityNetwork.Client.Scene;
+
+namespace Chowizard.UnityNetwork.Client.Ui
 {
-    public Button uiButtonStartByServer;
-    public Button uiButtonStartByClient;
-
-    public void OnClickStartByServer()
+    public class UiSetControlPanelSelectMode : UiSet
     {
-        NetworkManager.Instance.StartByServer();
+        public Button uiButtonStartByServer;
+        public Button uiButtonStartByClient;
 
-        if(NetworkManager.Instance.isAtStartup == false)
-            GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
-        else
-            Debug.LogError("NetworkManager is not startup.");
-    }
+        public void OnClickStartByServer()
+        {
+            NetworkManager.Instance.StartByServer();
 
-    public void OnClickStartByClient()
-    {
-        NetworkManager.Instance.mode = NetworkManager.eMode.Client;
-        GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.Lobby);
-    }
+            if(NetworkManager.Instance.isAtStartup == false)
+                GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.GamePlay);
+            else
+                Debug.LogError("NetworkManager is not startup.");
+        }
 
-    // Use this for initialization
-    private void Start()
-    {
-        Debug.Assert(uiButtonStartByServer != null);
-        Debug.Assert(uiButtonStartByClient != null);
-    }
+        public void OnClickStartByClient()
+        {
+            NetworkManager.Instance.mode = NetworkManager.eMode.Client;
+            GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.Lobby);
+        }
 
-    // Update is called once per frame
-    private void Update()
-    {
+        // Use this for initialization
+        private void Start()
+        {
+            Debug.Assert(uiButtonStartByServer != null);
+            Debug.Assert(uiButtonStartByClient != null);
+        }
+
+        // Update is called once per frame
+        private void Update()
+        {
+        }
     }
 }

@@ -3,17 +3,20 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public abstract class GameScene : MonoBehaviour
+namespace Chowizard.UnityNetwork.Client.Scene
 {
-    public enum eSceneType
+    public abstract class GameScene : MonoBehaviour
     {
-        None = 0,
+        public enum eSceneType
+        {
+            None = 0,
 
-        Intro,
-        Start,
-        Lobby,
-        GamePlay
+            Intro,
+            Start,
+            Lobby,
+            GamePlay
+        }
+
+        public eSceneType sceneType = eSceneType.None;
     }
-
-    public eSceneType sceneType = eSceneType.None;
 }

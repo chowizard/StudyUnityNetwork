@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UnityNet.Client.Core
+namespace Chowizard.UnityNetwork.Client.Core
 {
     public class IdGenerator
     {

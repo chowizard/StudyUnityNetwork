@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace SnowFamily.UnityNet.Client.Ai
+namespace Chowizard.UnityNetwork.Client.Character.Ai
 {
     public abstract class CharacterAiState
     {

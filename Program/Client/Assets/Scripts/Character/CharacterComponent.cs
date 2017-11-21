@@ -3,31 +3,35 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterEntity))]
-public abstract class CharacterComponent : MonoBehaviour
+namespace Chowizard.UnityNetwork.Client.Character
 {
-    public enum eState
+    [RequireComponent(typeof(CharacterEntity))]
+    public abstract class CharacterComponent : MonoBehaviour
     {
-        None = 0,
+        public enum eState
+        {
+            None = 0,
 
-        Active,
-        Deactive,
-    }
+            Active,
+            Deactive,
+        }
 
-    public eState state = eState.None;
+        public eState state = eState.None;
 
-    public CharacterEntity owner;
+        public CharacterEntity owner;
 
-    // Use this for initialization
-    protected virtual void Start()
-    {
-        if(owner == null)
-            owner = GetComponent<CharacterEntity>();
-    }
+        // Use this for initialization
+        protected virtual void Start()
+        {
+            if(owner == null)
+                owner = GetComponent<CharacterEntity>();
+        }
 
-    // Update is called once per frame
-    protected virtual void Update()
-    {
+        // Update is called once per frame
+        protected virtual void Update()
+        {
 
+        }
     }
 }
+

@@ -4,24 +4,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiSetControlPanelGameStart : UiSet
+using Chowizard.UnityNetwork.Client.Core;
+using Chowizard.UnityNetwork.Client.Scene;
+
+namespace Chowizard.UnityNetwork.Client.Ui
 {
-    public Button uiButtonGoToBack;
-
-    public void OnClickGoToBack()
+    public class UiSetControlPanelGameStart : UiSet
     {
-        GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.Intro);
-    }
+        public Button uiButtonGoToBack;
 
-    // Use this for initialization
-    private void Start()
-    {
-        Debug.Assert(uiButtonGoToBack != null);
-    }
+        public void OnClickGoToBack()
+        {
+            GameSceneManager.Instance.ChangeScene(GameScene.eSceneType.Intro);
+        }
 
-    // Update is called once per frame
-    private void Update()
-    {
+        // Use this for initialization
+        private void Start()
+        {
+            Debug.Assert(uiButtonGoToBack != null);
+        }
 
+        // Update is called once per frame
+        private void Update()
+        {
+
+        }
     }
 }

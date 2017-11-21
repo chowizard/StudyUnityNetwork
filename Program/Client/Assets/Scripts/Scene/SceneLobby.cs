@@ -3,28 +3,36 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class SceneLobby : GameScene
+using Chowizard.UnityNetwork.Client.Core;
+using Chowizard.UnityNetwork.Client.Network;
+using Chowizard.UnityNetwork.Client.Ui;
+
+namespace Chowizard.UnityNetwork.Client.Scene
 {
-    private UiFrame uiFrameLobby;
-
-    private void Awake()
+    public class SceneLobby : GameScene
     {
-        sceneType = eSceneType.Lobby;
-    }
+        private UiFrame uiFrameLobby;
 
-    // Use this for initialization
-    private void Start()
-    {
-        GameSceneManager.Instance.currentScene = this;
-        Debug.Log(string.Format("Scene [{0}] was started.", sceneType.ToString()));
+        private void Awake()
+        {
+            sceneType = eSceneType.Lobby;
+        }
 
-        uiFrameLobby = UiManager.Instance.LoadUiFrame("UiFrameLobby");
-        UiManager.Instance.ChangeUiFrame(uiFrameLobby);
-    }
+        // Use this for initialization
+        private void Start()
+        {
+            GameSceneManager.Instance.currentScene = this;
+            Debug.Log(string.Format("Scene [{0}] was started.", sceneType.ToString()));
 
-    // Update is called once per frame
-    private void Update()
-    {
+            uiFrameLobby = UiManager.Instance.LoadUiFrame("UiFrameLobby");
+            UiManager.Instance.ChangeUiFrame(uiFrameLobby);
+        }
 
+        // Update is called once per frame
+        private void Update()
+        {
+
+        }
     }
 }
+

@@ -1,33 +1,40 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
-public class UiFrameSceneGamePlay : UiFrame
+using Chowizard.UnityNetwork.Client.Core;
+using Chowizard.UnityNetwork.Client.Network;
+
+namespace Chowizard.UnityNetwork.Client.Ui
 {
-
-    // Use this for initialization
-    protected override void Start()
+    public class UiFrameSceneGamePlay : UiFrame
     {
-        base.Start();
 
-        switch(NetworkManager.Instance.mode)
+        // Use this for initialization
+        protected override void Start()
         {
-        case NetworkManager.eMode.Server:
-            LoadUiSet("UiSetControlPanelServer");
-            break;
+            base.Start();
 
-        case NetworkManager.eMode.Client:
-            LoadUiSet("UiSetControlPanelClient");
-            break;
+            switch(NetworkManager.Instance.mode)
+            {
+            case NetworkManager.eMode.Server:
+                LoadUiSet("UiSetControlPanelServer");
+                break;
+
+            case NetworkManager.eMode.Client:
+                LoadUiSet("UiSetControlPanelClient");
+                break;
+            }
+
+            LoadUiSet("UiSetInformationWindow");
+            LoadUiSet("UiSetLogWindow");
         }
 
-        LoadUiSet("UiSetInformationWindow");
-        LoadUiSet("UiSetLogWindow");
-    }
-
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
+        // Update is called once per frame
+        protected override void Update()
+        {
+            base.Update();
+        }
     }
 }

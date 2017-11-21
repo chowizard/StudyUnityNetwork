@@ -3,82 +3,86 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-[DisallowMultipleComponent]
-public class CharacterComponentMove : CharacterComponent
+namespace Chowizard.UnityNetwork.Client.Character
 {
-    private Quaternion targetRotation;
-    private float elapsedTimeRotation;
-    public bool isStartedRotation;
-
-    public void Stop()
+    [DisallowMultipleComponent]
+    public class CharacterComponentMove : CharacterComponent
     {
-        owner.destinationPosition = owner.transform.position;
+        private Quaternion targetRotation;
+        private float elapsedTimeRotation;
+        public bool isStartedRotation;
 
-        owner.destinationRotation = owner.transform.rotation;
-        targetRotation = owner.transform.rotation;
-        EndRotation();
-    }
-
-    public void Move(Vector3 direction)
-    {
-        Vector3 translation = direction * MoveSpeed * Time.deltaTime;
-
-        if(translation != Vector3.zero)
-            owner.transform.Translate(translation, Space.World);
-    }
-
-    public void Rotate(Quaternion rotation)
-    {
-        bool isEqualRotation = (owner.transform.rotation == rotation) ? true : false;
-        bool existRotationSpeed = (owner.rotationSpeed > 0.0f) ? true : false;
-
-        if((isEqualRotation == true) || (existRotationSpeed == false))
+        public void Stop()
         {
-            owner.transform.rotation = rotation;
+            owner.destinationPosition = owner.transform.position;
+
+            owner.destinationRotation = owner.transform.rotation;
+            targetRotation = owner.transform.rotation;
             EndRotation();
         }
-        else
+
+        public void Move(Vector3 direction)
         {
-            targetRotation = rotation;
-            isStartedRotation = true;
-        }
-    }
+            Vector3 translation = direction * MoveSpeed * Time.deltaTime;
 
-    public float MoveSpeed
-    {
-        get
+            if(translation != Vector3.zero)
+                owner.transform.Translate(translation, Space.World);
+        }
+
+        public void Rotate(Quaternion rotation)
         {
-            return owner.moveSpeed;
+            bool isEqualRotation = (owner.transform.rotation == rotation) ? true : false;
+            bool existRotationSpeed = (owner.rotationSpeed > 0.0f) ? true : false;
+
+            if((isEqualRotation == true) || (existRotationSpeed == false))
+            {
+                owner.transform.rotation = rotation;
+                EndRotation();
+            }
+            else
+            {
+                targetRotation = rotation;
+                isStartedRotation = true;
+            }
         }
-    }
 
-    // Use this for initialization
-    protected override void Start()
-    {
-        base.Start();
+        public float MoveSpeed
+        {
+            get
+            {
+                return owner.moveSpeed;
+            }
+        }
 
-        owner.AddCharacterComponent(this);
-    }
+        // Use this for initialization
+        protected override void Start()
+        {
+            base.Start();
 
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
+            owner.AddCharacterComponent(this);
+        }
 
-        UpdateRotation();
-    }
+        // Update is called once per frame
+        protected override void Update()
+        {
+            base.Update();
 
-    private void UpdateRotation()
-    {
-        float interpolation = owner.rotationSpeed * elapsedTimeRotation;
-        Quaternion.Lerp(transform.rotation, targetRotation, interpolation);
+            UpdateRotation();
+        }
 
-        elapsedTimeRotation += Time.deltaTime;
-    }
+        private void UpdateRotation()
+        {
+            float interpolation = owner.rotationSpeed * elapsedTimeRotation;
+            Quaternion.Lerp(transform.rotation, targetRotation, interpolation);
 
-    private void EndRotation()
-    {
-        elapsedTimeRotation = 0.0f;
-        isStartedRotation = false;
+            elapsedTimeRotation += Time.deltaTime;
+        }
+
+        private void EndRotation()
+        {
+            elapsedTimeRotation = 0.0f;
+            isStartedRotation = false;
+        }
     }
 }
+

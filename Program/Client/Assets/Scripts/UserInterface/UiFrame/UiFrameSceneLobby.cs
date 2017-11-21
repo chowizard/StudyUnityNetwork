@@ -3,22 +3,25 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-public class UiFrameSceneLobby : UiFrame
+namespace Chowizard.UnityNetwork.Client.Ui
 {
-    // Use this for initialization
-    protected override void Start()
+    public class UiFrameSceneLobby : UiFrame
     {
-        base.Start();
+        // Use this for initialization
+        protected override void Start()
+        {
+            base.Start();
 
-        LoadUiSet("UiSetInformationWindow");
-        LoadUiSet("UiSetLogWindow");
-        LoadUiSet("UiSetGameStart");
-        LoadUiSet("UiSetControlPanelGameStart");
-    }
+            LoadUiSet("UiSetInformationWindow");
+            LoadUiSet("UiSetLogWindow");
+            LoadUiSet("UiSetGameStart");
+            LoadUiSet("UiSetControlPanelGameStart");
+        }
 
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
+        // Update is called once per frame
+        protected override void Update()
+        {
+            base.Update();
+        }
     }
 }

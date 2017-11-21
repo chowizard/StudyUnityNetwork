@@ -1,23 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
-public class UiFrameSceneInfro : UiFrame
+namespace Chowizard.UnityNetwork.Client.Ui
 {
-
-    // Use this for initialization
-    protected override void Start()
+    public class UiFrameSceneInfro : UiFrame
     {
-        base.Start();
 
-        LoadUiSet("UiSetControlPanelSelectMode");
-        LoadUiSet("UiSetInformationWindow");
-        LoadUiSet("UiSetLogWindow");
-    }
+        // Use this for initialization
+        protected override void Start()
+        {
+            base.Start();
 
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
+            LoadUiSet("UiSetControlPanelSelectMode");
+            LoadUiSet("UiSetInformationWindow");
+            LoadUiSet("UiSetLogWindow");
+        }
+
+        // Update is called once per frame
+        protected override void Update()
+        {
+            base.Update();
+        }
     }
 }

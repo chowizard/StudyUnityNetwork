@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+namespace Chowizard.UnityNetwork.Client
+{
+}
+
 public class CameraController : MonoBehaviour
 {
     public Camera targetCamera;

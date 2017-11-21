@@ -4,50 +4,55 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameSceneManager : MonoBehaviour
+using Chowizard.UnityNetwork.Client.Scene;
+
+namespace Chowizard.UnityNetwork.Client.Core
 {
-    public GameScene currentScene;
-
-    public static GameSceneManager Instance
+    public class GameSceneManager : MonoBehaviour
     {
-        get
+        public GameScene currentScene;
+
+        public static GameSceneManager Instance
         {
-            return GameManager.Singleton.gameSceneManager;
+            get
+            {
+                return GameManager.Singleton.gameSceneManager;
+            }
         }
-    }
 
-    public void ChangeScene(GameScene.eSceneType sceneType)
-    {
-        switch(sceneType)
+        public void ChangeScene(GameScene.eSceneType sceneType)
         {
-        case GameScene.eSceneType.Intro:
-            LoadScene("Intro");
-            break;
+            switch(sceneType)
+            {
+            case GameScene.eSceneType.Intro:
+                LoadScene("Intro");
+                break;
 
-        case GameScene.eSceneType.Lobby:
-            LoadScene("Lobby");
-            break;
+            case GameScene.eSceneType.Lobby:
+                LoadScene("Lobby");
+                break;
 
-        case GameScene.eSceneType.GamePlay:
-            LoadScene("GamePlay");
-            break;
+            case GameScene.eSceneType.GamePlay:
+                LoadScene("GamePlay");
+                break;
+            }
         }
-    }
 
-    public void LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-    }
+        public void LoadScene(string sceneName)
+        {
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        }
 
-    // Use this for initialization
-    private void Start()
-    {
+        // Use this for initialization
+        private void Start()
+        {
 
-    }
+        }
 
-    // Update is called once per frame
-    private void Update()
-    {
+        // Update is called once per frame
+        private void Update()
+        {
 
+        }
     }
 }

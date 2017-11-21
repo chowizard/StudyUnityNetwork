@@ -3,30 +3,33 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using SnowFamily.UnityNet.Client;
-using SnowFamily.UnityNet.Client.Ai;
+using Chowizard.UnityNetwork.Client;
+using Chowizard.UnityNetwork.Client.Character.Ai;
 
-[DisallowMultipleComponent]
-public class CharacterComponentAiPlayer : CharacterComponentAi
+namespace Chowizard.UnityNetwork.Client.Character
 {
-    // Use this for initialization
-    protected override void Start()
+    [DisallowMultipleComponent]
+    public class CharacterComponentAiPlayer : CharacterComponentAi
     {
-        base.Start();
+        // Use this for initialization
+        protected override void Start()
+        {
+            base.Start();
 
-        owner.AddCharacterComponent(this);
-    }
+            owner.AddCharacterComponent(this);
+        }
 
-    // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
-    }
-    protected override void RegisterAiStates()
-    {
-        AddAiState(new CharacterAiStateNormal(this));
-        AddAiState(new CharacterAiStateCombat(this));
-        AddAiState(new CharacterAiStateMove(this));
-        AddAiState(new CharacterAiStateReturn(this));
+        // Update is called once per frame
+        protected override void Update()
+        {
+            base.Update();
+        }
+        protected override void RegisterAiStates()
+        {
+            AddAiState(new CharacterAiStateNormal(this));
+            AddAiState(new CharacterAiStateCombat(this));
+            AddAiState(new CharacterAiStateMove(this));
+            AddAiState(new CharacterAiStateReturn(this));
+        }
     }
 }
