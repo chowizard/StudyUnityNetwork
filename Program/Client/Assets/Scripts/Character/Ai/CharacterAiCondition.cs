@@ -1,26 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using UnityEngine;
-
-namespace Chowizard.UnityNetwork.Client.Character.Action
+namespace Chowizard.UnityNetwork.Client.Character.Ai
 {
-    public class CharacterAction
+    public abstract class CharacterAiCondition
     {
         public enum eType
         {
-            None,
+            None = 0,
 
-            Idle,
-            Die,
-            Move,
-            Attack,
-            UseSkill
+            Normal,
+            Dead,
+            SensedEnemy,
         }
 
         private eType type = eType.None;
 
-        public CharacterAction(eType type)
+        public CharacterAiCondition(eType type)
         {
             this.type = type;
         }

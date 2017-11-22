@@ -17,7 +17,7 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
             Return
         }
 
-        public enum eState
+        public enum eProcessState
         {
             None = 0,
 
@@ -26,8 +26,22 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
             Exit,
         }
 
+        public enum eCondition
+        {
+
+        }
+
+        public enum eReact
+        {
+        }
+
+        public const int StateTypeMinimum = (int)eType.Normal;
+        public const int StateTypeMaximum = (int)eType.Return;
+        public const int StateTypeSize = StateTypeMaximum + 1;
+
+
         protected eType type = eType.None;
-        protected eState state = eState.None;
+        protected eProcessState processState = eProcessState.None;
         protected CharacterComponentAi stateManager;
 
         public CharacterAiState(CharacterComponentAi stateManager)
@@ -37,17 +51,17 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
 
         public virtual void Enter()
         {
-            state = eState.Enter;
+            processState = eProcessState.Enter;
         }
 
         public virtual void Update()
         {
-            state = eState.Update;
+            processState = eProcessState.Update;
         }
 
         public virtual void Exit()
         {
-            state = eState.Exit;
+            processState = eProcessState.Exit;
         }
 
         public eType Type
@@ -58,11 +72,11 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
             }
         }
 
-        public eState State
+        public eProcessState State
         {
             get
             {
-                return state;
+                return processState;
             }
         }
 

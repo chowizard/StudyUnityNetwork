@@ -1,26 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using UnityEngine;
-
-namespace Chowizard.UnityNetwork.Client.Character.Action
+namespace Chowizard.UnityNetwork.Client.Character.Ai
 {
-    public class CharacterAction
+    public abstract class CharacterAiBehaviour
     {
         public enum eType
         {
-            None,
+            None = 0,
 
-            Idle,
-            Die,
-            Move,
+            Stand,
+            MoveTo,
+            Chase,
             Attack,
-            UseSkill
+            ReturnTo,
         }
 
         private eType type = eType.None;
 
-        public CharacterAction(eType type)
+        public CharacterAiBehaviour(eType type)
         {
             this.type = type;
         }

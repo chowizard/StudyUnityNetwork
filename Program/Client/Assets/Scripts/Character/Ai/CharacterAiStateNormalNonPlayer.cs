@@ -27,12 +27,25 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
         {
             base.Update();
 
-
+            if(elapsedCommandTime >= CommandIntervalSeconds)
+            {
+                SelectNextAction();
+                elapsedCommandTime = 0.0f;
+            }
+            else
+            {
+                elapsedCommandTime += Time.deltaTime;
+            }
         }
 
         public override void Exit()
         {
             base.Exit();
+        }
+
+        /* 다음 행동을 결정한다. */
+        private void SelectNextAction()
+        {
         }
     }
 }
