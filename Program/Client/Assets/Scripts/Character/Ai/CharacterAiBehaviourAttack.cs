@@ -5,8 +5,8 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
 {
     public class CharacterAiBehaviourAttack : CharacterAiBehaviour
     {
-        public CharacterAiBehaviourAttack() :
-            base(eType.Attack)
+        public CharacterAiBehaviourAttack(CharacterEntity owner) :
+            base(eType.Attack, owner)
         {
         }
     }

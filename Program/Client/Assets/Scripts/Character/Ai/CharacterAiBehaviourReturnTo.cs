@@ -5,8 +5,8 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
 {
     public class CharacterAiBehaviourReturnTo : CharacterAiBehaviour
     {
-        public CharacterAiBehaviourReturnTo() :
-            base(eType.ReturnTo)
+        public CharacterAiBehaviourReturnTo(CharacterEntity owner) :
+            base(eType.ReturnTo, owner)
         {
         }
     }

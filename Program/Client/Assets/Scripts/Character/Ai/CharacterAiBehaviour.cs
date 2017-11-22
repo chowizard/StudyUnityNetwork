@@ -17,10 +17,12 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
         }
 
         private eType type = eType.None;
+        private CharacterEntity owner;
 
-        public CharacterAiBehaviour(eType type)
+        public CharacterAiBehaviour(eType type, CharacterEntity owner)
         {
             this.type = type;
+            this.owner = owner;
         }
 
         public eType Type
@@ -28,6 +30,14 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
             get
             {
                 return type;
+            }
+        }
+
+        public CharacterEntity Owner
+        {
+            get
+            {
+                return owner;
             }
         }
     }

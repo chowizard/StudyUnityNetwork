@@ -29,7 +29,7 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
 
             if(elapsedCommandTime >= CommandIntervalSeconds)
             {
-                SelectNextAction();
+                SelectNextBehaviour();
                 elapsedCommandTime = 0.0f;
             }
             else
@@ -44,8 +44,19 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
         }
 
         /* 다음 행동을 결정한다. */
-        private void SelectNextAction()
+        private void SelectNextBehaviour()
         {
+            int random = Random.Range(0, 100);
+            if(random < 50)
+            {
+                CharacterAiStateMove aiStateMove = stateManager.GetAiState(eType.Move) as CharacterAiStateMove;
+                Debug.Assert(aiStateMove != null);
+
+                //aiStateMove.
+            }
+            else
+            {
+            }
         }
     }
 }
