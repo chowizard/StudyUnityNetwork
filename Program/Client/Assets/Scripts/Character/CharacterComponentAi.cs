@@ -32,10 +32,15 @@ namespace Chowizard.UnityNetwork.Client.Character
         public int updateAiRatePerSeconds = DefaultUpdateAiStateRate;
         private float elapsedUpdateAiTime;
 
-        public virtual void ChangeAiState(CharacterAiState.eType aiState)
+        public virtual void ChangeAiState(CharacterAiState.eType type, CharacterAiCondition condition, CharacterAiBehaviour behaviour)
         {
-            nextAiState = GetAiState(aiState);
+            nextAiState = GetAiState(type);
             Debug.Assert(nextAiState != null);
+
+            Debug.Assert(condition != null);
+            nextAiState.Condition = condition;
+            Debug.Assert(behaviour != null);
+            nextAiState.Behaviour = behaviour;
 
             currentAiState.Exit();
         }
@@ -44,6 +49,14 @@ namespace Chowizard.UnityNetwork.Client.Character
         {
             CharacterAiState data;
             return aiStates.TryGetValue(type, out data) ? data : null;
+        }
+
+        public bool IsExistNextAiState
+        {
+            get
+            {
+                return (nextAiState != null) ? true : false;
+            }
         }
 
         protected abstract void RegisterAiStates();

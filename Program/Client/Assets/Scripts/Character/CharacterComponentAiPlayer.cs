@@ -30,6 +30,8 @@ namespace Chowizard.UnityNetwork.Client.Character
             AddAiState(new CharacterAiStateCombat(this));
             AddAiState(new CharacterAiStateMove(this));
             AddAiState(new CharacterAiStateReturn(this));
+
+            ChangeAiState(CharacterAiState.eType.Normal, new CharacterAiConditionNormal(owner), new CharacterAiBehaviourStand(owner));
         }
     }
 }

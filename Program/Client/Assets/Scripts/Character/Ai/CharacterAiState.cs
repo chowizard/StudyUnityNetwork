@@ -96,6 +96,10 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
             {
                 return condition;
             }
+            set
+            {
+                condition = value;
+            }
         }
 
         public CharacterAiBehaviour Behaviour
@@ -103,6 +107,26 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
             get
             {
                 return behaviour;
+            }
+            set
+            {
+                behaviour = value;
+            }
+        }
+
+        public bool IsExistCondition
+        {
+            get
+            {
+                return (condition != null) ? true : false;
+            }
+        }
+
+        public bool IsExistBehaviour
+        {
+            get
+            {
+                return (behaviour != null) ? true : false;
             }
         }
     }
