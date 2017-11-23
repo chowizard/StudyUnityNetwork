@@ -58,7 +58,7 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
                 Quaternion rotation = Quaternion.AngleAxis(angle, Owner.transform.localEulerAngles);
 
                 CharacterAiConditionNormal condition = new CharacterAiConditionNormal(Owner);
-                CharacterAiBehaviourMoveTo behaviour = new CharacterAiBehaviourMoveTo(Owner, movePosition, rotation);
+                CharacterAiBehaviourMoveToPosition behaviour = new CharacterAiBehaviourMoveToPosition(Owner, movePosition, rotation);
 
                 /* 그 쪽으로 이동시킨다. */
                 stateManager.ChangeAiState(eType.Move, condition, behaviour);
@@ -69,7 +69,7 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
                 Quaternion rotation = Quaternion.AngleAxis(angle, Owner.transform.localEulerAngles);
 
                 CharacterAiConditionNormal condition = new CharacterAiConditionNormal(Owner);
-                CharacterAiBehaviourMoveTo behaviour = new CharacterAiBehaviourMoveTo(Owner, Owner.transform.position, rotation);
+                CharacterAiBehaviourMoveToPosition behaviour = new CharacterAiBehaviourMoveToPosition(Owner, Owner.transform.position, rotation);
 
                 /* 그 쪽으로 이동시킨다. */
                 stateManager.ChangeAiState(eType.Move, condition, behaviour);

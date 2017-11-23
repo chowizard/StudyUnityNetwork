@@ -47,7 +47,7 @@ namespace Chowizard.UnityNetwork.Client.Character
         {
             AddAiState(new CharacterAiStateNormalNonPlayer(this));
             AddAiState(new CharacterAiStateCombat(this));
-            AddAiState(new CharacterAiStateMove(this));
+            AddAiState(new CharacterAiStateMoveToPosition(this));
             AddAiState(new CharacterAiStateReturn(this));
 
             ChangeAiState(CharacterAiState.eType.Normal, new CharacterAiConditionNormal(owner), new CharacterAiBehaviourStand(owner));
