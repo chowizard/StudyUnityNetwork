@@ -23,3 +23,4 @@ Program/Client/Assembly-CSharp-Editor-firstpass.csproj
 Program/Client/.vscode/settings.json
 Program/Client/.vscode/tasks.json
 Program/Client/.vscode/launch.json
+Program/Client/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
