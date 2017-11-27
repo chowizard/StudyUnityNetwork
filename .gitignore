@@ -13,12 +13,11 @@ Program/Client/obj/Debug/Assembly-CSharp.csproj.CoreCompileInputs.cache
 Program/Client/obj/Debug/Assembly-CSharp-firstpass.csproj.CoreCompileInputs.cache
 Program/Client/obj/Debug/Assembly-CSharp-Editor.csproj.CoreCompileInputs.cache
 Program/Client/obj/Debug/Assembly-CSharp-Editor-firstpass.csproj.CoreCompileInputs.cache
+Program/Client/Assets/3thParty/UnityTechnologies/UnityTestTools/Common/Settings/IntegrationTestsRunnerSettings.asset.meta
+Program/Client/Assets/3thParty/UnityTechnologies/UnityTestTools/Common/Settings/IntegrationTestsRunnerSettings.asset
+Program/Client/Assets/3thParty/UnityTechnologies/UnityTestTools/Common/Settings.meta
 Program/Client/Assembly-CSharp.csproj
 Program/Client/Assembly-CSharp-firstpass.csproj
 Program/Client/Assembly-CSharp-Editor.csproj
 Program/Client/Assembly-CSharp-Editor-firstpass.csproj
 Program/Client/.vscode/settings.json
-Program/Client/.vscode/launch.json
-Program/Client/.vscode/tasks.json
-Program/Client/.vscode/launch.json
-Program/Client/.vscode/tasks.json

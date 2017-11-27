@@ -54,7 +54,7 @@ namespace Chowizard.UnityNetwork.Client.Character
             {
                 CharacterComponentMove moveComponent = owner.GetCharacterComponent<CharacterComponentMove>();
                 if(moveComponent != null)
-                    moveComponent.Move(new Vector3(axisX, 0.0f, axisZ));
+                    moveComponent.MoveToDirection(new Vector3(axisX, 0.0f, axisZ));
             }
         }
     }

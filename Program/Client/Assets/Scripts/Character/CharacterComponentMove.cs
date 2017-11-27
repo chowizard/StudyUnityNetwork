@@ -8,6 +8,27 @@ namespace Chowizard.UnityNetwork.Client.Character
     [DisallowMultipleComponent]
     public class CharacterComponentMove : CharacterComponent
     {
+        public enum eMoveState
+        {
+            Stopped = 0,
+            Started,
+            Moving,
+            Arrived
+        }
+
+        public enum eRotateState
+        {
+            NotRotate,
+            Started,
+            Rotated,
+            Complete,
+        }
+
+        private eMoveState moveState = eMoveState.Stopped;
+        private Vector3 startPosition;
+        private Vector3 destinationPosition;
+
+        private eRotateState rotateState = eRotateState.NotRotate;
         private Quaternion targetRotation;
         private float elapsedTimeRotation;
         public bool isStartedRotation;
@@ -21,7 +42,15 @@ namespace Chowizard.UnityNetwork.Client.Character
             EndRotation();
         }
 
-        public void Move(Vector3 direction)
+        public void MoveToPosition(Vector3 position)
+        {
+            startPosition = owner.transform.position;
+            destinationPosition = position;
+
+
+        }
+
+        public void MoveToDirection(Vector3 direction)
         {
             Vector3 translation = direction * MoveSpeed * Time.deltaTime;
 
@@ -46,6 +75,54 @@ namespace Chowizard.UnityNetwork.Client.Character
             }
         }
 
+        public eMoveState MoveState
+        {
+            get
+            {
+                return moveState;
+            }
+        }
+
+        public Vector3 StartPosition
+        {
+            get
+            {
+                return startPosition;
+            }
+        }
+
+        public Vector3 DestinationPosition
+        {
+            get
+            {
+                return destinationPosition;
+            }
+        }
+
+        public eRotateState RotateState
+        {
+            get
+            {
+                return rotateState;
+            }
+        }
+
+        public Quaternion TargetRotation
+        {
+            get
+            {
+                return targetRotation;
+            }
+        }
+
+        public float ElapsedTimeRotation
+        {
+            get
+            {
+                return elapsedTimeRotation;
+            }
+        }
+
         public float MoveSpeed
         {
             get
@@ -67,7 +144,49 @@ namespace Chowizard.UnityNetwork.Client.Character
         {
             base.Update();
 
+            UpdateMove();
             UpdateRotation();
+        }
+
+        private void UpdateMove()
+        {
+            switch(moveState)
+            {
+            case eMoveState.Stopped:
+                UpdateMoveStateStopped();
+                break;
+
+            case eMoveState.Started:
+                UpdateMoveStateStarted();
+                break;
+
+            case eMoveState.Moving:
+                UpdateMoveStateMoving();
+                break;
+
+            case eMoveState.Arrived:
+                UpdateMoveStateArrived();
+                break;
+            }
+        }
+
+        private void UpdateMoveStateStopped()
+        {
+        }
+
+        private void UpdateMoveStateStarted()
+        {
+        }
+
+        private void UpdateMoveStateMoving()
+        {
+            //Vector3 distanceStartToDistinationSqr2 = Vector3.SqrMagnitude();
+            //Vector3 distanceSelfToDestinationSqr2 = Vector3.SqrMagnitude();
+        }
+
+        private void UpdateMoveStateArrived()
+        {
+            moveState = eMoveState.Stopped;
         }
 
         private void UpdateRotation()

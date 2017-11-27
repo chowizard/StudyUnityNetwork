@@ -62,15 +62,44 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
 
         private void UpdateMove()
         {
+            /* 아직 회전이 완료가 안 된 상태라면 이동이 불가능함. */
+            if(isEndToRotate == false)
+            {
+                Debug.LogError(string.Format("Character {0} rotation not ended yet!", Owner.netId));
+                return;
+            }
+
             CharacterAiBehaviourMoveToPosition detailBehaviour = behaviour as CharacterAiBehaviourMoveToPosition;
             Debug.Assert(detailBehaviour != null);
 
-            //detailBehaviour.rotation
+            CharacterComponentMove moveComponent = Owner.GetCharacterComponent<CharacterComponentMove>();
+            Debug.Assert(moveComponent != null);
+            if(moveComponent == null)
+                return;
+
+            //moveComponent.Move();
         }
 
         private void UpdateRotate()
         {
+            CharacterAiBehaviourMoveToPosition detailBehaviour = behaviour as CharacterAiBehaviourMoveToPosition;
+            Debug.Assert(detailBehaviour != null);
 
+            /* 이미 회전이 완료가 된 상태라면 종료함. */
+            if(Owner.transform.rotation == detailBehaviour.rotation)
+            {
+                isEndToRotate = true;
+                return;
+            }
+
+            CharacterComponentMove moveComponent = Owner.GetCharacterComponent<CharacterComponentMove>();
+            Debug.Assert(moveComponent != null);
+            if(moveComponent == null)
+                return;
+
+            /* 회전각이 안 맞는 상태이므로, 목표 회전각이 될 때까지 회전하도록 한다. */
+            if(moveComponent.isStartedRotation == false)
+                moveComponent.Rotate(detailBehaviour.rotation);
         }
     }
 }
