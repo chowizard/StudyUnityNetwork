@@ -174,7 +174,7 @@ namespace Chowizard.UnityNetwork.Client.Character
             else
             {
                 Vector3 distanceMeToDest = owner.destinationPosition - owner.transform.position;
-                owner.GetComponent<CharacterComponentMove>().Move(distanceMeToDest.normalized);
+                owner.GetComponent<CharacterComponentMove>().MoveToDirection(distanceMeToDest.normalized);
             }
         }
 
