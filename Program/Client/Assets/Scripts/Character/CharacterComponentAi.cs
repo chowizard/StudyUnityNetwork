@@ -42,7 +42,8 @@ namespace Chowizard.UnityNetwork.Client.Character
             Debug.Assert(behaviour != null);
             nextAiState.Behaviour = behaviour;
 
-            currentAiState.Exit();
+            if(currentAiState != null)
+                currentAiState.Exit();
         }
 
         public CharacterAiState GetAiState(CharacterAiState.eType type)
@@ -63,19 +64,18 @@ namespace Chowizard.UnityNetwork.Client.Character
 
         protected virtual void UpdateAiState()
         {
-            if(currentAiState == null)
-                return;
-
             if(nextAiState != null)
             {
                 currentAiState = nextAiState;
                 nextAiState = null;
 
-                currentAiState.Enter();
+                if(currentAiState != null)
+                    currentAiState.Enter();
             }
             else
             {
-                currentAiState.Update();
+                if(currentAiState != null)
+                    currentAiState.Update();
             }
         }
 
@@ -92,6 +92,8 @@ namespace Chowizard.UnityNetwork.Client.Character
         protected override void Start()
         {
             base.Start();
+
+            RegisterAiStates();
         }
 
         // Update is called once per frame

@@ -7,7 +7,7 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
 {
     public sealed class CharacterAiStateNormalNonPlayer : CharacterAiStateNormal
     {
-        public float CommandIntervalSeconds = 3.0f;
+        public float CommandIntervalSeconds = 1.0f;
         private float elapsedCommandTime;
 
 
