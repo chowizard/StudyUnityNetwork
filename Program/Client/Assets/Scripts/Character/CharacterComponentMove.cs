@@ -11,17 +11,17 @@ namespace Chowizard.UnityNetwork.Client.Character
         public enum eMoveState
         {
             Stopped = 0,
-            Started,
+            Start,
             Moving,
-            Arrived
+            End
         }
 
         public enum eRotateState
         {
             NotRotate,
-            Started,
-            Rotated,
-            Complete,
+            Start,
+            Rotating,
+            End,
         }
 
         private eMoveState moveState = eMoveState.Stopped;
@@ -30,16 +30,29 @@ namespace Chowizard.UnityNetwork.Client.Character
 
         private eRotateState rotateState = eRotateState.NotRotate;
         private Quaternion targetRotation;
-        private float elapsedTimeRotation;
+        private float elapsedTimeToRotate;
         public bool isStartedRotation;
 
         public void Stop()
         {
+            StopMove();
+            StopRotate();
+        }
+
+        public void StopMove()
+        {
             owner.destinationPosition = owner.transform.position;
 
+            moveState = eMoveState.End;
+        }
+
+        public void StopRotate()
+        {
             owner.destinationRotation = owner.transform.rotation;
             targetRotation = owner.transform.rotation;
             EndRotation();
+
+            rotateState = eRotateState.End;
         }
 
         public void MoveToPosition(Vector3 position)
@@ -47,15 +60,22 @@ namespace Chowizard.UnityNetwork.Client.Character
             startPosition = owner.transform.position;
             destinationPosition = position;
 
-
+            moveState = eMoveState.Start;
         }
 
         public void MoveToDirection(Vector3 direction)
         {
-            Vector3 translation = direction * MoveSpeed * Time.deltaTime;
+            if(direction == Vector3.zero)
+                return;
 
-            if(translation != Vector3.zero)
-                owner.transform.Translate(translation, Space.World);
+            Vector3 translation = (direction * owner.moveSpeed * Time.deltaTime);
+            if(translation == Vector3.zero)
+                return;
+
+            startPosition = owner.transform.position;
+            destinationPosition = owner.transform.position + translation;
+
+            moveState = eMoveState.Start;
         }
 
         public void Rotate(Quaternion rotation)
@@ -99,6 +119,22 @@ namespace Chowizard.UnityNetwork.Client.Character
             }
         }
 
+        public bool IsMoving
+        {
+            get
+            {
+                return (moveState == eMoveState.Moving) ? true : false;
+            }
+        }
+
+        public Vector3 MoveDirection
+        {
+            get
+            {
+                return Vector3.Normalize(destinationPosition - startPosition);
+            }
+        }
+
         public eRotateState RotateState
         {
             get
@@ -119,7 +155,15 @@ namespace Chowizard.UnityNetwork.Client.Character
         {
             get
             {
-                return elapsedTimeRotation;
+                return elapsedTimeToRotate;
+            }
+        }
+
+        public bool IsRotating
+        {
+            get
+            {
+                return (rotateState == eRotateState.Rotating) ? true : false;
             }
         }
 
@@ -145,7 +189,7 @@ namespace Chowizard.UnityNetwork.Client.Character
             base.Update();
 
             UpdateMove();
-            UpdateRotation();
+            UpdateRotate();
         }
 
         private void UpdateMove()
@@ -156,7 +200,7 @@ namespace Chowizard.UnityNetwork.Client.Character
                 UpdateMoveStateStopped();
                 break;
 
-            case eMoveState.Started:
+            case eMoveState.Start:
                 UpdateMoveStateStarted();
                 break;
 
@@ -164,7 +208,7 @@ namespace Chowizard.UnityNetwork.Client.Character
                 UpdateMoveStateMoving();
                 break;
 
-            case eMoveState.Arrived:
+            case eMoveState.End:
                 UpdateMoveStateArrived();
                 break;
             }
@@ -176,12 +220,25 @@ namespace Chowizard.UnityNetwork.Client.Character
 
         private void UpdateMoveStateStarted()
         {
+            moveState = eMoveState.Moving;
         }
 
         private void UpdateMoveStateMoving()
         {
-            //Vector3 distanceStartToDistinationSqr2 = Vector3.SqrMagnitude();
-            //Vector3 distanceSelfToDestinationSqr2 = Vector3.SqrMagnitude();
+            float distanceStartToDistinationSqr2 = Vector3.SqrMagnitude(destinationPosition - startPosition);
+            float distanceStartToSelfSqr2 = Vector3.SqrMagnitude(owner.transform.position - startPosition);
+
+            if(distanceStartToSelfSqr2 >= distanceStartToDistinationSqr2)
+            {
+                StopMove();
+            }
+            else
+            {
+                Vector3 translation = MoveDirection * MoveSpeed * Time.deltaTime;
+
+                if(translation != Vector3.zero)
+                    owner.transform.Translate(translation, Space.World);
+            }
         }
 
         private void UpdateMoveStateArrived()
@@ -189,17 +246,61 @@ namespace Chowizard.UnityNetwork.Client.Character
             moveState = eMoveState.Stopped;
         }
 
-        private void UpdateRotation()
+        private void UpdateRotate()
         {
-            float interpolation = owner.rotationSpeed * elapsedTimeRotation;
-            Quaternion.Lerp(transform.rotation, targetRotation, interpolation);
+            switch(rotateState)
+            {
+            case eRotateState.NotRotate:
+                UpdateRotateNotRotate();
+                break;
 
-            elapsedTimeRotation += Time.deltaTime;
+            case eRotateState.Start:
+                UpdateRotateStart();
+                break;
+
+            case eRotateState.Rotating:
+                UpdateRotateRotating();
+                break;
+
+            case eRotateState.End:
+                UpdateRotateEnd();
+                break;
+            }
+        }
+
+        private void UpdateRotateNotRotate()
+        {
+        }
+
+        private void UpdateRotateStart()
+        {
+            rotateState = eRotateState.Rotating;
+        }
+
+        private void UpdateRotateRotating()
+        {
+            float interpolation = owner.rotationSpeed * elapsedTimeToRotate;
+            if(interpolation >= 1.0f)
+            {
+                StopRotate();
+            }
+            else
+            {
+                Quaternion.Lerp(transform.rotation, targetRotation, interpolation);
+                elapsedTimeToRotate += Time.deltaTime;
+            }
+        }
+
+        private void UpdateRotateEnd()
+        {
+            EndRotation();
+
+            rotateState = eRotateState.NotRotate;
         }
 
         private void EndRotation()
         {
-            elapsedTimeRotation = 0.0f;
+            elapsedTimeToRotate = 0.0f;
             isStartedRotation = false;
         }
     }
