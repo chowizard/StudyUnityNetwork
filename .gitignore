@@ -25,3 +25,5 @@ Program/Client/.vscode/tasks.json
 Program/Client/.vscode/launch.json
 Program/Client/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 Program/Client/package-lock.json
+Program/Client/Assembly-UnityScript.unityproj
+Program/Client/obj/

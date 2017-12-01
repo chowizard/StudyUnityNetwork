@@ -40,14 +40,13 @@ namespace Chowizard.UnityNetwork.Client.Character
 
         public void StopMove()
         {
-            owner.destinationPosition = owner.transform.position;
+            owner.transform.position = destinationPosition;
 
             moveState = eMoveState.End;
         }
 
         public void StopRotate()
         {
-            owner.destinationRotation = owner.transform.rotation;
             targetRotation = owner.transform.rotation;
             EndRotation();
 

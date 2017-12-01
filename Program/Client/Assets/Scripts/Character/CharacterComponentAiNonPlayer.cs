@@ -61,6 +61,7 @@ namespace Chowizard.UnityNetwork.Client.Character
             base.UpdateAiState();
         }
 
+#if UNUSED
         private void UpdateCommandIntervalTime()
         {
             if(elapsedCommandTime >= commandIntervalSeconds)
@@ -120,7 +121,7 @@ namespace Chowizard.UnityNetwork.Client.Character
         private void CommandMove(Vector3 targetPosition)
         {
             startPosition = owner.transform.position;
-            owner.destinationPosition = targetPosition;
+            owner.GetCharacterComponent<CharacterComponentMove>().DestinationPosition = targetPosition;
 
             aiState = eAiState.Move;
         }
@@ -187,5 +188,6 @@ namespace Chowizard.UnityNetwork.Client.Character
                 aiState = eAiState.Idle;
             }
         }
+#endif
     }
 }

@@ -19,18 +19,11 @@ namespace Chowizard.UnityNetwork.Client.Character
 
         public GameObject model;
 
-        /* 최종 목료가 될 위치 */
-        public Vector3 destinationPosition;
         public float moveSpeed = 10.0f;
-
-        /* 최종 목료가 될 회전각 */
-        public Quaternion destinationRotation;
         public float rotationSpeed;
 
         /* 전체 컴포넌트 목록 */
         private Dictionary<System.Type, CharacterComponent> components = new Dictionary<System.Type, CharacterComponent>();
-
-        private float elapsedTimeToCheckSyncDiatance;
 
         public ClassType AddCharacterComponent<ClassType>() where ClassType : CharacterComponent
         {
@@ -151,8 +144,6 @@ namespace Chowizard.UnityNetwork.Client.Character
         private void Start()
         {
             Debug.Assert(model != null);
-
-            destinationPosition = transform.position;
         }
 
         private void OnDrawGizmosSelected()
