@@ -31,7 +31,6 @@ namespace Chowizard.UnityNetwork.Client.Character
         private eRotateState rotateState = eRotateState.NotRotate;
         private Quaternion targetRotation;
         private float elapsedTimeToRotate;
-        public bool isStartedRotation;
 
         public void Stop()
         {
@@ -91,7 +90,6 @@ namespace Chowizard.UnityNetwork.Client.Character
             else
             {
                 targetRotation = rotation;
-                isStartedRotation = true;
             }
         }
 
@@ -301,7 +299,6 @@ namespace Chowizard.UnityNetwork.Client.Character
         private void EndRotation()
         {
             elapsedTimeToRotate = 0.0f;
-            isStartedRotation = false;
         }
     }
 }

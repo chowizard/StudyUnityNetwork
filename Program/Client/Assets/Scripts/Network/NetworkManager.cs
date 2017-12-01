@@ -46,6 +46,9 @@ namespace Chowizard.UnityNetwork.Client.Network
         {
             get
             {
+                if(GameManager.Singleton == null)
+                    return null;
+
                 return GameManager.Singleton.networkManager;
             }
         }

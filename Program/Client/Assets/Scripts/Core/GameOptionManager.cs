@@ -10,6 +10,9 @@ namespace Chowizard.UnityNetwork.Client.Core
         {
             get
             {
+                if(GameManager.Singleton == null)
+                    return null;
+
                 return GameManager.Singleton.gameOptionManager;
             }
         }

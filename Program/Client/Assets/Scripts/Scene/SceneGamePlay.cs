@@ -31,7 +31,8 @@ namespace Chowizard.UnityNetwork.Client.Scene
 
         public void ClearEntities()
         {
-            EntityManager.Instance.Clear();
+            if(EntityManager.Instance != null)
+                EntityManager.Instance.Clear();
         }
 
         private void Awake()
