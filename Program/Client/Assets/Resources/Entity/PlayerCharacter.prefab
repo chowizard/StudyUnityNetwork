@@ -90,7 +90,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1986818384811430}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -98,7 +98,7 @@ Transform:
   - {fileID: 4515725256600140}
   m_Father: {fileID: 4922881360736190}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4515725256600140
 Transform:
   m_ObjectHideFlags: 1
@@ -131,14 +131,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1851611101664868}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4395196438640804}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!23 &23019536419785788
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -291,7 +291,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   owner: {fileID: 114624193723331358}
-  isStartedRotation: 0
 --- !u!114 &114321685311093182
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -319,6 +318,7 @@ MonoBehaviour:
   state: 0
   owner: {fileID: 114624193723331358}
   aiState: 0
+  updateAiRatePerSeconds: 30
 --- !u!114 &114624193723331358
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -335,9 +335,7 @@ MonoBehaviour:
   property:
     isPlayer: 1
   model: {fileID: 1331452213942746}
-  destinationPosition: {x: 0, y: 0, z: 0}
   moveSpeed: 10
-  destinationRotation: {x: 0, y: 0, z: 0, w: 0}
   rotationSpeed: 0
 --- !u!114 &114840146952577844
 MonoBehaviour:

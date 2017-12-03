@@ -47,23 +47,28 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
         private void SelectNextBehaviour()
         {
             int random = Random.Range(0, 100);
-            if(random < 33)
+            if(random < 75)
             {
                 /* 이동할 지점과 회전할 지점을 정한다. */
                 float movePositionX = Random.Range(Owner.transform.position.x - 5.0f, Owner.transform.position.x + 5.0f);
                 float movePositionZ = Random.Range(Owner.transform.position.z - 5.0f, Owner.transform.position.z + 5.0f);
                 Vector3 movePosition = new Vector3(movePositionX, Owner.transform.position.y, movePositionZ);
 
-                float angle = Random.Range(0.0f, 360.0f);
-                Quaternion rotation = Quaternion.AngleAxis(angle, Owner.transform.localEulerAngles);
+                //float angle = Random.Range(0.0f, 360.0f);
+                //Quaternion rotation = Quaternion.AngleAxis(angle, Owner.transform.localEulerAngles);
+                Vector3 toDirection = Vector3.Normalize(movePosition - Owner.transform.position);
+                if(toDirection != Vector3.zero)
+                {
+                    Quaternion rotation = Quaternion.FromToRotation(Owner.transform.forward, toDirection);
 
-                CharacterAiConditionNormal condition = new CharacterAiConditionNormal(Owner);
-                CharacterAiBehaviourMoveToPosition behaviour = new CharacterAiBehaviourMoveToPosition(Owner, movePosition, rotation);
+                    CharacterAiConditionNormal condition = new CharacterAiConditionNormal(Owner);
+                    CharacterAiBehaviourMoveToPosition behaviour = new CharacterAiBehaviourMoveToPosition(Owner, movePosition, rotation);
 
-                /* 그 쪽으로 이동시킨다. */
-                stateManager.ChangeAiState(eType.Move, condition, behaviour);
+                    /* 그 쪽으로 이동시킨다. */
+                    stateManager.ChangeAiState(eType.Move, condition, behaviour);
+                }
             }
-            else if(random < 66)
+            else if(random < 95)
             {
                 float angle = Random.Range(0.0f, 360.0f);
                 Quaternion rotation = Quaternion.AngleAxis(angle, Owner.transform.localEulerAngles);
