@@ -50,8 +50,8 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
             if(random < 75)
             {
                 /* 이동할 지점과 회전할 지점을 정한다. */
-                float movePositionX = Random.Range(Owner.transform.position.x - 5.0f, Owner.transform.position.x + 5.0f);
-                float movePositionZ = Random.Range(Owner.transform.position.z - 5.0f, Owner.transform.position.z + 5.0f);
+                float movePositionX = Random.Range(Owner.transform.position.x - 10.0f, Owner.transform.position.x + 10.0f);
+                float movePositionZ = Random.Range(Owner.transform.position.z - 10.0f, Owner.transform.position.z + 10.0f);
                 Vector3 movePosition = new Vector3(movePositionX, Owner.transform.position.y, movePositionZ);
 
                 //float angle = Random.Range(0.0f, 360.0f);
@@ -59,10 +59,11 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
                 Vector3 toDirection = Vector3.Normalize(movePosition - Owner.transform.position);
                 if(toDirection != Vector3.zero)
                 {
-                    Quaternion rotation = Quaternion.FromToRotation(Owner.transform.forward, toDirection);
+                    Quaternion toRotation = Quaternion.FromToRotation(Owner.transform.forward, toDirection);
+                    Quaternion nowRotation = Owner.transform.rotation * toRotation;
 
                     CharacterAiConditionNormal condition = new CharacterAiConditionNormal(Owner);
-                    CharacterAiBehaviourMoveToPosition behaviour = new CharacterAiBehaviourMoveToPosition(Owner, movePosition, rotation);
+                    CharacterAiBehaviourMoveToPosition behaviour = new CharacterAiBehaviourMoveToPosition(Owner, movePosition, nowRotation);
 
                     /* 그 쪽으로 이동시킨다. */
                     stateManager.ChangeAiState(eType.Move, condition, behaviour);
