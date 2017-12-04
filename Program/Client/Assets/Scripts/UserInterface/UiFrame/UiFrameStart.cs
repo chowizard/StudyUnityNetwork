@@ -15,6 +15,7 @@ namespace Chowizard.UnityNetwork.Client.Ui
             LoadUiSet("UiSetInformationWindow");
             LoadUiSet("UiSetLogWindow");
             LoadUiSet("UiSetControlPanelSelectMode");
+            LoadUiSet("UiSetVersion");
         }
 
         // Update is called once per frame
