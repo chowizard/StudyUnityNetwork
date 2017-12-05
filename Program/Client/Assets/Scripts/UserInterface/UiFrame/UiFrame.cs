@@ -20,6 +20,8 @@ namespace Chowizard.UnityNetwork.Client.Ui
             BottomRight
         }
 
+        public Canvas uiCanvasScreenSpaceMain;
+
         public RectTransform uiAnchorCenter;
         public RectTransform uiAnchorLeft;
         public RectTransform uiAnchorRight;
@@ -107,6 +109,8 @@ namespace Chowizard.UnityNetwork.Client.Ui
         // Use this for initialization
         protected virtual void Start()
         {
+            Debug.Assert(uiCanvasScreenSpaceMain != null);
+
             RegisterAnchorPoint(eAnchorType.Center);
             RegisterAnchorPoint(eAnchorType.Left);
             RegisterAnchorPoint(eAnchorType.Right);
@@ -125,7 +129,7 @@ namespace Chowizard.UnityNetwork.Client.Ui
 
         private RectTransform RegisterAnchorPoint(eAnchorType type)
         {
-            Transform findTransform = transform.Find(type.ToString());
+            Transform findTransform = uiCanvasScreenSpaceMain.transform.Find(type.ToString());
             Debug.Assert(findTransform != null);
             if(findTransform == null)
                 return null;
@@ -172,7 +176,7 @@ namespace Chowizard.UnityNetwork.Client.Ui
             if(anchorTransform != null)
                 uiSet.transform.SetParent(anchorTransform);
             else
-                uiSet.transform.SetParent(transform);
+                uiSet.transform.SetParent(uiCanvasScreenSpaceMain.transform);
 
             uiSet.name = uiPrefab.name;
 

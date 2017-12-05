@@ -24,7 +24,7 @@ namespace Chowizard.UnityNetwork.Client.Scene
             GameSceneManager.Instance.currentScene = this;
             Debug.Log(string.Format("Scene [{0}] was started.", sceneType.ToString()));
 
-            uiFrameStart = UiManager.Instance.LoadUiFrame("UiFrameStart");
+            uiFrameStart = UiManager.Instance.LoadUiFrame("UiFrameSceneStart");
             UiManager.Instance.ChangeUiFrame(uiFrameStart);
         }
 

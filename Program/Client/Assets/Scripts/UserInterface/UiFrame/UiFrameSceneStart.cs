@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Chowizard.UnityNetwork.Client.Ui
 {
-    public class UiFrameStart : UiFrame
+    public class UiFrameSceneStart : UiFrame
     {
         // Use this for initialization
         protected override void Start()

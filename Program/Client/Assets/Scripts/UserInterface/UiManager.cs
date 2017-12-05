@@ -76,7 +76,10 @@ namespace Chowizard.UnityNetwork.Client.Ui
         public void ChangeUiFrame(UiFrame uiFrame)
         {
             if(uiFrame == null)
+            {
+                Debug.LogError("UI frame is not exist!");
                 return;
+            }
 
             foreach(var pair in uiFrames)
             {

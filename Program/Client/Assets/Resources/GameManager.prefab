@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modeStartAt: 0
-  npcCount: 100
+  initialNpcSpawningCount: 0
   mainCamera: {fileID: 114438895662124344}
   gameSceneManager: {fileID: 114387561579554280}
   gameOptionManager: {fileID: 114067335565658104}
@@ -515,10 +515,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9845ee3a9878f3c46b6edab6655e685e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: 127.0.0.1
+  address: 127.0.0.1
   port: 15632
   isAtStartup: 1
   mode: 0
+  enableToSyncDistance: 20
+  checkSyncDiatanceInterval: 1
   message: 
 --- !u!114 &114836935658293598
 MonoBehaviour:

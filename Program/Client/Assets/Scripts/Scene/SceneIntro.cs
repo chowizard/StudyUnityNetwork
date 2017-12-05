@@ -26,7 +26,7 @@ namespace Chowizard.UnityNetwork.Client.Scene
 
             NetworkManager.Instance.mode = NetworkManager.eMode.None;
 
-            uiFrameIntro = UiManager.Instance.LoadUiFrame("UiFrameIntro");
+            uiFrameIntro = UiManager.Instance.LoadUiFrame("UiFrameSceneIntro");
             UiManager.Instance.ChangeUiFrame(uiFrameIntro);
         }
 
