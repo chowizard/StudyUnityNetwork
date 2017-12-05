@@ -63,17 +63,19 @@ namespace Chowizard.UnityNetwork.Client.Character
 
         public void MoveToDirection(Vector3 direction)
         {
-            if(direction == Vector3.zero)
+            Vector3 adjustDirection = direction.normalized;
+            if(adjustDirection == Vector3.zero)
                 return;
 
-            Vector3 translation = (direction * owner.moveSpeed * Time.deltaTime);
+            Vector3 translation = (adjustDirection * owner.moveSpeed * Time.deltaTime);
             if(translation == Vector3.zero)
                 return;
 
             startPosition = owner.transform.position;
             destinationPosition = owner.transform.position + translation;
 
-            moveState = eMoveState.Start;
+            if(IsMoving == false)
+                moveState = eMoveState.Start;
         }
 
         public void Rotate(Quaternion rotation)
@@ -120,7 +122,7 @@ namespace Chowizard.UnityNetwork.Client.Character
         {
             get
             {
-                return (moveState == eMoveState.Moving) ? true : false;
+                return ((moveState == eMoveState.Start) || (moveState == eMoveState.Moving)) ? true : false;
             }
         }
 
@@ -160,7 +162,7 @@ namespace Chowizard.UnityNetwork.Client.Character
         {
             get
             {
-                return (rotateState == eRotateState.Rotating) ? true : false;
+                return ((rotateState == eRotateState.Start) || (rotateState == eRotateState.Rotating)) ? true : false;
             }
         }
 
