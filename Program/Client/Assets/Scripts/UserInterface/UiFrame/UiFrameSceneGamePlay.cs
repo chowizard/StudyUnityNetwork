@@ -10,12 +10,26 @@ namespace Chowizard.UnityNetwork.Client.Ui
 {
     public class UiFrameSceneGamePlay : UiFrame
     {
+        public Canvas uiCanvasWorldMain;
 
         // Use this for initialization
         protected override void Start()
         {
+            Debug.Assert(uiCanvasWorldMain != null);
+
             base.Start();
 
+            LoadUiSets();
+        }
+
+        // Update is called once per frame
+        protected override void Update()
+        {
+            base.Update();
+        }
+
+        private void LoadUiSets()
+        {
             switch(NetworkManager.Instance.mode)
             {
             case NetworkManager.eMode.Server:
@@ -29,12 +43,6 @@ namespace Chowizard.UnityNetwork.Client.Ui
 
             LoadUiSet("UiSetInformationWindow");
             LoadUiSet("UiSetLogWindow");
-        }
-
-        // Update is called once per frame
-        protected override void Update()
-        {
-            base.Update();
         }
     }
 }
