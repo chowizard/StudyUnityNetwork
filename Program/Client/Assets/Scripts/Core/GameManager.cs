@@ -18,6 +18,7 @@ namespace Chowizard.UnityNetwork.Client.Core
 
         public GameSceneManager gameSceneManager;
         public GameOptionManager gameOptionManager;
+        public ResourceManager resourceManager;
         public EntityManager entityManager;
         public Network.NetworkManager networkManager;
         public UiManager uiManager;

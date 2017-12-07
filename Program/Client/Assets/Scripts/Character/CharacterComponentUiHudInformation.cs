@@ -16,23 +16,10 @@ namespace Chowizard.UnityNetwork.Client.Character
         // Use this for initialization
         protected override void Start()
         {
-            if(uiHud == null)
-            {
-                UiFrameSceneGamePlay uiFrame = UiManager.Instance.GetUiFrame("UiFrameSceneGamePlay") as UiFrameSceneGamePlay;
-                Debug.Assert(uiFrame != null);
-
-                if(uiFrame != null)
-                {
-                    uiHud = uiFrame.uiHudCharacterManager.Get(owner.netId.Value);
-                    if(uiHud == null)
-                    {
-                        //uiHud = Instantiate<Ui>
-                        //uiFrame.uiHudCharacterManager.Add(owner, );
-                    }
-                }
-            }
-
             base.Start();
+
+            if(uiHud == null)
+                uiHud = RegisterUi();
         }
 
         // Update is called once per frame
@@ -45,6 +32,26 @@ namespace Chowizard.UnityNetwork.Client.Character
         {
 
         }
-    }
 
+        private UiHudCharacterInformation RegisterUi()
+        {
+            UiFrameSceneGamePlay uiFrame = UiManager.Instance.GetUiFrame("UiFrameSceneGamePlay") as UiFrameSceneGamePlay;
+            Debug.Assert(uiFrame != null);
+
+            if(uiFrame == null)
+                return null;
+
+            UiHudCharacterInformation uiCharacterInformation = uiFrame.uiHudCharacterManager.Get(owner.netId.Value);
+            if(uiCharacterInformation == null)
+            {
+                GameObject uiHudObject = ResourceManager.Instance.InstantiateFromResource("UserInterface/UiHeadupDisplay/UiHudCharacterInformation");
+                uiCharacterInformation = uiHudObject.GetComponent<UiHudCharacterInformation>();
+                Debug.Assert(uiCharacterInformation != null);
+
+                uiFrame.uiHudCharacterManager.Add(owner, uiCharacterInformation);
+            }
+
+            return uiCharacterInformation;
+        }
+    }
 }
