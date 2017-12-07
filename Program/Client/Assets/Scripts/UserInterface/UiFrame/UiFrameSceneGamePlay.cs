@@ -10,7 +10,11 @@ namespace Chowizard.UnityNetwork.Client.Ui
 {
     public class UiFrameSceneGamePlay : UiFrame
     {
+        [Space]
         public Canvas uiCanvasWorldMain;
+
+        [Space]
+        public UiHudCharacterManager uiHudCharacterManager;
 
         // Use this for initialization
         protected override void Start()

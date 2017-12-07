@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 224041005280619264}
   - component: {fileID: 114333684102719640}
   m_Layer: 5
-  m_Name: UiHudCharacterInformations
+  m_Name: UiHudCharacterInformation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,10 +72,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a819bd25a37139144b9f40d88e0dafcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  owner: {fileID: 0}
   uiTextCharacterId: {fileID: 114735431373316320}
   uiTextDescription: {fileID: 114999300525548578}
-  characterId: 0
-  characterPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &114735431373316320
 MonoBehaviour:
   m_ObjectHideFlags: 1

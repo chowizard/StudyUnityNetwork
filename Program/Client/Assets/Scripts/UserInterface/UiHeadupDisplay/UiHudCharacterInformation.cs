@@ -5,12 +5,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using Chowizard.UnityNetwork.Client.Core;
-using Chowizard.UnityNetwork.Client.Scene;
+using Chowizard.UnityNetwork.Client.Character;
 
 namespace Chowizard.UnityNetwork.Client.Ui
 {
-    public class UiHudCharacterInformations : MonoBehaviour
+    public class UiHudCharacterInformation : MonoBehaviour
     {
+        public CharacterEntity owner;
+
+        [Space]
         public Text uiTextCharacterId;
         public Text uiTextDescription;
 
@@ -20,6 +23,8 @@ namespace Chowizard.UnityNetwork.Client.Ui
         // Use this for initialization
         private void Start()
         {
+            Debug.Assert(owner != null);
+
             Debug.Assert(uiTextCharacterId != null);
             Debug.Assert(uiTextDescription != null);
         }
@@ -33,10 +38,35 @@ namespace Chowizard.UnityNetwork.Client.Ui
 
         private void UpdateCheckCharacterId()
         {
+            if(characterId == owner.netId.Value)
+                return;
+
+            characterId = owner.netId.Value;
+            uiTextCharacterId.text = DisplayTextCharacterId;
         }
 
         private void UpdateCheckDescription()
         {
+
+        }
+
+        private string DisplayTextCharacterId
+        {
+            get
+            {
+                return "ID : ";
+            }
+        }
+
+        private string DisplayTextDescription
+        {
+            get
+            {
+                string stateText = "상태 : ";
+                string positionText = "위치 : " + owner.transform.position;
+
+                return stateText + "\n" + positionText;
+            }
         }
     }
 }

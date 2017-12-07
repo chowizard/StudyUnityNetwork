@@ -20,8 +20,10 @@ namespace Chowizard.UnityNetwork.Client.Ui
             BottomRight
         }
 
+        [Space]
         public Canvas uiCanvasScreenSpaceMain;
 
+        [Space]
         public RectTransform uiAnchorCenter;
         public RectTransform uiAnchorLeft;
         public RectTransform uiAnchorRight;
