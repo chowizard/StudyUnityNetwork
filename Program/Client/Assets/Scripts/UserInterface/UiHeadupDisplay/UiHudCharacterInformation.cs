@@ -38,6 +38,9 @@ namespace Chowizard.UnityNetwork.Client.Ui
 
         private void UpdateCheckCharacterId()
         {
+            if(owner == null)
+                return;
+
             if(characterId == owner.netId.Value)
                 return;
 
@@ -47,7 +50,14 @@ namespace Chowizard.UnityNetwork.Client.Ui
 
         private void UpdateCheckDescription()
         {
+            if(owner == null)
+                return;
 
+            if(characterPosition == owner.transform.position)
+                return;
+
+            characterPosition = owner.transform.position;
+            uiTextDescription.text = DisplayTextDescription;
         }
 
         private string DisplayTextCharacterId
@@ -63,7 +73,7 @@ namespace Chowizard.UnityNetwork.Client.Ui
             get
             {
                 string stateText = "상태 : ";
-                string positionText = "위치 : " + owner.transform.position;
+                string positionText = "위치 : " + characterPosition;
 
                 return stateText + "\n" + positionText;
             }

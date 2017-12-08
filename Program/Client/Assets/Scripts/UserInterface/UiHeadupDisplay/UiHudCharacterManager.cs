@@ -11,7 +11,7 @@ namespace Chowizard.UnityNetwork.Client.Ui
 {
     public class UiHudCharacterManager : MonoBehaviour
     {
-        private Dictionary<uint, UiHudCharacterInformation> characterInformations;
+        private Dictionary<uint, UiHudCharacterInformation> characterInformations = new Dictionary<uint, UiHudCharacterInformation>();
 
         public void Clear()
         {
@@ -37,6 +37,9 @@ namespace Chowizard.UnityNetwork.Client.Ui
             Debug.Assert(uiHud != null);
             if(uiHud == null)
                 return;
+
+            if(uiHud.owner != owner)
+                uiHud.owner = owner;
 
             Debug.Assert(characterInformations.ContainsKey(owner.netId.Value) == false);
             characterInformations.Add(owner.netId.Value, uiHud);

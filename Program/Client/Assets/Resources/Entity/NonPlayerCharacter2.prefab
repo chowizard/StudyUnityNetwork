@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 114779810632250774}
   - component: {fileID: 114722044546307236}
   - component: {fileID: 114992534961798170}
+  - component: {fileID: 114932037115526410}
   m_Layer: 0
   m_Name: NonPlayerCharacter2
   m_TagString: Untagged
@@ -485,6 +486,20 @@ MonoBehaviour:
   model: {fileID: 1590283730044926}
   moveSpeed: 10
   rotationSpeed: 0
+--- !u!114 &114932037115526410
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1612585951381680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f6fc07644d858488363f2dcfa6299f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  owner: {fileID: 114923807747402844}
+  uiHud: {fileID: 0}
 --- !u!114 &114992534961798170
 MonoBehaviour:
   m_ObjectHideFlags: 1

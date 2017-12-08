@@ -16,6 +16,8 @@ namespace Chowizard.UnityNetwork.Client.Core
 
         public CameraController mainCamera;
 
+        [Space]
+        [Space]
         public GameSceneManager gameSceneManager;
         public GameOptionManager gameOptionManager;
         public ResourceManager resourceManager;
@@ -48,6 +50,7 @@ namespace Chowizard.UnityNetwork.Client.Core
         {
             Debug.Assert(gameSceneManager != null);
             Debug.Assert(gameOptionManager != null);
+            Debug.Assert(resourceManager != null);
             Debug.Assert(entityManager != null);
             Debug.Assert(networkManager != null);
             Debug.Assert(uiManager != null);
