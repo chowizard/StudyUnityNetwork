@@ -13,6 +13,10 @@ namespace Chowizard.UnityNetwork.Client.Character
     {
         public UiHudCharacterInformation uiHud;
 
+        [Space]
+        public Transform pointCharacterId;
+        public Transform pointDescription;
+
         // Use this for initialization
         protected override void Start()
         {
@@ -43,13 +47,7 @@ namespace Chowizard.UnityNetwork.Client.Character
 
             UiHudCharacterInformation uiCharacterInformation = uiFrame.uiHudCharacterManager.Get(owner.netId.Value);
             if(uiCharacterInformation == null)
-            {
-                GameObject uiHudObject = ResourceManager.Instance.InstantiateFromResource("UserInterface/UiHeadupDisplay/UiHudCharacterInformation");
-                uiCharacterInformation = uiHudObject.GetComponent<UiHudCharacterInformation>();
-                Debug.Assert(uiCharacterInformation != null);
-
-                uiFrame.uiHudCharacterManager.Add(owner, uiCharacterInformation);
-            }
+                uiCharacterInformation = uiFrame.uiHudCharacterManager.Register(this);
 
             return uiCharacterInformation;
         }

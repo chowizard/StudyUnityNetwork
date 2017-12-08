@@ -411,6 +411,8 @@ MonoBehaviour:
   state: 0
   owner: {fileID: 114624193723331358}
   uiHud: {fileID: 0}
+  pointCharacterId: {fileID: 4418452591348010}
+  pointDescription: {fileID: 4552322844864892}
 --- !u!114 &114321685311093182
 MonoBehaviour:
   m_ObjectHideFlags: 1

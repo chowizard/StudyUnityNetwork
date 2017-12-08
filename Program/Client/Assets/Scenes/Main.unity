@@ -241,17 +241,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114553981418331146, guid: 1a6b606490914854dbbd39291f0f5d04,
-        type: 2}
-      propertyPath: resourceManager
-      value: 
-      objectReference: {fileID: 1224595234}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1a6b606490914854dbbd39291f0f5d04, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &1224595234 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114046376823770952, guid: 1a6b606490914854dbbd39291f0f5d04,
-    type: 2}
-  m_PrefabInternal: {fileID: 1224595233}
-  m_Script: {fileID: 11500000, guid: 40f6f2a0a8190104b9933b7b19ce6701, type: 3}

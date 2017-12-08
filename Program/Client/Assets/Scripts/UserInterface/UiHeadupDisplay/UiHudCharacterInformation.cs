@@ -11,7 +11,7 @@ namespace Chowizard.UnityNetwork.Client.Ui
 {
     public class UiHudCharacterInformation : MonoBehaviour
     {
-        public CharacterEntity owner;
+        public CharacterComponentUiHudInformation controller;
 
         [Space]
         public Text uiTextCharacterId;
@@ -23,7 +23,7 @@ namespace Chowizard.UnityNetwork.Client.Ui
         // Use this for initialization
         private void Start()
         {
-            Debug.Assert(owner != null);
+            Debug.Assert(controller != null);
 
             Debug.Assert(uiTextCharacterId != null);
             Debug.Assert(uiTextDescription != null);
@@ -36,27 +36,41 @@ namespace Chowizard.UnityNetwork.Client.Ui
             UpdateCheckDescription();
         }
 
+        private void LateUpdate()
+        {
+            transform.position = controller.transform.position;
+
+            uiTextCharacterId.transform.position = controller.pointCharacterId.transform.position;
+            uiTextDescription.transform.position = controller.pointDescription.transform.position;
+        }
+
         private void UpdateCheckCharacterId()
         {
-            if(owner == null)
+            if(controller == null)
                 return;
 
-            if(characterId == owner.netId.Value)
+            Debug.Assert(controller.owner != null);
+            if(controller.owner == null)
                 return;
 
-            characterId = owner.netId.Value;
+            uint id = controller.owner.netId.Value;
+
+            if(characterId == id)
+                return;
+
+            characterId = id;
             uiTextCharacterId.text = DisplayTextCharacterId;
         }
 
         private void UpdateCheckDescription()
         {
-            if(owner == null)
+            if(controller == null)
                 return;
 
-            if(characterPosition == owner.transform.position)
+            if(characterPosition == controller.transform.position)
                 return;
 
-            characterPosition = owner.transform.position;
+            characterPosition = controller.transform.position;
             uiTextDescription.text = DisplayTextDescription;
         }
 
@@ -64,7 +78,7 @@ namespace Chowizard.UnityNetwork.Client.Ui
         {
             get
             {
-                return "ID : ";
+                return "ID : " + characterId;
             }
         }
 
