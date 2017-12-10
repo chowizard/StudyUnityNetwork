@@ -34,7 +34,16 @@ namespace Chowizard.UnityNetwork.Client.Character
 
         private void OnDestroy()
         {
+            if(uiHud == null)
+                return;
 
+            UiFrameSceneGamePlay uiFrame = UiManager.Instance.GetUiFrame("UiFrameSceneGamePlay") as UiFrameSceneGamePlay;
+            Debug.Assert(uiFrame != null);
+
+            if(uiFrame == null)
+                return;
+
+            uiFrame.uiHudCharacterManager.Remove(uiHud);
         }
 
         private UiHudCharacterInformation RegisterUi()

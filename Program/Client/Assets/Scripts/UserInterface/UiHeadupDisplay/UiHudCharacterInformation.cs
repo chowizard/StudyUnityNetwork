@@ -38,6 +38,9 @@ namespace Chowizard.UnityNetwork.Client.Ui
 
         private void LateUpdate()
         {
+            if(controller == null)
+                return;
+
             transform.position = controller.transform.position;
 
             uiTextCharacterId.transform.position = controller.pointCharacterId.transform.position;
