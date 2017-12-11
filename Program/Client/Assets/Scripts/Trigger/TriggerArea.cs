@@ -3,20 +3,22 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace Chowizard.UnityNetwork.Client.Stage
+namespace Chowizard.UnityNetwork.Client.Trigger
 {
-    public sealed class StageManager : MonoBehaviour
+    public class TriggerArea : MonoBehaviour
     {
+
         // Use this for initialization
-        private void Start()
+        void Start()
         {
 
         }
 
         // Update is called once per frame
-        private void Update()
+        void Update()
         {
 
         }
     }
 }
+

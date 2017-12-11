@@ -1,19 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
-public class StageArea : MonoBehaviour
+namespace Chowizard.UnityNetwork.Client.Stage
 {
-
-    // Use this for initialization
-    void Start()
+    public class StageArea : MonoBehaviour
     {
+        // Use this for initialization
+        void Start()
+        {
 
-    }
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
+        // Update is called once per frame
+        void Update()
+        {
 
+        }
     }
 }
+
