@@ -251,6 +251,11 @@ Prefab:
       propertyPath: port
       value: 18001
       objectReference: {fileID: 0}
+    - target: {fileID: 114716622877680960, guid: 1a6b606490914854dbbd39291f0f5d04,
+        type: 2}
+      propertyPath: enableToSyncDistance
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1a6b606490914854dbbd39291f0f5d04, type: 2}
   m_IsPrefabParent: 0
