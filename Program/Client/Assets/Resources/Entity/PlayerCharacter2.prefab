@@ -368,6 +368,7 @@ MonoBehaviour:
   property:
     isPlayer: 1
   model: {fileID: 1459651256503214}
+  attachPointsRoot: {fileID: 1278585951749120}
   moveSpeed: 10
   rotationSpeed: 0
 --- !u!114 &114304350942092806
