@@ -13,7 +13,7 @@ public class CameraController : MonoBehaviour
     public GameObject followTarget;
     public bool isFollowTarget;
 
-    public float moveSpeed = 10.0f;
+    public float moveSpeed = 20.0f;
 
     public void Move(Vector3 translate)
     {
