@@ -6,12 +6,16 @@ using UnityEngine.Networking;
 
 using Chowizard.UnityNetwork.Client.Character;
 using Chowizard.UnityNetwork.Client.Core;
+using Chowizard.UnityNetwork.Client.Stage;
+using Chowizard.UnityNetwork.Client.Trigger;
 using Chowizard.UnityNetwork.Client.Ui;
 
 namespace Chowizard.UnityNetwork.Client.Scene
 {
     public class SceneGamePlay : GameScene
     {
+        private StageManager stageManager;
+        private TriggerManager triggerManager;
         private UiFrame uiFrameGamePlay;
 
         public void SpawnNonPlayerCharacters(int spawningCount)

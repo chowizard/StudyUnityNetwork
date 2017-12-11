@@ -5,18 +5,42 @@ using UnityEngine;
 
 namespace Chowizard.UnityNetwork.Client.Stage
 {
-    public class StageArea : MonoBehaviour
+    [DisallowMultipleComponent]
+    public abstract class StageArea : MonoBehaviour
     {
-        // Use this for initialization
-        void Start()
-        {
+        public StageManager manager;
+        public uint areaId;
 
+        public Vector3 minimum;
+        public Vector3 maximum;
+        private BoxCollider boundary;
+
+        public bool IsContain(Vector3 position)
+        {
+            return false;
+        }
+
+        private void Awake()
+        {
+        }
+
+        // Use this for initialization
+        private void Start()
+        {
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
+            RefreshBoundary();
+        }
 
+        private void RefreshBoundary()
+        {
+        }
+
+        private void GenerateBoundary()
+        {
         }
     }
 }
