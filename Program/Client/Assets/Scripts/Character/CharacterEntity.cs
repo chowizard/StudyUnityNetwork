@@ -18,6 +18,7 @@ namespace Chowizard.UnityNetwork.Client.Character
         public CharacterEntityProperty property;
 
         public GameObject model;
+        public GameObject attachPointsRoot;
 
         public float moveSpeed = 10.0f;
         public float rotationSpeed;
@@ -144,6 +145,7 @@ namespace Chowizard.UnityNetwork.Client.Character
         private void Start()
         {
             Debug.Assert(model != null);
+            Debug.Assert(attachPointsRoot != null);
         }
 
         private void OnDrawGizmosSelected()

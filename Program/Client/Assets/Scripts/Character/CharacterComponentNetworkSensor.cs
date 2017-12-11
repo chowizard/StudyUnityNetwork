@@ -46,14 +46,10 @@ namespace Chowizard.UnityNetwork.Client.Character
             UpdateSensorLevel();
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnDrawGizmosSelected()
         {
-
-        }
-
-        private void OnCollisionExit(Collision collision)
-        {
-
+            //Gizmos.color = new Color(0.3f, 0.25f, 0.02f, 0.75f);
+            //Gizmos.DrawWireSphere(transform.position, );
         }
 
         private void UpdateSensorLevel()

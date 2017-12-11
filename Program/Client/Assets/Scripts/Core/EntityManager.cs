@@ -233,4 +233,3 @@ namespace Chowizard.UnityNetwork.Client.Core
         }
     }
 }
-
