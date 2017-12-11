@@ -241,10 +241,15 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114438895662124344, guid: 1a6b606490914854dbbd39291f0f5d04,
+    - target: {fileID: 114716622877680960, guid: 1a6b606490914854dbbd39291f0f5d04,
         type: 2}
-      propertyPath: moveSpeed
-      value: 50
+      propertyPath: address
+      value: 121.161.128.126
+      objectReference: {fileID: 0}
+    - target: {fileID: 114716622877680960, guid: 1a6b606490914854dbbd39291f0f5d04,
+        type: 2}
+      propertyPath: port
+      value: 18001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1a6b606490914854dbbd39291f0f5d04, type: 2}
