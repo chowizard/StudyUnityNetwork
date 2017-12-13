@@ -178,6 +178,7 @@ namespace Chowizard.UnityNetwork.Client.Network
         #endregion
 
         #region Custom Events
+
         #endregion
 
         public NetworkConnection[] Connections
