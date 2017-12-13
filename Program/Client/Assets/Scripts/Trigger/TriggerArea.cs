@@ -9,7 +9,7 @@ namespace Chowizard.UnityNetwork.Client.Trigger
     public class TriggerArea : MonoBehaviour
     {
         public TriggerManager manager;
-        public uint triggerId;
+        public uint id;
 
         public Vector3 minimum;
         public Vector3 maximum;

@@ -50,6 +50,7 @@ namespace Chowizard.UnityNetwork.Client.Network
             }
         }
 
+        #region HLAPI Events
         public void OnError(NetworkMessage networkMessage)
         {
             string message = "Error occured. : ";
@@ -97,6 +98,10 @@ namespace Chowizard.UnityNetwork.Client.Network
 
             networkManager.message = message;
         }
+        #endregion
+
+        #region Custom Events
+        #endregion
     }
 }
 

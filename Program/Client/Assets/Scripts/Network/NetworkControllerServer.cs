@@ -56,7 +56,7 @@ namespace Chowizard.UnityNetwork.Client.Network
             networkManager.message = message;
         }
 
-        #region Events For Server
+        #region HLAPI Events
         public void OnConnected(NetworkMessage networkMessage)
         {
             AddConnection(networkMessage.conn);
@@ -175,6 +175,9 @@ namespace Chowizard.UnityNetwork.Client.Network
             networkManager.message = logText;
             #endregion
         }
+        #endregion
+
+        #region Custom Events
         #endregion
 
         public NetworkConnection[] Connections
