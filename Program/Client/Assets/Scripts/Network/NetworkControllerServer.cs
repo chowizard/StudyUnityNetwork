@@ -8,6 +8,8 @@ using UnityEngine.Networking.NetworkSystem;
 
 using Chowizard.UnityNetwork.Client.Character;
 using Chowizard.UnityNetwork.Client.Core;
+using Chowizard.UnityNetwork.Client.Network;
+using Chowizard.UnityNetwork.Client.Network.Message;
 
 namespace Chowizard.UnityNetwork.Client.Network
 {
@@ -178,7 +180,25 @@ namespace Chowizard.UnityNetwork.Client.Network
         #endregion
 
         #region Custom Events
+        private void SendCharacterMoveTo(uint characterId, Vector3 position)
+        {
+            NetworkMessageCharacterMoveTo networkMessage = new NetworkMessageCharacterMoveTo(characterId, position);
+            NetworkServer.SendToAll(NetworkMessageCharacterMoveTo.Code, networkMessage);
+        }
 
+        private void OnCharacterMoveTo(NetworkMessage networkMessage)
+        {
+            Debug.Assert(networkMessage != null);
+            if(networkMessage == null)
+                return;
+
+            NetworkMessageCharacterMoveTo detailMessage = networkMessage.ReadMessage<NetworkMessageCharacterMoveTo>();
+            Debug.Assert(detailMessage != null);
+            if(detailMessage == null)
+                return;
+
+            //EntityManager.detailMessage.characterId
+        }
         #endregion
 
         public NetworkConnection[] Connections

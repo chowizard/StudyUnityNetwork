@@ -7,6 +7,8 @@ using UnityEngine.Networking.NetworkSystem;
 
 using Chowizard.UnityNetwork.Client.Character;
 using Chowizard.UnityNetwork.Client.Core;
+using Chowizard.UnityNetwork.Client.Network;
+using Chowizard.UnityNetwork.Client.Network.Message;
 using Chowizard.UnityNetwork.Client.Scene;
 
 namespace Chowizard.UnityNetwork.Client.Network
@@ -59,7 +61,7 @@ namespace Chowizard.UnityNetwork.Client.Network
             }
         }
 
-        #region Network Events
+        #region HLAPI Events
         public void OnError(NetworkMessage networkMessage)
         {
             string logText = "Error occured. : ";
@@ -129,16 +131,43 @@ namespace Chowizard.UnityNetwork.Client.Network
         }
         #endregion
 
+        #region Custom Events
+        private void SendCharacterMoveTo(uint characterId, Vector3 position)
+        {
+            NetworkMessageCharacterMoveTo networkMessage = new NetworkMessageCharacterMoveTo(characterId, position);
+            netClient.SendByChannel(NetworkMessageCharacterMoveTo.Code, networkMessage, Channels.DefaultUnreliable);
+        }
+
+        private void OnCharacterMoveTo(NetworkMessage networkMessage)
+        {
+            Debug.Assert(networkMessage != null);
+            if(networkMessage == null)
+                return;
+
+            NetworkMessageCharacterMoveTo detailMessage = networkMessage.ReadMessage<NetworkMessageCharacterMoveTo>();
+            Debug.Assert(detailMessage != null);
+            if(detailMessage == null)
+                return;
+
+            //EntityManager.detailMessage.characterId
+        }
+        #endregion
+
         private bool SetupClient()
         {
             if(netClient == null)
             {
                 netClient = new NetworkClient();
+                
+                // UNET 내장 네트워크 이벤트 메시지 등록
                 netClient.RegisterHandler(MsgType.Error, OnError);
                 netClient.RegisterHandler(MsgType.Connect, OnConnected);
                 netClient.RegisterHandler(MsgType.Disconnect, OnDisconnected);
                 netClient.RegisterHandler(MsgType.Ready, OnReady);
                 netClient.RegisterHandler(MsgType.NotReady, OnNotReady);
+
+                // 사용자 정의 네트워크 이벤트 메시지 등록
+                netClient.RegisterHandler(NetworkMessageCharacterMoveTo.Code, OnCharacterMoveTo);
             }
 
             try
