@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Chowizard.UnityNetwork.Client.Network.EventHandler
+namespace Chowizard.UnityNetwork.Client.Network.Message
 {
     public abstract class NetworkEventHandler<ClassType> where ClassType : MessageBase
     {

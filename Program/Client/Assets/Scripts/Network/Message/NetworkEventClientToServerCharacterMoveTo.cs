@@ -4,10 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-using Chowizard.UnityNetwork.Client.Network;
-using Chowizard.UnityNetwork.Client.Network.Message;
-
-namespace Chowizard.UnityNetwork.Client.Network.EventHandler
+namespace Chowizard.UnityNetwork.Client.Network.Message
 {
     public sealed class NetworkEventClientToServerCharacterMoveTo : 
         NetworkEventClientToServer<NetworkMessageCharacterMoveTo>
