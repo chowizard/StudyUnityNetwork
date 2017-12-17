@@ -9,20 +9,24 @@ using Chowizard.UnityNetwork.Client.Network.Message;
 
 namespace Chowizard.UnityNetwork.Client.Network.EventHandler
 {
-    public sealed class NetworkEventServerToClientCharacterMoveTo : NetworkEventServerToClient
+    public sealed class NetworkEventServerToClientCharacterMoveTo : 
+        NetworkEventServerToClient<NetworkMessageCharacterMoveTo>
     {
-        public override void SendToClientByChannel(int connectionId, short channelId = Channels.DefaultReliable)
+        public override void SendToClientByChannel(NetworkMessageCharacterMoveTo networkMessage, int connectionId, short channelId)
         {
-
+            if(networkMessage == null)
+                return;
         }
-        public override void SendToAllByChannel(short channelId = Channels.DefaultReliable)
+        public override void SendToAllByChannel(NetworkMessageCharacterMoveTo networkMessage, short channelId)
         {
-            
+            if(networkMessage == null)
+                return;
         }
 
         public override void Receive(NetworkMessage networkMessage)
         {
-
+            if(networkMessage == null)
+                return;
         }
 
         public override short MessageCode

@@ -6,18 +6,19 @@ using UnityEngine.Networking;
 
 namespace Chowizard.UnityNetwork.Client.Network.EventHandler
 {
-    public abstract class NetworkEventClientToServer : NetworkEventHandler
+    public abstract class NetworkEventClientToServer<ClassType> : 
+        NetworkEventHandler<ClassType> where ClassType : MessageBase
     {
-        public abstract void SendByChannel(int channelId = Channels.DefaultReliable);
+        public abstract void SendByChannel(ClassType networkMessage, int channelId);
         
-        public void Send()
+        public void Send(ClassType networkMessage)
         {
-            SendByChannel(Channels.DefaultReliable);
+            SendByChannel(networkMessage, Channels.DefaultReliable);
         }
 
-        public void SendUnreliable()
+        public void SendUnreliable(ClassType networkMessage)
         {
-            SendByChannel(Channels.DefaultUnreliable);
+            SendByChannel(networkMessage, Channels.DefaultUnreliable);
         }
     }
 }
