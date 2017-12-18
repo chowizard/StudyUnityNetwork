@@ -19,7 +19,7 @@ namespace Chowizard.UnityNetwork.Client.Network
         private GameManager mainScene;
 
         private Dictionary<int, NetworkConnection> connections = new Dictionary<int, NetworkConnection>();
-        //private Dictionary<short, NetworkEvent>
+        private Dictionary<short, NetworkEventHandler> eventHandlers = new Dictionary<short, NetworkEventHandler>();
 
         public NetworkControllerServer(NetworkManager networkManager)
         {

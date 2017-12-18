@@ -7,7 +7,8 @@ using UnityEngine.Networking;
 namespace Chowizard.UnityNetwork.Client.Network.Message
 {
     public abstract class NetworkEventClientToServer<ClassType> : 
-        NetworkEventHandler<ClassType> where ClassType : MessageBase
+        NetworkEventHandler 
+        where ClassType : MessageBase
     {
         public abstract void SendByChannel(ClassType networkMessage, int channelId);
         
