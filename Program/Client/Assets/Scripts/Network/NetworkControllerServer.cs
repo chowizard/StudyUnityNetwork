@@ -40,6 +40,9 @@ namespace Chowizard.UnityNetwork.Client.Network
             //NetworkServer.Reset();
             //NetworkServer.ResetConnectionStats();
 
+            if(eventHandlers.Count > 0)
+                ClearEventHandlers();
+
             if(NetworkServer.active)
                 NetworkServer.Shutdown();
         }
@@ -181,24 +184,11 @@ namespace Chowizard.UnityNetwork.Client.Network
         #endregion
 
         #region Custom Events
-        private void SendCharacterMoveTo(uint characterId, Vector3 position)
+        public ClassType GetEventHandler<ClassType>(short messageCode)
+            where ClassType : NetworkEventServerToClient<ClassType>
         {
-            NetworkMessageCharacterMoveTo networkMessage = new NetworkMessageCharacterMoveTo(characterId, position);
-            NetworkServer.SendToAll(NetworkMessageCharacterMoveTo.Code, networkMessage);
-        }
-
-        private void OnCharacterMoveTo(NetworkMessage networkMessage)
-        {
-            Debug.Assert(networkMessage != null);
-            if(networkMessage == null)
-                return;
-
-            NetworkMessageCharacterMoveTo detailMessage = networkMessage.ReadMessage<NetworkMessageCharacterMoveTo>();
-            Debug.Assert(detailMessage != null);
-            if(detailMessage == null)
-                return;
-
-            //EntityManager.detailMessage.characterId
+            NetworkEventHandler data;
+            return eventHandlers.TryGetValue(messageCode, out data) ? data as ClassType : null;
         }
         #endregion
 
@@ -222,6 +212,9 @@ namespace Chowizard.UnityNetwork.Client.Network
         {
             Terminate();
 
+            // UNET 내장 네트워크 이벤트 메시지 등록
+            // P.S
+            // : 1 ~ 15까지의 MsgTypes 상수들은 시스템 메시지 값이라서, 커스텀 이벤트로 핸들링할 수 없다.
             NetworkServer.RegisterHandler(MsgType.Error, OnError);
             NetworkServer.RegisterHandler(MsgType.Connect, OnConnected);
             NetworkServer.RegisterHandler(MsgType.Disconnect, OnDisconnected);
@@ -230,10 +223,8 @@ namespace Chowizard.UnityNetwork.Client.Network
             NetworkServer.RegisterHandler(MsgType.AddPlayer, OnAddPlayer);
             NetworkServer.RegisterHandler(MsgType.RemovePlayer, OnRemovePlayer);
 
-            // P.S
-            // : 1 ~ 15까지의 MsgTypes 상수들은 시스템 메시지 값이라서, 커스텀 이벤트로 핸들링할 수 없다.
-            //NetworkServer.RegisterHandler(MsgType.ObjectSpawn, OnObjectSpawn);
-            //NetworkServer.RegisterHandler(MsgType.ObjectSpawnScene, OnObjectSpawnScene);
+            // 사용자 정의 네트워크 이벤트 메시지 등록
+            AddEventHandler<NetworkEventServerToClientCharacterMoveTo>();
 
             return NetworkServer.Listen(networkManager.port);
         }
@@ -285,6 +276,20 @@ namespace Chowizard.UnityNetwork.Client.Network
 
                 return false;
             }
+        }
+
+        private void ClearEventHandlers()
+        {
+            eventHandlers.Clear();
+        }
+
+        private void AddEventHandler<ClassType>() 
+            where ClassType : NetworkEventHandler, new()
+        {
+            ClassType eventHandler = new ClassType();
+            
+            Debug.Assert(eventHandlers.ContainsKey(eventHandler.MessageCode) == false);
+            eventHandlers.Add(eventHandler.MessageCode, eventHandler);
         }
     }
 }

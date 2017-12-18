@@ -19,6 +19,7 @@ namespace Chowizard.UnityNetwork.Client.Network
         private GameManager sceneMain;
 
         private NetworkClient netClient;
+        private Dictionary<short, NetworkEventHandler> eventHandlers = new Dictionary<short, NetworkEventHandler>();
 
         public NetworkControllerClient(NetworkManager networkManager)
         {
@@ -132,24 +133,11 @@ namespace Chowizard.UnityNetwork.Client.Network
         #endregion
 
         #region Custom Events
-        private void SendCharacterMoveTo(uint characterId, Vector3 position)
+        public ClassType GetEventHandler<ClassType>(short messageCode)
+            where ClassType : NetworkEventServerToClient<ClassType>
         {
-            NetworkMessageCharacterMoveTo networkMessage = new NetworkMessageCharacterMoveTo(characterId, position);
-            netClient.SendByChannel(NetworkMessageCharacterMoveTo.Code, networkMessage, Channels.DefaultUnreliable);
-        }
-
-        private void OnCharacterMoveTo(NetworkMessage networkMessage)
-        {
-            Debug.Assert(networkMessage != null);
-            if(networkMessage == null)
-                return;
-
-            NetworkMessageCharacterMoveTo detailMessage = networkMessage.ReadMessage<NetworkMessageCharacterMoveTo>();
-            Debug.Assert(detailMessage != null);
-            if(detailMessage == null)
-                return;
-
-            //EntityManager.detailMessage.characterId
+            NetworkEventHandler data;
+            return eventHandlers.TryGetValue(messageCode, out data) ? data as ClassType : null;
         }
         #endregion
 
@@ -167,7 +155,8 @@ namespace Chowizard.UnityNetwork.Client.Network
                 netClient.RegisterHandler(MsgType.NotReady, OnNotReady);
 
                 // 사용자 정의 네트워크 이벤트 메시지 등록
-                netClient.RegisterHandler(NetworkMessageCharacterMoveTo.Code, OnCharacterMoveTo);
+                AddEventHandler<NetworkEventClientToServerCharacterMoveTo>();
+                //GetEventHandler<NetworkEventClientToServerCharacterMoveTo>();
             }
 
             try
@@ -182,6 +171,19 @@ namespace Chowizard.UnityNetwork.Client.Network
 
             return true;
         }
+
+        private void ClearEventHandlers()
+        {
+            eventHandlers.Clear();
+        }
+
+        private void AddEventHandler<ClassType>() 
+            where ClassType : NetworkEventHandler, new()
+        {
+            ClassType eventHandler = new ClassType();
+            
+            Debug.Assert(eventHandlers.ContainsKey(eventHandler.MessageCode) == false);
+            eventHandlers.Add(eventHandler.MessageCode, eventHandler);
+        }
     }
 }
-
