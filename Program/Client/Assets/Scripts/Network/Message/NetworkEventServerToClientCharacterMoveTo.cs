@@ -9,17 +9,6 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
     public sealed class NetworkEventServerToClientCharacterMoveTo : 
         NetworkEventServerToClient<NetworkMessageCharacterMoveTo>
     {
-        public override void SendToClientByChannel(NetworkMessageCharacterMoveTo networkMessage, int connectionId, short channelId)
-        {
-            if(networkMessage == null)
-                return;
-        }
-        public override void SendToAllByChannel(NetworkMessageCharacterMoveTo networkMessage, short channelId)
-        {
-            if(networkMessage == null)
-                return;
-        }
-
         public override void Receive(NetworkMessage networkMessage)
         {
             if(networkMessage == null)

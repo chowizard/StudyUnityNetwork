@@ -7,12 +7,12 @@ using UnityEngine.Networking;
 
 namespace Chowizard.UnityNetwork.Client.Network.Message
 {
-    public class NetworkMessageCharacterMoveTo : MessageBase
+    public class NetworkMessageCharacterMoveTo : NetworkCustomMessage
     {
         public uint characterId;
         public Vector3 position;
 
-        public static short Code
+        public override short MessageCode
         {
             get
             {

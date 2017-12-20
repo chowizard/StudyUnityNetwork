@@ -8,14 +8,17 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
 {
     public abstract class NetworkEventServerToClient<ClassType> : 
         NetworkEventHandler 
-        where ClassType : MessageBase
-    {
-        public abstract void SendToClientByChannel(ClassType networkMessage, int connectionId, short channelId);
-        public abstract void SendToAllByChannel(ClassType networkMessage, short channelId = Channels.DefaultReliable);
-        
+        where ClassType : NetworkCustomMessage
+    {   
         public void SendToClient(ClassType networkMessage, int connectionId)
         {
-            SendToClientByChannel(networkMessage, connectionId, Channels.DefaultReliable);
+            if(networkMessage == null)
+                return;
+
+            if(connectionId < 0)
+                return;
+
+            NetworkServer.SendToClient(connectionId, networkMessage.MessageCode, networkMessage);
         }
 
         public void SendToClients(ClassType networkMessage, IEnumerable<int> connectionIds)
@@ -29,74 +32,41 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
         
         public void SendToAll(ClassType networkMessage)
         {
-            SendToAllByChannel(networkMessage, Channels.DefaultReliable);
-        }
-
-        public void SendToAllByChannels(ClassType networkMessage, IEnumerable<short> channelIds)
-        {
-            if(channelIds == null)
+            if(networkMessage == null)
                 return;
 
-            foreach(short channelId in channelIds)
-                SendToAllByChannel(networkMessage, channelId);
+            NetworkServer.SendToAll(networkMessage.MessageCode, networkMessage);
         }
 
-        public void SendToClientsByChannels(ClassType networkMessage, IEnumerable<int> connectionIds, IEnumerable<short> channelIds)
+        public void SendByChannelToAll(ClassType networkMessage, short channelId)
         {
-            if(connectionIds == null)
+            if(networkMessage == null)
                 return;
 
-            if(channelIds == null)
+            if(channelId < 0)
                 return;
 
-            foreach(short channelId in channelIds)
-            {
-                foreach(int connectionId in connectionIds)
-                    SendToClientByChannel(networkMessage, connectionId, channelId);
-            }
+            NetworkServer.SendByChannelToAll(networkMessage.MessageCode, networkMessage, channelId);
         }
 
-        public void SendUnreliableToClient(ClassType networkMessage, int connectionId)
+        public void SendByChannelsToAll(ClassType networkMessage, IEnumerable<short> channelIds)
         {
-            SendToClientByChannel(networkMessage, connectionId, Channels.DefaultUnreliable);
-        }
-
-        public void SendUnreliableToClients(ClassType networkMessage, IEnumerable<int> connectionIds)
-        {
-            if(connectionIds == null)
-                return;
-
-            foreach(int connectionId in connectionIds)
-                SendUnreliableToClient(networkMessage, connectionId);
-        }
-        
-        public void SendUnreliableToAll(ClassType networkMessage)
-        {
-            SendToAllByChannel(networkMessage, Channels.DefaultUnreliable);
-        }
-
-        public void SendUnreliableToAllByChannels(ClassType networkMessage, IEnumerable<short> channelIds)
-        {
-            if(channelIds == null)
-                return;
-
-            foreach(short channelId in channelIds)
-                SendToAllByChannel(networkMessage, channelId);
-        }
-
-        public void SendUnreliableToClientsByChannels(ClassType networkMessage, IEnumerable<int> connectionIds, IEnumerable<short> channelIds)
-        {
-            if(connectionIds == null)
+            if(networkMessage == null)
                 return;
 
             if(channelIds == null)
                 return;
 
             foreach(short channelId in channelIds)
-            {
-                foreach(int connectionId in connectionIds)
-                    SendToClientByChannel(networkMessage, connectionId, channelId);
-            }
+                SendByChannelToAll(networkMessage, channelId);
+        }
+
+        public void SendUneliableToAll(ClassType networkMessage)
+        {
+            if(networkMessage == null)
+                return;
+
+            NetworkServer.SendUnreliableToAll(networkMessage.MessageCode, networkMessage);
         }
     }
 }
