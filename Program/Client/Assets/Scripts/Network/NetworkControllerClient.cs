@@ -134,7 +134,7 @@ namespace Chowizard.UnityNetwork.Client.Network
 
         #region Custom Events
         public ClassType GetEventHandler<ClassType>(short messageCode)
-            where ClassType : NetworkEventServerToClient<ClassType>
+            where ClassType : NetworkEventHandler
         {
             NetworkEventHandler data;
             return eventHandlers.TryGetValue(messageCode, out data) ? data as ClassType : null;
@@ -156,7 +156,7 @@ namespace Chowizard.UnityNetwork.Client.Network
 
                 // 사용자 정의 네트워크 이벤트 메시지 등록
                 AddEventHandler<NetworkEventClientToServerCharacterMoveTo>();
-                //GetEventHandler<NetworkEventClientToServerCharacterMoveTo>();
+                //GetEventHandler<NetworkEventClientToServerCharacterMoveTo>(NetworkMessageCode.CharacterMoveTo);
             }
 
             try
