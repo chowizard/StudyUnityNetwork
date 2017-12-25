@@ -10,16 +10,37 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
         NetworkEventHandler 
         where ClassType : NetworkCustomMessage
     {
-        public abstract void SendByChannel(ClassType networkMessage, int channelId);
-        
-        public void Send(ClassType networkMessage)
+        public void SendByChannel(NetworkClient networkClient, ClassType networkMessage, int channelId)
         {
-            SendByChannel(networkMessage, Channels.DefaultReliable);
+            if(networkClient == null)
+                return;
+
+            if(networkMessage == null)
+                return;
+
+            networkClient.SendByChannel(networkMessage.MessageCode, networkMessage, channelId);
+        }
+        
+        public void Send(NetworkClient networkClient, ClassType networkMessage)
+        {
+            if(networkClient == null)
+                return;
+
+            if(networkMessage == null)
+                return;
+
+            networkClient.Send(networkMessage.MessageCode, networkMessage);
         }
 
-        public void SendUnreliable(ClassType networkMessage)
+        public void SendUnreliable(NetworkClient networkClient, ClassType networkMessage)
         {
-            SendByChannel(networkMessage, Channels.DefaultUnreliable);
+            if(networkClient == null)
+                return;
+
+            if(networkMessage == null)
+                return;
+
+            networkClient.SendUnreliable(networkMessage.MessageCode, networkMessage);
         }
     }
 }

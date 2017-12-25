@@ -13,6 +13,8 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
         {
             if(networkMessage == null)
                 return;
+
+            
         }
 
         public override short MessageCode
