@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using Chowizard.UnityNetwork.Client.Network;
+using Chowizard.UnityNetwork.Client.Network.Message;
+
 namespace Chowizard.UnityNetwork.Client.Character.Ai
 {
     public class CharacterAiStateMoveToPosition : CharacterAiState
@@ -98,7 +101,18 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
                 return;
 
             if(moveComponent.IsMoving == false)
+            {
                 moveComponent.MoveToPosition(detailBehaviour.position);
+
+                if(NetworkManager.Instance.ServerController != null)
+                {
+                    NetworkEventServerToClientCharacterMoveTo networkEventHandler = NetworkManager.Instance.ServerController.GetEventHandler<NetworkEventServerToClientCharacterMoveTo>(NetworkMessageCode.CharacterMoveTo);
+                    Debug.Assert(networkEventHandler != null);
+
+                    NetworkMessageCharacterMoveTo networkMessage = new NetworkMessageCharacterMoveTo(Owner.netId.Value, detailBehaviour.position);
+                    networkEventHandler.SendUnreliableToAll(networkMessage);
+                }
+            }
         }
 
         private void UpdateRotate()
@@ -120,7 +134,18 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
 
             /* 회전각이 안 맞는 상태이므로, 목표 회전각이 될 때까지 회전하도록 한다. */
             if(moveComponent.IsRotating == false)
+            {
                 moveComponent.Rotate(detailBehaviour.rotation);
+
+                if(NetworkManager.Instance.ServerController != null)
+                {
+                    NetworkEventServerToClientCharacterRotateTo networkEventHandler = NetworkManager.Instance.ServerController.GetEventHandler<NetworkEventServerToClientCharacterRotateTo>(NetworkMessageCode.CharacterMoveTo);
+                    Debug.Assert(networkEventHandler != null);
+
+                    NetworkMessageCharacterRotateTo networkMessage = new NetworkMessageCharacterRotateTo(Owner.netId.Value, detailBehaviour.rotation);
+                    networkEventHandler.SendUnreliableToAll(networkMessage);
+                }
+            }
         }
     }
 }

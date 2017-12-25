@@ -61,7 +61,7 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
                 SendByChannelToAll(networkMessage, channelId);
         }
 
-        public void SendUneliableToAll(ClassType networkMessage)
+        public void SendUnreliableToAll(ClassType networkMessage)
         {
             if(networkMessage == null)
                 return;

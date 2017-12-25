@@ -27,6 +27,7 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
                 return;
             
             CharacterComponentAi aiComponent = character.GetCharacterComponent<CharacterComponentAi>();
+            Debug.Assert(aiComponent != null);
             Vector3 toDirection = Vector3.Normalize(detailMessage.position - character.transform.position);
             if(toDirection == Vector3.zero)
                 return;

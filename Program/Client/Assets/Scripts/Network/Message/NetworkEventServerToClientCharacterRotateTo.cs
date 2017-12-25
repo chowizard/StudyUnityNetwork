@@ -10,8 +10,8 @@ using Chowizard.UnityNetwork.Client.Character.Ai;
 
 namespace Chowizard.UnityNetwork.Client.Network.Message
 {
-    public sealed class NetworkEventServerToClientCharacterMoveTo : 
-        NetworkEventServerToClient<NetworkMessageCharacterMoveTo>
+    public sealed class NetworkEventServerToClientCharacterRotateTo : 
+        NetworkEventServerToClient<NetworkMessageCharacterRotateTo>
     {
         public override void Receive(NetworkMessage networkMessage)
         {
@@ -21,7 +21,7 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
             if(networkMessage.conn.connectionId == NetworkManager.Instance.ClientController.NetClient.connection.connectionId)
                 return;
 
-            NetworkMessageCharacterMoveTo detailMessage = networkMessage.ReadMessage<NetworkMessageCharacterMoveTo>();
+            NetworkMessageCharacterRotateTo detailMessage = networkMessage.ReadMessage<NetworkMessageCharacterRotateTo>();
             if(detailMessage == null)
                 return;
 
@@ -31,15 +31,9 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
             
             CharacterComponentAi aiComponent = character.GetCharacterComponent<CharacterComponentAi>();
             Debug.Assert(aiComponent != null);
-            Vector3 toDirection = Vector3.Normalize(detailMessage.position - character.transform.position);
-            if(toDirection == Vector3.zero)
-                return;
-            
-            Quaternion toRotation = Quaternion.FromToRotation(character.transform.forward, toDirection);
-            Quaternion nowRotation = character.transform.rotation * toRotation;
 
             CharacterAiConditionNormal aiCondition = new CharacterAiConditionNormal(character);
-            CharacterAiBehaviourMoveToPosition aiBehaviour = new CharacterAiBehaviourMoveToPosition(character, detailMessage.position, nowRotation);
+            CharacterAiBehaviourMoveToPosition aiBehaviour = new CharacterAiBehaviourMoveToPosition(character, character.transform.position, detailMessage.rotation);
 
             aiComponent.ChangeAiState(CharacterAiState.eType.Move, aiCondition, aiBehaviour);
         }
@@ -48,7 +42,7 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
         {
             get
             {
-                return NetworkMessageCode.CharacterMoveTo;
+                return NetworkMessageCode.CharacterRotateTo;
             }
         }
     }
