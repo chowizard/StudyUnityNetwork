@@ -225,6 +225,7 @@ namespace Chowizard.UnityNetwork.Client.Network
 
             // 사용자 정의 네트워크 이벤트 메시지 등록
             AddEventHandler<NetworkEventServerToClientCharacterMoveTo>();
+            AddEventHandler<NetworkEventServerToClientCharacterRotateTo>();
 
             return NetworkServer.Listen(networkManager.port);
         }
@@ -290,6 +291,8 @@ namespace Chowizard.UnityNetwork.Client.Network
             
             Debug.Assert(eventHandlers.ContainsKey(eventHandler.MessageCode) == false);
             eventHandlers.Add(eventHandler.MessageCode, eventHandler);
+
+            NetworkServer.RegisterHandler(eventHandler.MessageCode, eventHandler.Receive);
         }
     }
 }

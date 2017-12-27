@@ -40,7 +40,7 @@ namespace Chowizard.UnityNetwork.Client.Ui
 
             Add(uiHud);
 
-            uiHud.transform.parent = transform;
+            uiHud.transform.SetParent(transform);
 
             return uiHud;
         }

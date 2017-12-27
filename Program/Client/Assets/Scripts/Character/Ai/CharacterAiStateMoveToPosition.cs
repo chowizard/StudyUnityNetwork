@@ -139,7 +139,7 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
 
                 if(NetworkManager.Instance.ServerController != null)
                 {
-                    NetworkEventServerToClientCharacterRotateTo networkEventHandler = NetworkManager.Instance.ServerController.GetEventHandler<NetworkEventServerToClientCharacterRotateTo>(NetworkMessageCode.CharacterMoveTo);
+                    NetworkEventServerToClientCharacterRotateTo networkEventHandler = NetworkManager.Instance.ServerController.GetEventHandler<NetworkEventServerToClientCharacterRotateTo>(NetworkMessageCode.CharacterRotateTo);
                     Debug.Assert(networkEventHandler != null);
 
                     NetworkMessageCharacterRotateTo networkMessage = new NetworkMessageCharacterRotateTo(Owner.netId.Value, detailBehaviour.rotation);
