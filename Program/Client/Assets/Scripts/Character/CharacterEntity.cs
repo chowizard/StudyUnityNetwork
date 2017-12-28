@@ -42,12 +42,20 @@ namespace Chowizard.UnityNetwork.Client.Character
 
         public void AddCharacterComponent<ClassType>(ClassType component) where ClassType : CharacterComponent
         {
-            components.Add(typeof(ClassType), component);
+            System.Type type = GetTypeForRegister<ClassType>();
+            Debug.Assert(type != null);
+            if(type == null)
+                return;
+
+            components.Add(type, component);
         }
 
         public bool RemoveCharacterComponent<ClassType>() where ClassType : CharacterComponent
         {
             ClassType component = gameObject.GetComponent<ClassType>();
+            if(component == null)
+                return true;
+
             Destroy(component);
 
             return components.Remove(typeof(ClassType));
@@ -55,8 +63,13 @@ namespace Chowizard.UnityNetwork.Client.Character
 
         public ClassType GetCharacterComponent<ClassType>() where ClassType : CharacterComponent
         {
+            System.Type type = GetTypeForRegister<ClassType>();
+            Debug.Assert(type != null);
+            if(type == null)
+                return null;
+
             CharacterComponent data;
-            return components.TryGetValue(typeof(ClassType), out data) ? data as ClassType : null;
+            return components.TryGetValue(type, out data) ? data as ClassType : null;
         }
 
         public bool ActivateCharacterComponent<ClassType>() where ClassType : CharacterComponent
@@ -161,6 +174,15 @@ namespace Chowizard.UnityNetwork.Client.Character
         {
             EntityManager.Instance.RemoveEntity(netId.Value);
         }
+
+        private System.Type GetTypeForRegister<ClassType>() where ClassType : CharacterComponent
+        {
+            System.Type type = typeof(ClassType);
+            while((type.BaseType != null) && (type.BaseType != typeof(CharacterComponent)))
+                type = type.BaseType;
+
+            //Debug.Log("Register Type : " + type.ToString());
+            return type;
+        }
     }
 }
-

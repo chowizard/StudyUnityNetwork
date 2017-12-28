@@ -30,7 +30,7 @@ namespace Chowizard.UnityNetwork.Client.Character
         // Update is called once per frame
         protected virtual void Update()
         {
-
+            // 내용 없음
         }
     }
 }
