@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+using Chowizard.UnityNetwork.Client.Network;
+using Chowizard.UnityNetwork.Client.Network.Message;
+
 namespace Chowizard.UnityNetwork.Client.Character
 {
     [DisallowMultipleComponent]
@@ -52,11 +55,19 @@ namespace Chowizard.UnityNetwork.Client.Character
 
             if((axisX != 0.0f) || (axisZ != 0.0f))
             {
+                Vector3 nowPosition = new Vector3(axisX, 0.0f, axisZ);
+
                 CharacterComponentMove moveComponent = owner.GetCharacterComponent<CharacterComponentMove>();
                 if(moveComponent != null)
-                    moveComponent.MoveToDirection(new Vector3(axisX, 0.0f, axisZ));
+                    moveComponent.MoveToDirection(nowPosition);
+
+                NetworkEventHandlerCharacterMoveTo networkEventHandler = Network.NetworkManager.Instance.ClientController.GetEventHandler<NetworkEventHandlerCharacterMoveTo>(NetworkMessageCode.CharacterMoveTo);
+                Debug.Assert(networkEventHandler != null);
+
+                NetworkMessageCharacterMoveTo networkMessage = new NetworkMessageCharacterMoveTo(owner.netId.Value, nowPosition);
+                Network.NetworkManager.Instance.ClientController.NetClient.SendUnreliable(networkEventHandler.MessageCode, networkEventHandler);
+                //NetworkServer.SendUnreliableToAll(networkEventHandler.MessageCode, networkEventHandler);
             }
         }
     }
 }
-

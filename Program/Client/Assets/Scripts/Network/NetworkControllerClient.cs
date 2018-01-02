@@ -146,7 +146,7 @@ namespace Chowizard.UnityNetwork.Client.Network
             if(netClient == null)
             {
                 netClient = new NetworkClient();
-                
+
                 // UNET 내장 네트워크 이벤트 메시지 등록
                 netClient.RegisterHandler(MsgType.Error, OnError);
                 netClient.RegisterHandler(MsgType.Connect, OnConnected);
@@ -155,9 +155,8 @@ namespace Chowizard.UnityNetwork.Client.Network
                 netClient.RegisterHandler(MsgType.NotReady, OnNotReady);
 
                 // 사용자 정의 네트워크 이벤트 메시지 등록
-                AddEventHandler<NetworkEventClientToServerCharacterMoveTo>();
-                AddEventHandler<NetworkEventClientToServerCharacterRotateTo>();
-                //GetEventHandler<NetworkEventClientToServerCharacterMoveTo>(NetworkMessageCode.CharacterMoveTo);
+                AddEventHandler<NetworkEventHandlerCharacterMoveTo>();
+                AddEventHandler<NetworkEventHandlerCharacterRotateTo>();
             }
 
             try
@@ -178,11 +177,11 @@ namespace Chowizard.UnityNetwork.Client.Network
             eventHandlers.Clear();
         }
 
-        private void AddEventHandler<ClassType>() 
+        private void AddEventHandler<ClassType>()
             where ClassType : NetworkEventHandler, new()
         {
             ClassType eventHandler = new ClassType();
-            
+
             Debug.Assert(eventHandlers.ContainsKey(eventHandler.MessageCode) == false);
             eventHandlers.Add(eventHandler.MessageCode, eventHandler);
 

@@ -106,11 +106,11 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
 
                 if(NetworkManager.Instance.ServerController != null)
                 {
-                    NetworkEventServerToClientCharacterMoveTo networkEventHandler = NetworkManager.Instance.ServerController.GetEventHandler<NetworkEventServerToClientCharacterMoveTo>(NetworkMessageCode.CharacterMoveTo);
+                    NetworkEventHandlerCharacterMoveTo networkEventHandler = NetworkManager.Instance.ServerController.GetEventHandler<NetworkEventHandlerCharacterMoveTo>(NetworkMessageCode.CharacterMoveTo);
                     Debug.Assert(networkEventHandler != null);
 
                     NetworkMessageCharacterMoveTo networkMessage = new NetworkMessageCharacterMoveTo(Owner.netId.Value, detailBehaviour.position);
-                    networkEventHandler.SendUnreliableToAll(networkMessage);
+                    UnityEngine.Networking.NetworkServer.SendUnreliableToAll(networkMessage.MessageCode, networkMessage);
                 }
             }
         }
@@ -139,11 +139,11 @@ namespace Chowizard.UnityNetwork.Client.Character.Ai
 
                 if(NetworkManager.Instance.ServerController != null)
                 {
-                    NetworkEventServerToClientCharacterRotateTo networkEventHandler = NetworkManager.Instance.ServerController.GetEventHandler<NetworkEventServerToClientCharacterRotateTo>(NetworkMessageCode.CharacterRotateTo);
+                    NetworkEventHandlerCharacterRotateTo networkEventHandler = NetworkManager.Instance.ServerController.GetEventHandler<NetworkEventHandlerCharacterRotateTo>(NetworkMessageCode.CharacterRotateTo);
                     Debug.Assert(networkEventHandler != null);
 
                     NetworkMessageCharacterRotateTo networkMessage = new NetworkMessageCharacterRotateTo(Owner.netId.Value, detailBehaviour.rotation);
-                    networkEventHandler.SendUnreliableToAll(networkMessage);
+                    UnityEngine.Networking.NetworkServer.SendUnreliableToAll(networkMessage.MessageCode, networkMessage);
                 }
             }
         }

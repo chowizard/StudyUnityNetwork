@@ -224,8 +224,8 @@ namespace Chowizard.UnityNetwork.Client.Network
             NetworkServer.RegisterHandler(MsgType.RemovePlayer, OnRemovePlayer);
 
             // 사용자 정의 네트워크 이벤트 메시지 등록
-            AddEventHandler<NetworkEventServerToClientCharacterMoveTo>();
-            AddEventHandler<NetworkEventServerToClientCharacterRotateTo>();
+            AddEventHandler<NetworkEventHandlerCharacterMoveTo>();
+            AddEventHandler<NetworkEventHandlerCharacterRotateTo>();
 
             return NetworkServer.Listen(networkManager.port);
         }
@@ -284,11 +284,11 @@ namespace Chowizard.UnityNetwork.Client.Network
             eventHandlers.Clear();
         }
 
-        private void AddEventHandler<ClassType>() 
+        private void AddEventHandler<ClassType>()
             where ClassType : NetworkEventHandler, new()
         {
             ClassType eventHandler = new ClassType();
-            
+
             Debug.Assert(eventHandlers.ContainsKey(eventHandler.MessageCode) == false);
             eventHandlers.Add(eventHandler.MessageCode, eventHandler);
 

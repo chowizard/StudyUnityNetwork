@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -6,19 +6,14 @@ using UnityEngine.Networking;
 
 using Chowizard.UnityNetwork.Client.Core;
 using Chowizard.UnityNetwork.Client.Character;
-using Chowizard.UnityNetwork.Client.Character.Ai;
 
 namespace Chowizard.UnityNetwork.Client.Network.Message
 {
-    public sealed class NetworkEventServerToClientCharacterRotateTo : 
-        NetworkEventServerToClient<NetworkMessageCharacterRotateTo>
+    public sealed class NetworkEventHandlerCharacterRotateTo : NetworkEventHandler
     {
         public override void Receive(NetworkMessage networkMessage)
         {
             if(networkMessage == null)
-                return;
-
-            if(networkMessage.conn.connectionId == NetworkManager.Instance.ClientController.NetClient.connection.connectionId)
                 return;
 
             NetworkMessageCharacterRotateTo detailMessage = networkMessage.ReadMessage<NetworkMessageCharacterRotateTo>();
@@ -28,14 +23,13 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
             CharacterEntity character = EntityManager.Instance.GetEntity(detailMessage.characterId);
             if(character == null)
                 return;
-            
-            CharacterComponentAi aiComponent = character.GetCharacterComponent<CharacterComponentAi>();
-            Debug.Assert(aiComponent != null);
 
-            CharacterAiConditionNormal aiCondition = new CharacterAiConditionNormal(character);
-            CharacterAiBehaviourMoveToPosition aiBehaviour = new CharacterAiBehaviourMoveToPosition(character, character.transform.position, detailMessage.rotation);
+            CharacterComponentMove moveComponent = character.GetCharacterComponent<CharacterComponentMove>();
+            Debug.Assert(moveComponent != null);
+            if(moveComponent == null)
+                return;
 
-            aiComponent.ChangeAiState(CharacterAiState.eType.Move, aiCondition, aiBehaviour);
+            moveComponent.Rotate(detailMessage.rotation);
         }
 
         public override short MessageCode
@@ -46,4 +40,5 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
             }
         }
     }
+
 }

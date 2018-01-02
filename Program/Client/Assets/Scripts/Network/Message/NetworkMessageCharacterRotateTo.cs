@@ -20,7 +20,7 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
             }
         }
 
-        /* UnityEntgine.Networking.NetworkMessage에서 UnityEntgine.Networking.MessageBase 
+        /* UnityEntgine.Networking.NetworkMessage에서 UnityEntgine.Networking.MessageBase
           기반의 객체로 전달할 때, public 기본 생성자를 요구한다. */
         public NetworkMessageCharacterRotateTo()
         {
