@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 namespace Chowizard.UnityNetwork.Client.Network.Message
 {
-    public abstract class NetworkEventHandler : MessageBase
+    public abstract class NetworkEventHandler
     {
         public abstract void Receive(NetworkMessage networkMessage);
 

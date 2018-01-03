@@ -64,9 +64,9 @@ namespace Chowizard.UnityNetwork.Client.Character
                 NetworkEventHandlerCharacterMoveTo networkEventHandler = Network.NetworkManager.Instance.ClientController.GetEventHandler<NetworkEventHandlerCharacterMoveTo>(NetworkMessageCode.CharacterMoveTo);
                 Debug.Assert(networkEventHandler != null);
 
-                NetworkMessageCharacterMoveTo networkMessage = new NetworkMessageCharacterMoveTo(owner.netId.Value, nowPosition);
-                Network.NetworkManager.Instance.ClientController.NetClient.SendUnreliable(networkEventHandler.MessageCode, networkEventHandler);
-                //NetworkServer.SendUnreliableToAll(networkEventHandler.MessageCode, networkEventHandler);
+                NetworkMessageCharacterMoveTo networkMessage = new NetworkMessageCharacterMoveTo(owner.netId.Value, owner.GetCharacterComponent<CharacterComponentMove>().DestinationPosition);
+                Network.NetworkManager.Instance.ClientController.NetClient.SendUnreliable(networkEventHandler.MessageCode, networkMessage);
+                //Network.NetworkManager.Instance.ClientController.NetClient.Send(networkEventHandler.MessageCode, networkEventHandler);
             }
         }
     }

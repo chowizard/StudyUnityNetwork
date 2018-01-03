@@ -16,6 +16,12 @@ namespace Chowizard.UnityNetwork.Client.Network.Message
             if(networkMessage == null)
                 return;
 
+            if(networkMessage.reader.Length <= 0)
+            {
+                Debug.LogError("Received message bytes are nothing!");
+                return;
+            }
+
             NetworkMessageCharacterMoveTo detailMessage = networkMessage.ReadMessage<NetworkMessageCharacterMoveTo>();
             if(detailMessage == null)
                 return;
