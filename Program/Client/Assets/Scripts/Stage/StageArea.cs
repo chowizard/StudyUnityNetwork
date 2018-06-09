@@ -8,7 +8,7 @@ namespace Chowizard.UnityNetwork.Client.Stage
     [DisallowMultipleComponent]
     public abstract class StageArea : MonoBehaviour
     {
-        public StageManager manager;
+        public StageAreaManager manager;
         public uint id;
 
         public Vector3 minimum;

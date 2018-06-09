@@ -6,9 +6,13 @@ using UnityEngine;
 
 namespace Chowizard.UnityNetwork.Client.Stage
 {
-    public sealed class StageManager : MonoBehaviour
+    // 기능 : 스테이지 영역 관리자
+    public sealed class StageAreaManager : MonoBehaviour
     {
+        // 스테이지 목록 컨테이너
         private Dictionary<uint, StageArea> areas = new Dictionary<uint, StageArea>();
+
+        // 각 좌표축 별 크기
         private int capacityX;
         private int capacityY;
         private int capacityZ;

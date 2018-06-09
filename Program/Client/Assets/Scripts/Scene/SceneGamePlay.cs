@@ -14,7 +14,7 @@ namespace Chowizard.UnityNetwork.Client.Scene
 {
     public class SceneGamePlay : GameScene
     {
-        private StageManager stageManager;
+        private StageAreaManager stageManager;
         private TriggerManager triggerManager;
         private UiFrame uiFrameGamePlay;
 
